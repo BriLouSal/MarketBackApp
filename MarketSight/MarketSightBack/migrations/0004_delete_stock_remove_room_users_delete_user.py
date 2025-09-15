@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('OikonBack', '0003_rename_code_stock_symbol'),
+        ('MarketSightBack', '0003_rename_code_stock_symbol'),
     ]
 
     operations = [

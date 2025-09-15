@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('OikonBack', '0007_message_portfolio_profile_transaction_delete_stock_and_more'),
+        ('MarketSightBack', '0007_message_portfolio_profile_transaction_delete_stock_and_more'),
     ]
 
     operations = [

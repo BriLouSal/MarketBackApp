@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('OikonBack', '0005_delete_room'),
+        ('MarketSightBack', '0005_delete_room'),
     ]
 
     operations = [

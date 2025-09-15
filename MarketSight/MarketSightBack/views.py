@@ -136,7 +136,7 @@ def loginpage(request):
 
       
         else:
-            messages.success(request, "Login successful! Enjoy Oikon!")
+            messages.success(request, "Login successful! Enjoy MarketSight!")
             return render(request, 'base/search.html')
         
     return render(request, 'base/authentication/login.html')
@@ -161,4 +161,4 @@ def assistance(request):
 # def stock_portfolio(request):
 #     # We will fetch user's stock portfolio from database and display it here
 #     context = {}
-#     return render(request, 'OikonBack/stock_portfolio.html', context)
+#     return render(request, 'MarketSightBack/stock_portfolio.html', context)

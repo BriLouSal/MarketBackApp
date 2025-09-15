@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('last_update', models.DateTimeField(auto_now=True)),
-                ('users', models.ManyToManyField(related_name='rooms', to='OikonBack.user')),
+                ('users', models.ManyToManyField(related_name='rooms', to='MarketSightBack.user')),
             ],
         ),
     ]
