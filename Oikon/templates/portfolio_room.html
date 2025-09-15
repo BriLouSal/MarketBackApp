@@ -1,0 +1,34 @@
+
+
+
+{% block content %}
+
+
+
+
+
+
+<!-- We want the portfolio of our stocks here!  -->
+<div>
+    <div>
+        <h1>Stock Portfolio</h1>
+        {% for stocks in ticker %}
+        <div>
+            {{stocks.id}}: {stocks.stock}
+            <!-- We Wish to Display the Graphs -->
+        </div>
+         {% endfor %}
+    </div>
+
+</div>
+
+
+<!-- Yahoo Finance Display -->
+
+
+<!-- News Anaylsis in the Bottom -->
+    <!-- Use AI to indicate bias  -->
+
+
+{% endblock content %}
+
