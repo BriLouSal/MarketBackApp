@@ -21,7 +21,13 @@ from django.contrib import messages
 import pandas as pd
 import matplotlib.pyplot as plt
 import csv as cs
+
 from .models import Profile, Portfolio
+
+import scraper 
+
+import yfinance as yf
+
 
 
 
@@ -37,6 +43,8 @@ user = "Brain"
 
 #  This is a list of stocks that we will use to display in the portfolio room
 ticker = []
+
+
 
 
 
@@ -64,6 +72,8 @@ def portfolio_room(request):
     return render(request, 'portfolio_room.html', context)
 
 def stock(request, stock_tick):
+
+    # This will happen when the user has: Search.html -> Stock Checker ->
     stock_info = None
     for i in ticker:
         

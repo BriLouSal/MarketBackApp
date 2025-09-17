@@ -53,6 +53,10 @@
    {% if user.is_authenticated %}
       <p> Welcome! {{user.username}}</p>
 
+      <div class="trending_stock">
+         
+
+      </div>
    {% else %}
 
       <a href="{% url 'login' %}"> 
