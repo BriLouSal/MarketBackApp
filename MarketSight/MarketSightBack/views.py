@@ -46,6 +46,8 @@ ticker = []
 
 
 
+
+
 def check_stock(request):
     pass
 

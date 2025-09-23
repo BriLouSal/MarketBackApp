@@ -154,8 +154,15 @@ EMAIL_PORT = 587
 
 EMAIL_USE_TLS = True
 
+EMAIL_HOST_USER = "brianlouis.salinas@gmail.com"
 
-EMAIL
+
+EMAIL_HOST_PASSWORD = "arwm zmui rxse lwam"
+
+
+
+
+
 
 # EMAIL_HOST_USER = environ("EMAIL_HOST_USER")
 
