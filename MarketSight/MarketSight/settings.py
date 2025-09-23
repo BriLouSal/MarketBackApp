@@ -22,7 +22,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-env = environ.Env(DEBUG=(bool, False))
+# env = environ.Env(DEBUG=(bool, False))
  
 
 
@@ -155,7 +155,12 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 
-EMAIL_HOST_USER = environ("EMAIL_HOST_USER")
+EMAIL
+
+# EMAIL_HOST_USER = environ("EMAIL_HOST_USER")
+
+# EMAIL_HOST_PASSWORD = environ("EMAIL_HOST_PASSWORD")
+
 
 
 

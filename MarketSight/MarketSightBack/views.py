@@ -24,10 +24,8 @@ import csv as cs
 
 from .models import Profile, Portfolio
 
-import scraper 
 
 import yfinance as yf
-
 
 
 
@@ -135,7 +133,6 @@ def loginpage(request):
         password = request.POST.get('password')
 
         # This will check if user authentication will exist
-
         user = authenticate(request, email=email, username=username, password=password)
 
         if user is not None:
@@ -171,3 +168,5 @@ def assistance(request):
 #     # We will fetch user's stock portfolio from database and display it here
 #     context = {}
 #     return render(request, 'MarketSightBack/stock_portfolio.html', context)
+
+
