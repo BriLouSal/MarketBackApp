@@ -150,11 +150,31 @@ def loginpage(request):
     return render(request, 'base/authentication/login.html')
 
 def logout_page(request):
+    
     logout(request)
+    
     return render(request, 'base/authentication/logout.html')
 
 
+
+
 def assistance(request):
+
+    # We want user to be in the database: Email, Username, and password
+
+    # If it doesn't exist, we want it to have an error 
+    
+    # user = authenticate(request, email=email, username=username, password=password)
+
+    if request.method == "POST":
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        user = authenticate(request, email=email, username=username)
+
+    if user is None:
+        messages.error("This User does")
+        
+
     return render(request, 'base/Assistance.html')
 
 

@@ -5,12 +5,18 @@
     font-family: Arial, sans-serif;
 
 }
-body {
-    line-height: 1.6;
-    font-size: 16px;
-    height: 100vh;
-    /* background-color: ; */
+
+body{
+    font-family: 'Poppins', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    background-color: #f4f4f4;
+    color: #333;
+    background-image: linear-gradient(to right, #434343 0%, black 100%);
 }
+
+
 
 
 .border{
@@ -19,7 +25,11 @@ body {
     padding: 0;
     flex-direction: column;
     align-items: center;
+    
     border: 2px solid black;
+
+    margin-bottom: 125px;
+
     width: 20%;
     height: 60%;
     margin: 50px auto;
