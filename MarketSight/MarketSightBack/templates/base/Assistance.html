@@ -21,6 +21,25 @@
   
 <!-- For this one, we wanna create specific support: input -->
 
+    <div class="user_greeted">
+        <!-- Now we want to use if statements -->
+            
+        {% if user.is_authenticated %}
+            <p>Welcome {{% self.username %}}. Please Contact Us
+                if you're having issue with the website. We can gurantee that
+                we can respond in 1-2 Business Days!
+            </p>
+
+        {% else %}
+        <p>
+            Welcome to our Request Support Website. You can expect response from around 2-3 Business Days! Please Login to access the huge resource for your investment, and chat with others about your investment strategy!
+        </p>
+
+    </div>
+
+    {% endif  %}
+    
+
         <div class="border">
             <h1>Contact Us</h1>
             <form action="POST">

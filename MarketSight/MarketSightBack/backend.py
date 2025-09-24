@@ -33,3 +33,4 @@ class EmailBackEnd(BaseBackend):
 
 def service():
     ACCEPTED_MAIL_FREE_SERVICE = ["@ucalgary.ca"]
+    # We need to get user's email, and we can use string concetation to find the email, or endswith "@Ucalgary.ca"
