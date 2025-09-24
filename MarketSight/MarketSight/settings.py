@@ -41,14 +41,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'MarketSightBack.backends.EmailBackend',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "MarketSightBack.apps.MarketSightBackConfig"
+    "MarketSightBack.apps.MarketSightBackConfig",
+]
+
+AUTHENTICATION_BACKENDS = [
+    "MarketSightBack.backend.EmailBackend",  
+    "django.contrib.auth.backends.ModelBackend",  
 ]
 
 
