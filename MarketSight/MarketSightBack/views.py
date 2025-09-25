@@ -13,6 +13,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 
+from .backend import EmailBackend
+
 
 # Investment Endeavors Library
 
@@ -104,8 +106,9 @@ def signup(request):
             messages.error(request, "This username already exists, please try again!")
             return render(request, 'base/authentication/signup.html')
         
-            if User.objects.filler(email=email).exists():
-                pass
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "This email already exists in the database, please try again!")
+            return render(request, 'base/authentication/signup.html')
         
         user = User.objects.create_user(username=username, password=password)
        
@@ -137,7 +140,7 @@ def loginpage(request):
         # This will check if user authentication will exist
         user = authenticate(request, email=email, username=username, password=password)
 
-        if user is not None:
+        if user is None:
             login(request, user)
             messages.error(request, "This user does not exist, please signup or try again!")
             return render(request, 'base/authentication/login.html')
@@ -170,7 +173,7 @@ def assistance(request):
         user = authenticate(request, email=email, username=username)
 
         if user is None:
-            messages.error("This User does not exist ")
+            messages.error("This User does not exist, please use the username, and email that you've used to signup.")
 
         else:
             user_message = request.POST.get('email')
