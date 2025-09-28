@@ -25,7 +25,7 @@
         <!-- Now we want to use if statements -->
             
         {% if user.is_authenticated %}
-            <p>Welcome {{% self.username %}}. Please Contact Us
+            <p>Welcome {{ user.username }}. Please Contact Us
                 if you're having issue with the website. We can gurantee that
                 we can respond in 1-2 Business Days!
             </p>
@@ -43,7 +43,8 @@
 
         <div class="border">
             <h1>Contact Us</h1>
-            <form action="POST">
+            <form method="POST" action="{% url 'assistance' %}">
+                {% csrf_token %}
                 <label for="name">Name:</label>
                 <input type="text" id="inputbox" name="name" required>
                 <label for="email">Email:</label>
@@ -56,7 +57,19 @@
 
 
 
+        {% if messages %}
 
+        <div class="message_noti">
+            {% for messages in messages %}
+                <li>{{messages}}</li>
+            
+
+            {% endfor %}
+
+        </div>
+
+
+        {% endif %}
         
 
 

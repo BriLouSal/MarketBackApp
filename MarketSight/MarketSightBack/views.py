@@ -16,6 +16,11 @@ from django.contrib.auth.models import User
 from .backend import EmailBackend
 
 
+# email
+
+from django.core.mail import send_mail
+from django.conf import settings
+
 # Investment Endeavors Library
 
 from django.contrib import messages
@@ -121,6 +126,8 @@ def signup(request):
 
 
 
+
+
 def loginpage(request):
 
     if request.user.is_authenticated:
@@ -132,7 +139,6 @@ def loginpage(request):
     if request.method == "POST":
         email = request.POST.get('email')
        
-        # username = request.POST.get('username')
 
         password = request.POST.get('password')
 
@@ -168,17 +174,24 @@ def assistance(request):
     # If it doesn't exist, we want it to have an error 
 
     if request.method == "POST":
-        username = request.POST.get('username')
+        name = request.POST.get('name')
+        
         email = request.POST.get('email')
-        user = authenticate(request, email=email, username=username)
 
-        if user is None:
-            messages.error("This User does not exist, please use the username, and email that you've used to signup.")
+        user_message  = request.POST.get('message')
+        
+        user = authenticate(request, email=email, username=name)
 
-        else:
-            user_message = request.POST.get('message')
-            
+        send_mail (
+            subject = f"New Contact Message from {email}",
+            message= f"from {name} \n {user_message }",
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[settings.EMAIL_HOST_USER], 
 
+
+        )
+        messages.success(request, "Login successful! Enjoy MarketSight!")
+        return render(request, 'base/search.html')
 
 
     return render(request, 'base/Assistance.html')
