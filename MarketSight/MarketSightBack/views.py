@@ -109,12 +109,11 @@ def signup(request):
         if User.objects.filter(email=email).exists():
             messages.error(request, "This email already exists in the database, please try again!")
             return render(request, 'base/authentication/signup.html')
+        else:
         
-        user = User.objects.create_user(username=username, password=password)
-       
-        user.save()   
-  
-        messages.success(request, "Successfully Signed up, please use login page!")
+            user = User.objects.create_user(username=username, password=password, email=email)
+        
+            messages.success(request, "Successfully Signed up, please use login page!")
        
         redirect("base/authentication/login.html")
 
@@ -133,22 +132,23 @@ def loginpage(request):
     if request.method == "POST":
         email = request.POST.get('email')
        
-        username = request.POST.get('username')
+        # username = request.POST.get('username')
 
         password = request.POST.get('password')
 
         # This will check if user authentication will exist
-        user = authenticate(request, email=email, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
 
         if user is None:
-            login(request, user)
             messages.error(request, "This user does not exist, please signup or try again!")
             return render(request, 'base/authentication/login.html')
 
+
       
         else:
+            login(request, user)
             messages.success(request, "Login successful! Enjoy MarketSight!")
-            return redirect(request, 'base/search.html')
+            return render(request, 'base/search.html')
         
     return render(request, 'base/authentication/login.html')
 
@@ -176,7 +176,10 @@ def assistance(request):
             messages.error("This User does not exist, please use the username, and email that you've used to signup.")
 
         else:
-            user_message = request.POST.get('email')
+            user_message = request.POST.get('message')
+            
+
+
 
     return render(request, 'base/Assistance.html')
 
@@ -193,5 +196,7 @@ def assistance(request):
 #     # We will fetch user's stock portfolio from database and display it here
 #     context = {}
 #     return render(request, 'MarketSightBack/stock_portfolio.html', context)
+
+
 
 
