@@ -55,18 +55,50 @@ ticker = []
 
 
 
-def check_stock(request):
-    pass
+def check_stock(stock):
+    try:
+        ticker = yf.Ticker(stock)
+        # We can do is if something doesn't return, we can do return None 
+        # and in Search
+        info = ticker.info
 
+        if not info:
+            return None
+        else:
+            return info
 
+    except (ValueError, ConnectionAbortedError, ConnectionError, KeyError, IndexError):
+        return None
+    except Exception as e:
+    # Catch JSONDecodeError and any unexpected error
+        print(f"Error fetching stock {stock}: {e}")
+        return None
 
 
 
 def search(request):
     # This is the index view where we will display the home page/search page
     # Now we need to find how to redirect the search html -> stock.html
+    if request.method == "GET":
+        # AAPL, etc
+        search_stock = request.GET.get("search")
+        
+        if search_stock:
+            search_stock = str(search_stock.upper())
 
-    # Check if the stock exists by using try and exception  (Error Handling) towards the check_stock function
+        # ask for check_stock
+            stock_checked = check_stock(stock=search_stock)
+
+            if stock_checked is None:
+                messages.error(request, "Please Try Again, This Stock Does not Exist")
+                return render(request, 'base/search.html')
+
+
+            # This will give the stock the i = stock_checked. Since it's existing right?
+            else:
+                return redirect('stock', stock_tick=search_stock)
+        # Now check if the stock exists
+
 
     return render(request, 'base/search.html')
 

@@ -36,7 +36,7 @@
       <h1>MarketSight</h1>
       <div class="search-container">
          {% csrf_token %}
-         <form action="GET">
+         <form method="GET", action="{% url 'search' %}">
           <input type="text" placeholder="Search for Stocks..." name="search" required>
          <button type="submit">Search</button>
 
