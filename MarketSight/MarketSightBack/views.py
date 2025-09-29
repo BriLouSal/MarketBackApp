@@ -179,11 +179,13 @@ def assistance(request):
         email = request.POST.get('email')
 
         user_message  = request.POST.get('message')
+
+        subject = request.POST.get('subject')
         
         user = authenticate(request, email=email, username=name)
 
         send_mail (
-            subject = f"New Contact Message from {email}",
+            subject = f"New Contact Message from {subject}",
             message= f"from {name} \n {user_message }",
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[settings.EMAIL_HOST_USER], 

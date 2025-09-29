@@ -69,7 +69,25 @@ body{
 
 }
 
+.user_greeted{
+    display: flex;
+    flex-direction: row;
 
+    color: #fff;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.message_noti {
+    display: flex;
+    flex-direction: row;
+    color: #fff;
+
+    font-size: 15px;
+
+    
+}
 
 .home-button h1 {
     font-size: 20px;
