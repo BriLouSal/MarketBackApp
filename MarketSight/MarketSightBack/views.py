@@ -49,6 +49,9 @@ user = "Brain"
 #  This is a list of stocks that we will use to display in the portfolio room
 ticker = []
 
+# This will be used as a feature to store recent_search of a user stock
+recent_search = {}
+
 
 
 
@@ -61,14 +64,23 @@ def check_stock(stock):
         # We can do is if something doesn't return, we can do return None 
         # and in Search
         info = ticker.info
+        
+        day_stock_data = ticker.history(period='1d')
 
-        if not info:
-            return None
-        else:
-            return info
+        stock_info = {
+            'ticker': stock,
+            'price': day_stock_data
 
-    except (ValueError, ConnectionAbortedError, ConnectionError, KeyError, IndexError):
-        return None
+        }
+    
+
+        if not info or 'regularMarketPrice' not in info:
+                return None
+            
+        return stock_info
+
+    # except (ValueError, ConnectionAbortedError, ConnectionError, KeyError, IndexError):
+    #     return None
     except Exception as e:
     # Catch JSONDecodeError and any unexpected error
         print(f"Error fetching stock {stock}: {e}")
@@ -98,8 +110,6 @@ def search(request):
             else:
                 return redirect('stock', stock_tick=search_stock)
         # Now check if the stock exists
-
-
     return render(request, 'base/search.html')
 
 def home(request):
@@ -121,6 +131,7 @@ def stock(request, stock_tick):
             stock_info = i
   
     context = {'ticker': ticker}
+
    
     return render(request, 'base/stock.html', context)
 
