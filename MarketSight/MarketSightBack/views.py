@@ -15,10 +15,10 @@ from django.contrib.auth.models import User
 
 from .backend import EmailBackend
 
-# Error checker
-import sys
-print(sys.executable)
-# email
+# # Error checker
+# import sys
+# print(sys.executable)
+# # email
 
 from django.core.mail import send_mail
 from django.conf import settings
@@ -31,6 +31,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import csv as cs
 import alpaca
+from MarketSight.MarketSightBack.MSOAI import OpenAI
+
 
 from .models import Profile, Portfolio
 # from alpaca.data.historical import CryptoHistoricalDataClient
@@ -77,9 +79,6 @@ def check_stock(stock):
         stock_info = {
             'ticker': stock,
             'price': day_stock_data,
-
-
-
         }
     
     
