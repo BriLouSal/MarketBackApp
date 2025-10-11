@@ -15,7 +15,9 @@ from django.contrib.auth.models import User
 
 from .backend import EmailBackend
 
-
+# Error checker
+import sys
+print(sys.executable)
 # email
 
 from django.core.mail import send_mail
@@ -28,8 +30,13 @@ from django.contrib import messages
 import pandas as pd
 import matplotlib.pyplot as plt
 import csv as cs
+import alpaca
 
 from .models import Profile, Portfolio
+# from alpaca.data.historical import CryptoHistoricalDataClient
+
+
+from .MSOAI import open_stock_info
 
 
 import yfinance as yf

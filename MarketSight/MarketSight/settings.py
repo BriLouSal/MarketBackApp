@@ -38,6 +38,18 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
+
+environment_host = os.environ.get(".env")
+
+host_user_of_email = environment_host
+
+# EMAIL_HOST_USER = brianlouis.salinas@gmail.com
+
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -65,6 +77,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+
 
 ROOT_URLCONF = 'MarketSight.urls'
 

@@ -32,6 +32,9 @@ class Chat(models.Model):
     title = models.CharField(max_length=MAX_LENGTH_OF_TITLE)
     
     body = models.TextField()
+
+
+    
     
     created_at = models.DateField(default=timezone.now)
     
