@@ -69,9 +69,12 @@ def check_stock(stock):
 
         stock_info = {
             'ticker': stock,
-            'price': day_stock_data
+            'price': day_stock_data,
+
+
 
         }
+    
     
 
         if not info or 'regularMarketPrice' not in info:
