@@ -15,7 +15,6 @@ API_KEY = os.getenv('ALPACA')
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-print(API_KEY, SECRET_KEY)
 
 
 
