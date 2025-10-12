@@ -31,7 +31,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import csv as cs
 import alpaca
-from MarketSight.MarketSightBack.MSOAI import OpenAI
+
+
 
 
 from .models import Profile, Portfolio
