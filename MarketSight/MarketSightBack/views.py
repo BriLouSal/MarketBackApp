@@ -31,7 +31,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import csv as cs
 import alpaca
-from trading_classes import get_asset_info
+from trading_classes import get_asset_info, get_losers
 
 
 

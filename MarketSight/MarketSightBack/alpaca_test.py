@@ -8,7 +8,9 @@ from MSOAI import StockSummary, StockInfo
 from dotenv import load_dotenv
 import os
 
-from trading_classes import get_asset_info
+# from trading_classes import get_asset_info
+
+from yahooquery import Screener
 # This primarily to test my algorithim by adding into my Paper Traeding Simulator
 
 # Load our env files
@@ -39,4 +41,26 @@ print(type(account))
 
 
 
-print(get_asset_info)
+# print(get_asset_info)
+
+
+def get_losers():
+    info = Screener()
+    losers = info.get_screeners('day_losers')  # Returns dict
+
+
+
+    quotas = losers['day_losers']['quotes']
+
+    # List of losers (Harsh haha): We shall append it
+    losers = []
+    #  We want to iterate and grab the values of the day losers: Company, ticker, and its drop in price
+    for item in quotas:
+        company = item.get('shortName')
+        ticker = item.get('ticker')
+        daily_loss = item.get('regularMarketChangePercent')
+        losers.append((company, ticker, daily_loss))
+    return losers
+
+
+print(get_losers())
