@@ -23,20 +23,10 @@ API_KEY = os.getenv('ALPACA')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 
-TRADINGCLIENT = TradingClient(api_key=API_KEY, secret_key=SECRET_KEY)
+client = TradingClient(api_key=API_KEY, secret_key=SECRET_KEY)
 
-client = StockHistoricalDataClient(api_key=API_KEY, secret_key=SECRET_KEY)
 
 # First we need to check if stock exists, using the library from Alpaca, we can raise API error
-def check_stock(stock: str):
-    try:
-        check = client.get_stock_snapshot()
-    
-
-    except APIError:
-        # We can have an if-statement on
-        return False
-
 
 
 
@@ -59,6 +49,19 @@ tools = {
     
 }
 
+def check_stock(stock: str):
+    try:
+        asset = client.get_asset(stock)
+        if asset is not None:
+            return f"The stock {stock} exists!"
+        else:
+            return f"The stock: {stock}, does not exist! Please Try Again"
+    
+
+    except APIError as e:
+        # We can have an if-statement on
+        return False
+
 
 def StockSummary():
     response = client.messages.create(model= model_of_ai,
@@ -74,6 +77,10 @@ def StockSummary():
 def StockInfo(ticker):
     request_parameters = StockTradesRequest(symbol_or_symbols=ticker)
     return request_parameters
+
+
+def TradeTrend(ticker):
+    pass
 
 
 print(StockInfo('AAPL'))

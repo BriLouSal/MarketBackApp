@@ -31,7 +31,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import csv as cs
 import alpaca
-
+from trading_classes import get_asset_info
 
 
 
@@ -93,6 +93,12 @@ def search(request):
             else:
                 return redirect('stock', stock_tick=search_stock)
         # Now check if the stock exists
+
+    # Display top and worst performer
+
+    get_asset_info()
+    
+
     return render(request, 'base/search.html')
 
 def home(request):
