@@ -22,7 +22,7 @@ from .backend import EmailBackend
 
 from django.core.mail import send_mail
 from django.conf import settings
-
+# from .alpaca_market_test import stock, check_stock
 # Investment Endeavors Library
 
 from django.contrib import messages
@@ -39,7 +39,7 @@ from .models import Profile, Portfolio
 # from alpaca.data.historical import CryptoHistoricalDataClient
 
 
-from .MSOAI import open_stock_info
+from .MSOAI import open_stock_info, check_stock
 
 
 import yfinance as yf
@@ -68,33 +68,6 @@ recent_search = {}
 
 
 
-def check_stock(stock):
-    try:
-        ticker = yf.Ticker(stock)
-        # We can do is if something doesn't return, we can do return None 
-        # and in Search
-        info = ticker.info
-        
-        day_stock_data = ticker.history(period='1d')
-
-        stock_info = {
-            'ticker': stock,
-            'price': day_stock_data,
-        }
-    
-    
-
-        if not info or 'regularMarketPrice' not in info:
-                return None
-            
-        return stock_info
-
-    # except (ValueError, ConnectionAbortedError, ConnectionError, KeyError, IndexError):
-    #     return None
-    except Exception as e:
-    # Catch JSONDecodeError and any unexpected error
-        print(f"Error fetching stock {stock}: {e}")
-        return None
 
 
 
