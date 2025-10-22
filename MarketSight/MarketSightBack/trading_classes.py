@@ -7,7 +7,7 @@ from ta.volatility import BollingerBands
 
 # Obtain top loser from today's stock market
 from yahooquery import Screener
-
+import matplotlib as plt 
 
 def get_asset_info(self, df=None):
         """
@@ -93,6 +93,15 @@ def get_losers():
         daily_loss = item.get('regularMarketChangePercent')
         losers.append((company, ticker, daily_loss))
     return losers.sort()
+
+
+
+def graph(list_of_stocks: list):
+    for x in list_of_stocks:
+        stocks = pd.DataFrame(list_of_stocks,columns=['Company', "Ticker", "Daily % Loss"])
+        stocks_sorted = stocks.sort_values("Daily % Loss")
+
+        plt.figure(figsize=(10, 6))
 
 
 print(get_losers())

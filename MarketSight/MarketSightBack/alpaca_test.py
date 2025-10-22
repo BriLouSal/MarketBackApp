@@ -11,6 +11,11 @@ import os
 # from trading_classes import get_asset_info
 
 from yahooquery import Screener
+
+import pandas as pd
+import matplotlib as mp
+
+
 # This primarily to test my algorithim by adding into my Paper Traeding Simulator
 
 # Load our env files
@@ -63,4 +68,12 @@ def get_losers():
     return losers
 
 
-print(get_losers())
+
+# def graph(dict_of_stocks: dict):
+#     for x in dict_of_stocks:
+#         ticker = pd.DataFrame
+
+# graph(dict_of_stocks=get_losers())
+
+
+print(type(get_losers()))
