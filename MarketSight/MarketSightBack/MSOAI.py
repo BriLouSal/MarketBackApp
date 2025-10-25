@@ -1,14 +1,8 @@
-import datetime
-
-
-from alpaca.data import StockHistoricalDataClient, StockTradesRequest
 from alpaca.trading.client import TradingClient
-from alpaca.data.requests import StockSnapshotRequest
-from alpaca.common.exceptions import APIError
 from anthropic import Anthropic
-
-from dotenv import load_dotenv
+from alpaca.common.exceptions import APIError
 import os
+from dotenv import load_dotenv
 
 
 
@@ -23,7 +17,10 @@ API_KEY = os.getenv('ALPACA')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 
-client = TradingClient(api_key=API_KEY, secret_key=SECRET_KEY)
+CLAUDE = os.getenv('CLAUDE')
+
+
+alpaca_client = TradingClient(api_key=API_KEY, secret_key=SECRET_KEY)
 
 
 # First we need to check if stock exists, using the library from Alpaca, we can raise API error
@@ -38,7 +35,8 @@ client = TradingClient(api_key=API_KEY, secret_key=SECRET_KEY)
 
 
 
-client = Anthropic(api_key="CLAUDE")
+
+client = Anthropic(api_key=CLAUDE)
 
 model_of_ai = "claude-3-5-sonnet-20240620"
 
@@ -51,8 +49,8 @@ tools = {
 
 def check_stock(stock: str):
     try:
-        asset = client.get_asset(stock)
-        if asset is not None:
+        asset = alpaca_client.get_asset(stock.capitalize())
+        if asset:
             return f"The stock {stock} exists!"
         else:
             return f"The stock: {stock}, does not exist! Please Try Again"
@@ -74,13 +72,5 @@ def StockSummary():
 
 
 
-def StockInfo(ticker):
-    request_parameters = StockTradesRequest(symbol_or_symbols=ticker)
-    return request_parameters
 
 
-def TradeTrend(ticker):
-    pass
-
-
-print(StockInfo('AAPL'))

@@ -30,8 +30,7 @@ from django.contrib import messages
 import pandas as pd
 import matplotlib.pyplot as plt
 import csv as cs
-import alpaca
-from trading_classes import get_asset_info, get_losers
+from .trading_classes import get_asset_info, get_losers, graph_losers
 
 
 
@@ -39,7 +38,7 @@ from .models import Profile, Portfolio
 # from alpaca.data.historical import CryptoHistoricalDataClient
 
 
-from .MSOAI import open_stock_info, check_stock
+from .MSOAI import check_stock
 
 
 import yfinance as yf
@@ -96,7 +95,8 @@ def search(request):
 
     # Display top and worst performer
 
-    get_asset_info()
+    
+
     
 
     return render(request, 'base/search.html')
@@ -195,8 +195,6 @@ def logout_page(request):
     logout(request)
     
     return render(request, 'base/authentication/logout.html')
-
-
 
 
 def assistance(request):

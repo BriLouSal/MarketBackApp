@@ -7,7 +7,7 @@ from ta.volatility import BollingerBands
 
 # Obtain top loser from today's stock market
 from yahooquery import Screener
-import matplotlib as plt 
+import matplotlib.pyplot as plt 
 
 def get_asset_info(self, df=None):
         """
@@ -102,6 +102,81 @@ def graph(list_of_stocks: list):
         stocks_sorted = stocks.sort_values("Daily % Loss")
 
         plt.figure(figsize=(10, 6))
+        plt.is_interactive()
+    
 
 
 print(get_losers())
+
+
+
+def rsi_strength(stock: str):
+    stock = stock.capitalize()
+    stock_info = yf.download(tickers=stock, period='6mo', interval='1d')
+
+    if stock_info is None:
+        return f"The stock: {stock} Does not exist. Please Try again or recheck"
+
+    strength = RSIIndicator(close=stock_info['Close'], window=14)
+
+    data = strength.rsi()
+
+    print(data[["Close", "RSI"]].tail())
+
+    plt.figure(figsize=(10,5))
+    plt.plot(data["RSI"], label="RSI (14)")
+    plt.axhline(70, color='red', linestyle='--')
+    plt.axhline(30, color='green', linestyle='--')
+    plt.title("RSI for AAPL")
+    plt.legend()
+    plt.show()
+
+
+
+def get_losers():
+    info = Screener()
+    losers = info.get_screeners('day_losers')  # Returns dict
+
+
+
+    quotas = losers['day_losers']['quotes']
+
+    # List of losers (Harsh haha): We shall append it
+    losers = []
+    #  We want to iterate and grab the values of the day losers: Company, ticker, and its drop in price
+    for item in quotas:
+        company = item.get('shortName')
+        ticker = item.get('ticker')
+        daily_loss = item.get('regularMarketChangePercent')
+        losers.append((company, ticker, daily_loss))
+    return losers
+
+def graph_losers():
+    N = 10
+    losers_information = get_losers()[:N] # LIMIT OF 10
+    
+
+    
+    # Label
+    ticker = [item[1] for item in losers_information]
+    loss_daily = [item[2] for item in losers_information]
+
+
+
+    for tick, loss in (zip(ticker, loss_daily)):
+        print(tick, loss)
+        
+
+    
+    # Top 10 losers:
+
+    
+    
+    plt.figure(figsize=(10,6))
+
+
+
+
+
+
+print(graph_losers())

@@ -13,7 +13,8 @@ import os
 from yahooquery import Screener
 
 import pandas as pd
-import matplotlib as mp
+import matplotlib.pyplot as plt 
+
 
 
 # This primarily to test my algorithim by adding into my Paper Traeding Simulator
@@ -62,18 +63,35 @@ def get_losers():
     #  We want to iterate and grab the values of the day losers: Company, ticker, and its drop in price
     for item in quotas:
         company = item.get('shortName')
-        ticker = item.get('ticker')
+        ticker = item.get('symbol')
         daily_loss = item.get('regularMarketChangePercent')
         losers.append((company, ticker, daily_loss))
     return losers
 
+def graph_losers():
+    N = 10
+    losers_information = get_losers()[:N] # LIMIT OF 10
+    
+
+    
+    # Label
+    ticker = [item[1] for item in losers_information]
+    loss_daily = [item[2] for item in losers_information]
 
 
-# def graph(dict_of_stocks: dict):
-#     for x in dict_of_stocks:
-#         ticker = pd.DataFrame
 
-# graph(dict_of_stocks=get_losers())
+    for tick, loss in (zip(ticker, loss_daily)):
+        print(tick, loss)
+        
+
+    
+    # Top 10 losers:
+
+    
+    
+    plt.figure(figsize=(10,6))
 
 
-print(type(get_losers()))
+
+
+graph_losers()
