@@ -151,32 +151,35 @@ def get_losers():
         losers.append((company, ticker, daily_loss))
     return losers
 
-def graph_losers():
-    N = 10
-    losers_information = get_losers()[:N] # LIMIT OF 10
+# def graph_losers():
+#     N = 10
+#     losers_information = get_losers()[:N] # LIMIT OF 10
     
 
     
-    # Label
-    ticker = [item[1] for item in losers_information]
-    loss_daily = [item[2] for item in losers_information]
+#     # Label
+#     ticker = [item[1] for item in losers_information]
+#     loss_daily = [item[2] for item in losers_information]
 
 
 
-    for tick, loss in (zip(ticker, loss_daily)):
-        print(tick, loss)
+#     for tick, loss in (zip(ticker, loss_daily)):
+#         print(tick, loss)
         
 
     
-    # Top 10 losers:
+#     # Top 10 losers:
 
     
     
-    plt.figure(figsize=(10,6))
+#     plt.figure(figsize=(10,6))
+
+
+# def stock_graph():
+#     pass 
 
 
 
 
 
-
-print(graph_losers())
+# print(graph_losers())

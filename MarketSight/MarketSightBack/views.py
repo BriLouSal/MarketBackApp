@@ -30,7 +30,7 @@ from django.contrib import messages
 import pandas as pd
 import matplotlib.pyplot as plt
 import csv as cs
-from .trading_classes import get_asset_info, get_losers, graph_losers
+from .trading_classes import get_asset_info, get_losers
 
 
 
@@ -38,7 +38,7 @@ from .models import Profile, Portfolio
 # from alpaca.data.historical import CryptoHistoricalDataClient
 
 
-from .MSOAI import check_stock
+from .MSOAI import check_stock, StockSummary
 
 
 import yfinance as yf
@@ -112,13 +112,15 @@ def portfolio_room(request):
 def stock(request, stock_tick):
 
     # This will happen when the user has: Search.html -> Stock Checker ->
+    # We don't need to add none, as it's required for stocks to exist (return a value)
     stock_info = None
     for i in ticker:
         
         if i['id'] == str(stock_tick):
             
             stock_info = i
-  
+            summarized_stock = StockSummary(stock=stock_info)
+
     context = {'ticker': ticker}
 
    
