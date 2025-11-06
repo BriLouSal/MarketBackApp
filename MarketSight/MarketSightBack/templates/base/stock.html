@@ -4,21 +4,50 @@
 
 {% block content %}
 
+{% load static %}
 
 
-<div>
-    <div>
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="{% static 'style.css' %}">
+   <title>Document</title>
+   
+</head>
+<body>
+   {% block content %}
+
+
+
+   <!-- Div: Links Navbar -->
+        <div class="stock">
 
         <!-- Create a  -->
         {% for stocks in ticker %}
         <div>
+           <p>
             {{stocks.id}}: {{stocks.stock}}
+           </p> 
 
         </div>
          {% endfor %}
     </div>
 
 </div>
+
+        <div class="stock_graph">
+
+        </div>
+
+        <div class="stock_info">
+
+        </div>
+            
 
 
 <!-- Yahoo Finance Display -->
@@ -29,5 +58,20 @@
 
 
 
-{% endblock content %}
+
+
+
+ {% endblock content %}
+ 
+</body>
+</html>
+
+
+
+
+
+
+
+
+
 
