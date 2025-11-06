@@ -76,12 +76,12 @@ def search(request):
     if request.method == "GET":
         # AAPL, etc
         search_stock = request.GET.get("search")
+        search_stock = str(search_stock )
         
         if search_stock:
-            search_stock = str(search_stock.upper())
 
         # ask for check_stock
-            stock_checked = check_stock(stock=search_stock)
+            stock_checked = check_stock(stock=search_stock.upper())
 
             if stock_checked is None:
                 messages.error(request, "Please Try Again, This Stock Does not Exist")
@@ -123,7 +123,6 @@ def stock(request, stock_tick):
 
     context = {'ticker': ticker}
 
-   
     return render(request, 'base/stock.html', context)
 
 

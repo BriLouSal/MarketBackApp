@@ -48,13 +48,13 @@ MAX_TOKENS = os.getenv('MAX_TOKENS')
 
 tools = {}
 
-def check_stock(stock: str):
+def check_stock(stock: str) -> str:
     try:
-        asset = alpaca_client.get_asset(stock.capitalize())
+        asset = alpaca_client.get_asset(stock.upper())
         if asset:
-            return f"The stock {stock} exists!"
+            return True
         else:
-            return f"The stock: {stock}, does not exist! Please Try Again"
+            return False
     
 
     except APIError as e:
@@ -63,7 +63,7 @@ def check_stock(stock: str):
 # I want to create a summary of the stock 
 
 # MUST BE A STRING
-def StockInfo(symbol: str):
+def StockInfo(symbol: str) -> str:
     # First check stock
     symbol = symbol.capitalize
     stock = Ticker([symbol])
@@ -71,16 +71,21 @@ def StockInfo(symbol: str):
     return financial_data
 
 
-def StockSummary(stock: str):
-    response = client.messages.create(
-        model=MODEL_AI,
-        max_tokens=int(MAX_TOKENS),
-        messages=[
-            {"role": "user", "content": f"Summarize {StockInfo(stock.capitalize())} stock information and the updates it should have such as that "}
-        ],
-    )
-        # Create a max tokens for users, MAKE SURE TO ADD THE MAX TOKEN VALUE IN ENV
-    return response
+def StockSummary(stock: str) -> str:
+    stock = stock.upper()
+    # Check if stock exist,  if it deos pass response and return it
+    if check_stock(stock):
+        response = client.messages.create(
+            model=MODEL_AI,
+            max_tokens=int(MAX_TOKENS),
+            messages=[
+                {"role": "user", "content": f"Summarize  stock information and the updates it should have such as that it has"}
+            ],
+        )
+            # Create a max tokens for users, MAKE SURE TO ADD THE MAX TOKEN VALUE IN ENV
+        return response
+    else:
+        return f"The Stock {stock} Does not Exist, Please Try Again!"
 
 
 

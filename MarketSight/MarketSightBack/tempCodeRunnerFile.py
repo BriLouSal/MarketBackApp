@@ -1,4 +1,0 @@
-
-
-
-print(get_losers())
