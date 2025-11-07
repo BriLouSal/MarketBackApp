@@ -26,14 +26,6 @@ CLAUDE = os.getenv('CLAUDE')
 alpaca_client = TradingClient(api_key=API_KEY, secret_key=SECRET_KEY)
 
 
-# First we need to check if stock exists, using the library from Alpaca, we can raise API error
-
-
-
-# def stock(symbol: str):
-
-#     request_param = StockTradesRequest(   )
-
 
 
 
@@ -76,16 +68,17 @@ def StockSummary(stock: str) -> str:
     # Check if stock exist,  if it deos pass response and return it
     if check_stock(stock):
         information_of_stock = StockInfo(stock)
-        response = client.messages.create(
+        financial_info = client.messages.create(
             model=MODEL_AI,
             max_tokens=int(MAX_TOKENS),
             messages=[
                 {"role": "user", 
-                 "content": f"Summarize  stock information {information_of_stock} and the updates it should have such as that it has it properly formmated such as that we're able to have it organized prompt, and we want it to be formmated and useable in Django (NO CODE, BUT THIS IS  A REFERENCE TO JUST FORMAT IT HAHA. DO NOT ADD THE REMAINING FORMALITY, JUST ADD INFORMATION ONLY!). What does the stock infomration entail the company and what should investors do when investing in {stock} "}
+                 "content": f"Summarize  stock information {information_of_stock} and the updates it should have such as that it has it properly formmated such as that we're able to have it organized prompt, and we want it to be formmated and useable in Django (NO CODE, BUT THIS IS  A REFERENCE TO JUST FORMAT IT HAHA. DO NOT ADD THE REMAINING FORMALITY, JUST ADD INFORMATION ONLY!). What does the stock infomration entail the company and what should investors do when investing in {stock}. Format it in a way that is good for Django (Do not write code, just format the words and summary really well that it's compatible in HTML). Using the information in {information_of_stock} Please generate it such as that it's organized that would fit as a paragraph in django, and I want it to be really great formatted. So whatever you had in the {information_of_stock} Will be formatted perfectly with the best of your ability, just add it and no formalities..."}
             ],
         )
+
             # Create a max tokens for users, MAKE SURE TO ADD THE MAX TOKEN VALUE IN ENV
-        return response.content[0].text.strip()
+        return financial_info.content[0].text.strip()
     else:
         return f"The Stock {stock} Does not Exist, Please Try Again!"
 
@@ -95,4 +88,4 @@ def StockSummary(stock: str) -> str:
 
 
 
-print(type(StockSummary('AAPL')))
+print(StockSummary('AAPL'))
