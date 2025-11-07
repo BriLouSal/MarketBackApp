@@ -1,3 +1,9 @@
 /.venv
 MarketSight/MarketSight/.env
 MarketSight/MarketSightBack/.env
+MarketSight/MarketSightBack/MSOAI.py
+MarketSight/MarketSightBack/models.py
+
+
+
+
