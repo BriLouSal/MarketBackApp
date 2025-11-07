@@ -68,7 +68,7 @@ recent_search = {}
 
 
 
-
+  
 
 
 
@@ -242,8 +242,8 @@ def assistance(request):
 
 # def stock_portfolio(request):
 #     # We will fetch user's stock portfolio from database and display it here
-#     context = {}
-#     return render(request, 'MarketSightBack/stock_portfolio.html', context)
+#     retu
+#     context = {}rn render(request, 'MarketSightBack/stock_portfolio.html', context)
 
 
 

@@ -1,6 +1,6 @@
 from alpaca.trading.client import TradingClient
 from anthropic import AnthropicVertex
-from alpaca.common.exceptions import APIError
+from alpaca.common.exceptions import APIError # This is to ensure to check stocks (which will lead to API Error when a Stock is not valid)
 import os
 from dotenv import load_dotenv
 from anthropic import Anthropic
