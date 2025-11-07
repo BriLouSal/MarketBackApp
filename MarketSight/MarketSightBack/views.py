@@ -75,21 +75,24 @@ def search(request):
     # Now we need to find how to redirect the search html -> stock.html
     if request.method == "GET":
         # AAPL, etc
-        search_stock = request.GET.get("search")
-        search_stock = str(search_stock )
+        search_stock = str(request.GET.get("search"))
 
 
     # ask for check_stock
-        stock_checked = check_stock(stock=search_stock.upper())
 
-        if stock_checked is None:
-            messages.error(request, "Please Try Again, This Stock Does not Exist")
+        if not search_stock:
             return render(request, 'base/search.html')
 
+        search_stock = search_stock.upper()
+        stock_checked = check_stock(stock=search_stock)
 
         # This will give the stock the i = stock_checked. Since it's existing right?
-        else:
-            return redirect('stock', stock_tick=search_stock)
+        if not stock_checked:
+            messages.error(request, f"'{search_stock}' does not exist. Please try again.")
+            return render(request, 'base/search.html')
+    
+        return redirect('stock', stock_tick=search_stock)
+
         # Now check if the stock exists
 
     # Display top and worst performer
@@ -103,7 +106,7 @@ def portfolio_room(request):
     context = {'ticker': ticker}
     return render(request, 'portfolio_room.html', context)
 
-def stock(request, stock_tick):
+def stock(request, stock_tick:str):
 
     # This will happen when the user has: Search.html -> Stock Checker ->
     # We don't need to add none, as it's required for stocks to exist (return a value)
@@ -113,9 +116,9 @@ def stock(request, stock_tick):
         if i['id'] == str(stock_tick):
             
             stock_info = i
-            summarized_stock = StockSummary(stock=stock_info)
+    summarized_stock = StockSummary(stock=stock_tick.upper())
 
-    context = {'ticker': ticker}
+    context = {'ticker': ticker, 'info': summarized_stock,}
 
     return render(request, 'base/stock.html', context)
 

@@ -41,11 +41,12 @@
         <div class="stock_graph">
 
         </div>
-
+      
         <div class="stock_info">
-
-        </div>
-            
+         <h2>Details for {{ request.resolver_match.kwargs.stock_tick }}</h2>
+         <p class="gen-ai">{{ info }}</p>
+      </div>
+                  
 
 
 <!-- Yahoo Finance Display -->
