@@ -17,6 +17,39 @@ body{
 }
 
 
+.navbar{
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    
+}
+
+.navbar a:hover{
+    background: transparent;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #57A0C1,
+                0 0 20px #57A0C1,
+                0 0 40px #57A0C1,
+                0 0 80px #57A0C1;
+    text-shadow: 0 0 5px #FFF,
+                 0 0 10px #57A0C1,
+                 0 0 20px #57A0C1;
+    transition: all 0.3s ease;
+}
+
+
+.gen-ai{
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    display: block;
+    color: white;
+
+}
+
+
+
 
 
 

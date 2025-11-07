@@ -2,7 +2,7 @@
 
 
 
-{% block content %}
+
 
 {% load static %}
 
@@ -19,10 +19,27 @@
 </head>
 <body>
 
+   
+
+      <div class="navbar">
+      <a href="{% url 'assistance' %}">Support</a>
+      <a href="{% url 'room' %}">Portfolio</a>
+      <a href="{% url 'home' %}">Home</a>
+
+      {% if user.is_authenticated %}
+         <a href="{% url 'logout_page' %}">Logout</a>
+      {% else %}
+         <a href="{% url 'login' %}">Login</a>
+      {% endif %}
+      <a href="{% url 'search' %}">Search</a>
+      <!-- For Portfolio, I wanna have a redirection if the condiition is not met that will make sure users are signed up --> 
+   </div>
+
+ 
 
 
 
-   <!-- Div: Links Navbar -->
+
         <div class="stock">
 
         <!-- Create a  -->
@@ -44,7 +61,8 @@
       
         <div class="stock_info">
          <h2>Details for {{ request.resolver_match.kwargs.stock_tick }}</h2>
-         <p class="gen-ai">{{ info }}</p>
+         <!-- Create Animation for this one later on -->
+         <p class="gen-ai">{{ info|safe }}</p>
       </div>
                   
 
@@ -58,9 +76,6 @@
 
 
 
-
-
- {% endblock content %}
  
 </body>
 </html>

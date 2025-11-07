@@ -43,6 +43,9 @@ from .MSOAI import check_stock, StockSummary
 
 import yfinance as yf
 
+# Ensure Claude AI doesn't utilize ## (Which is used for markdown)
+
+import markdown
 
 
 # Side Library
@@ -118,7 +121,9 @@ def stock(request, stock_tick:str):
             stock_info = i
     summarized_stock = StockSummary(stock=stock_tick.upper())
 
-    context = {'ticker': ticker, 'info': summarized_stock,}
+    html_sum = markdown.markdown(summarized_stock)
+
+    context = {'ticker': ticker, 'info': html_sum,}
 
     return render(request, 'base/stock.html', context)
 
