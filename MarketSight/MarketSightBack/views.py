@@ -77,28 +77,22 @@ def search(request):
         # AAPL, etc
         search_stock = request.GET.get("search")
         search_stock = str(search_stock )
-        
-        if search_stock:
-
-        # ask for check_stock
-            stock_checked = check_stock(stock=search_stock.upper())
-
-            if stock_checked is None:
-                messages.error(request, "Please Try Again, This Stock Does not Exist")
-                return render(request, 'base/search.html')
 
 
-            # This will give the stock the i = stock_checked. Since it's existing right?
-            else:
-                return redirect('stock', stock_tick=search_stock)
+    # ask for check_stock
+        stock_checked = check_stock(stock=search_stock.upper())
+
+        if stock_checked is None:
+            messages.error(request, "Please Try Again, This Stock Does not Exist")
+            return render(request, 'base/search.html')
+
+
+        # This will give the stock the i = stock_checked. Since it's existing right?
+        else:
+            return redirect('stock', stock_tick=search_stock)
         # Now check if the stock exists
 
     # Display top and worst performer
-
-    
-
-    
-
     return render(request, 'base/search.html')
 
 def home(request):
