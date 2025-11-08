@@ -180,6 +180,8 @@ def loginpage(request):
         # This will check if user authentication will exist
         user = authenticate(request, email=email, password=password)
 
+        # We have to have the error happen if the user hasn't inputted anything!
+
         if user is None:
             messages.error(request, "This user does not exist, please signup or try again!")
             return render(request, 'base/authentication/login.html')

@@ -76,37 +76,37 @@ def get_asset_info(self, df=None):
         return buy_filtered_df
 
 
-def get_losers():
-    info = Screener()
-    losers = info.get_screeners('day_losers')  # Returns dict
+# def get_losers():
+#     info = Screener()
+#     losers = info.get_screeners('day_losers')  # Returns dict
 
 
 
-    quotas = losers['day_losers']['quotes']
+#     quotas = losers['day_losers']['quotes']
 
-    # List of losers (Harsh haha): We shall append it
-    losers = []
-    #  We want to iterate and grab the values of the day losers: Company, ticker, and its drop in price
-    for item in quotas:
-        company = item.get('shortName')
-        ticker = item.get('ticker')
-        daily_loss = item.get('regularMarketChangePercent')
-        losers.append((company, ticker, daily_loss))
-    return losers.sort()
+#     # List of losers (Harsh haha): We shall append it
+#     losers = []
+#     #  We want to iterate and grab the values of the day losers: Company, ticker, and its drop in price
+#     for item in quotas:
+#         company = item.get('shortName')
+#         ticker = item.get('ticker')
+#         daily_loss = item.get('regularMarketChangePercent')
+#         losers.append((company, ticker, daily_loss))
+#     return losers.sort()
 
 
 
-def graph(list_of_stocks: list):
-    for x in list_of_stocks:
-        stocks = pd.DataFrame(list_of_stocks,columns=['Company', "Ticker", "Daily % Loss"])
-        stocks_sorted = stocks.sort_values("Daily % Loss")
+# def graph(list_of_stocks: list):
+#     for x in list_of_stocks:
+#         stocks = pd.DataFrame(list_of_stocks,columns=['Company', "Ticker", "Daily % Loss"])
+#         stocks_sorted = stocks.sort_values("Daily % Loss")
 
-        plt.figure(figsize=(10, 6))
-        plt.is_interactive()
+#         plt.figure(figsize=(10, 6))
+#         plt.is_interactive()
     
 
 
-print(get_losers())
+# print(get_losers())
 
 
 
@@ -131,6 +131,7 @@ def rsi_strength(stock: str):
     plt.legend()
     plt.show()
 
+    
 
 
 def get_losers():

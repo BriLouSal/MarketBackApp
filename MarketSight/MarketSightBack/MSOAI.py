@@ -63,6 +63,7 @@ def StockInfo(symbol: str) -> str:
     return financial_data
 
 
+
 def StockSummary(stock: str) -> str:
     stock = stock.upper()
     # Check if stock exist,  if it deos pass response and return it
@@ -82,6 +83,9 @@ def StockSummary(stock: str) -> str:
     else:
         return f"The Stock {stock} Does not Exist, Please Try Again!"
 
+
+def news(stock: str) -> str:
+    pass
 
 
 
