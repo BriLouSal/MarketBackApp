@@ -50,12 +50,18 @@
 
         <div class="stock_graph">
 
+
         </div>
       
-        <div class="stock_info">
+         <div class="stock_info">
          <h2>Details for {{ request.resolver_match.kwargs.stock_tick }}</h2>
          <!-- Create Animation for this one later on -->
-         <p class="gen-ai">{{ info|safe }}</p>
+         <div class="gen-ai" id="gen-ai-text" data-content="{{ info|safe }}"></div>
+      </div>
+
+      <div class="stock_news">
+         <!-- For this one, I will add news via Alpaca -->
+
       </div>
                   
 
@@ -66,6 +72,10 @@
 <!-- News Anaylsis in the Bottom -->
     <!-- Use AI to indicate bias  -->
 
+
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script src="{% static 'chart_stocks.js'%}"></script>
+   
 
 
 

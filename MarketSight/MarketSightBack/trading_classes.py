@@ -111,7 +111,7 @@ def get_asset_info(self, df=None):
 
 
 def rsi_strength(stock: str):
-    stock = stock.capitalize()
+    stock = stock.upper()
     stock_info = yf.download(tickers=stock, period='6mo', interval='1d')
 
     if stock_info is None:
@@ -127,11 +127,14 @@ def rsi_strength(stock: str):
     plt.plot(data["RSI"], label="RSI (14)")
     plt.axhline(70, color='red', linestyle='--')
     plt.axhline(30, color='green', linestyle='--')
-    plt.title("RSI for AAPL")
+    plt.title(F"RSI for {stock}")
     plt.legend()
     plt.show()
 
     
+
+# THEORIZE, WE CAN USE PLOTS IN GRAPH TO DETERMINE BULLISH PATTERN, BEARISH PATTERN, ETC.
+
 
 
 def get_losers():

@@ -2,7 +2,7 @@
 # Main Django library
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -38,7 +38,7 @@ from .models import Profile, Portfolio
 # from alpaca.data.historical import CryptoHistoricalDataClient
 
 
-from .MSOAI import check_stock, StockSummary
+from .MSOAI import check_stock, StockSummary, news
 
 
 import yfinance as yf
@@ -109,6 +109,9 @@ def portfolio_room(request):
     context = {'ticker': ticker}
     return render(request, 'portfolio_room.html', context)
 
+
+
+
 def stock(request, stock_tick:str):
 
     # This will happen when the user has: Search.html -> Stock Checker ->
@@ -119,13 +122,22 @@ def stock(request, stock_tick:str):
         if i['id'] == str(stock_tick):
             
             stock_info = i
+
+    # What we know is that in order for Stock HTML to be accessed. the stock must exist
+    # Therfore, we can safely add the yfinance financial data report to create chart js
+    # and return it as JSON
     summarized_stock = StockSummary(stock=stock_tick.upper())
 
     html_sum = markdown.markdown(summarized_stock)
 
+    # Add news
+    news_sum = markdown.markdown(news(stock=stock_tick.upper()))
+
     context = {'ticker': ticker, 'info': html_sum,}
 
     return render(request, 'base/stock.html', context)
+
+
 
 
 def portfolio(request):
