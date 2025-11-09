@@ -140,6 +140,9 @@ def stock(request, stock_tick:str):
 
 
 
+
+
+
 def portfolio(request):
     return render(request, 'portfolio_room.html')
 
