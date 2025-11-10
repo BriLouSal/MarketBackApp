@@ -19,11 +19,24 @@ body{
 
 .navbar{
     padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: center;
     
+    display: flex;
+    
+    align-items: center;
+   
+    flex-direction: row;
+    
+    justify-content: center;
+   
+    color: white;
+
+
+    gap: 15px;
+    
+}
+
+a:visited{
+    text-decoration:  none;
 }
 
 .navbar a:hover{
