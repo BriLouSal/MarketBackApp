@@ -30,14 +30,19 @@ body{
    
     color: white;
 
+    text-decoration: none;
+
 
     gap: 15px;
     
 }
 
-a:visited{
-    text-decoration:  none;
+.navbar, a:visited{
+    color: white;
 }
+
+
+
 
 .navbar a:hover{
     background: transparent;
@@ -58,6 +63,16 @@ a:visited{
     font-family: 'Poppins', sans-serif;
     font-size: 15px;
     display: block;
+    align-items: center;
+    justify-content: center;
+}
+
+.stock_graph {
+    align-items: center;
+    justify-content: center;
+
+    display: flex;
+    flex-direction: column;
 }
 
 
