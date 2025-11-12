@@ -1,7 +1,5 @@
 /.venv
 MarketSight/MarketSight/.env
 MarketSight/MarketSightBack/.env
-MarketSight/MarketSightBack/MSOAI.py
 MarketSight/MarketSightBack/views.py
-MarketSight/MarketSightBack/training_models.py
 MarketSight/MarketSightBack/static/chart_stocks.js
