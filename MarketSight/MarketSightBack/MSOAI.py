@@ -47,7 +47,7 @@ MODEL_AI = "claude-sonnet-4-5"
 
 MAX_TOKENS = os.getenv('MAX_TOKENS')
 MAX_TOKEN_FOR_NEWS_SENTIMENT = os.getenv('MAX_TOKEN_FOR_NEWS_SENTIMENT')
-
+MAX_TOKENS_ANALYSIS_ON_NEWS = os.getenv('MAX_TOKENS_ANALYSIS_ON_NEWS')
 
 tools = {}
 
@@ -114,6 +114,7 @@ def news(stock: str) -> str:
     for articles in news_article:
         news_info['Headline'] = f"{articles.headline}"
         news_info['Content']= f"{articles.content}"
+    
     return news_info
 
 # Summary returns markdown
@@ -137,7 +138,7 @@ def NewsSummary(stock: str) -> str:
         return f"The Stock {stock} Does not Exist, Please Try Again!"
     
 def info_to_positivty_rating_positivety(stock: str) -> dict:
-    data = client.messages.create(
+    positive_data = client.messages.create(
     model=MODEL_AI,
     max_tokens=int(MAX_TOKEN_FOR_NEWS_SENTIMENT),
     messages =[
@@ -145,10 +146,10 @@ def info_to_positivty_rating_positivety(stock: str) -> dict:
             "content": f"Generate a news for {stock.upper()} that has positivety rating of and create this news that would have catalyst such as that the sentiment rating is 0.75-1.00 "}
     ],
 )
-    return data.content[0].text.strip()
+    return positive_data.content[0].text.strip()
 
 def info_to_positivty_rating_netural(stock: str) -> dict:
-    data = client.messages.create(
+    netural_data = client.messages.create(
     model=MODEL_AI,
     max_tokens=int(MAX_TOKEN_FOR_NEWS_SENTIMENT),
     messages =[
@@ -156,11 +157,11 @@ def info_to_positivty_rating_netural(stock: str) -> dict:
             "content": f"Generate a news for {stock.upper()} that has positivety rating of and create this news that would have catalyst such as that the sentiment rating is 0.50-0.75 "}
     ],
 )
-    return data.content[0].text.strip()
+    return netural_data.content[0].text.strip()
 
 
 def info_to_positivty_rating_negative(stock: str) -> dict:
-    data = client.messages.create(
+    negative_data = client.messages.create(
     model=MODEL_AI,
     max_tokens=int(MAX_TOKEN_FOR_NEWS_SENTIMENT),
     messages =[
@@ -168,15 +169,13 @@ def info_to_positivty_rating_negative(stock: str) -> dict:
             "content": f"Generate a news for a stock  that has positivety rating of and create this news that would have catalyst such as that the sentiment rating is 0.0-0.50. Create hundreds of output"}
     ],
 )
-    return data.content[0].text.strip()
+    return negative_data.content[0].text.strip()
 
 
     
     
 
 
-def auto_check(stock: str) -> list:
-    pass
 
     
 def portfolio_summary(stock: str) -> dict:

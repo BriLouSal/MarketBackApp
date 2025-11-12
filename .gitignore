@@ -3,3 +3,5 @@ MarketSight/MarketSight/.env
 MarketSight/MarketSightBack/.env
 MarketSight/MarketSightBack/views.py
 MarketSight/MarketSightBack/static/chart_stocks.js
+MarketSight/MarketSightBack/MSOAI.py
+MarketSight/MarketSightBack/training_models.py
