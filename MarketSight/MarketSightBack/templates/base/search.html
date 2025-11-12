@@ -1,0 +1,85 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="{% static 'style.css' %}">
+   <title>Document</title>
+   
+</head>
+<body>
+   {% block content %}
+
+
+
+   <!-- Div: Links Navbar -->
+     <div class="navbar">
+    <a href="{% url 'assistance' %}">Support</a>
+    <a href="{% url 'room' %}">Portfolio</a>
+    <a href="{% url 'home' %}">Home</a>
+
+   {% if user.is_authenticated %}
+        <a href="{% url 'logout_page' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+   {% endif %}
+   <a href="{% url 'search' %}">Search</a>
+    <!-- For Portfolio, I wanna have a redirection if the condiition is not met that will make sure users are signed up --> 
+ </div>
+
+ 
+
+   <div class="search-bar">
+      <h1 id="market">MarketSight</h1>
+      <div class="search-container">
+         <form method="GET", action="{% url 'search' %}">
+          <input type="text" placeholder="Search for Stocks..." name="search" required>
+         <button type="submit">Search</button>
+
+       </form>
+
+      
+      </div>
+
+   </div>
+
+   <!-- Div: Top Performer Today -->
+ <div class="greet_user">
+
+   {% if user.is_authenticated %}
+      <p> Welcome! {{user.username}}</p>
+
+      <div class="trending_stock">
+         
+
+      </div>
+   {% else %}
+
+      <a href="{% url 'login' %}"> 
+         <p>Please Login to take advantage of our tools!. We Welcome you into the adventure of financial freedom!</p> 
+   </a>
+  
+   {% endif %}
+ </div>
+
+<script src="search.js"></script>
+
+<canvas id="star-canva"></canvas>
+
+
+
+ {% endblock content %}
+ 
+</body>
+</html>
+
+
+
+
+
+
+
+
