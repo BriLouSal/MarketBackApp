@@ -30,9 +30,9 @@ Roadmap
 
 -  Finished Products
     - 
-<<<<<<< HEAD
-    User_Authentication
-=======
     User_Authentication, Stock Financial Report Summary, Search Engine, News Analysis (Positivety Rating, and outlook of the current climate of the company)
->>>>>>> 6ba86ec3eff36b04fa650db795e2b8f8106a64ef
+
+
+
+
 
