@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 
 from yahooquery import Ticker
 import pandas as pd
-from .MSOAI import NewsSummary, info_to_positivty_rating_positivety, info_to_positivty_rating_negative, info_to_positivty_rating_netural
+from .MSOAI import NewsSummary, info_to_positivty_rating_positivety, info_to_positivty_rating_negative, info_to_positivty_rating_netural, news
 
 load_dotenv()
 
@@ -46,7 +46,7 @@ def positivity_rating_training(stock: str):
     
     model = pd.DataFrame({
         'text': positive_data + negative_data + netural_data,
-        'labels': [2] * len(positive_data) + [1] * len(negative_data) + [0] * len(netural_data),
+        'label': [2] * len(positive_data) + [1] * len(negative_data) + [0] * len(netural_data),
     })
     
     # Vectorizer, considers importance of the words
@@ -61,7 +61,9 @@ def positivity_rating_training(stock: str):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Use Logistic Regression to predict the positivity rating
+    # Use Logistic Regression to predict the positivity rating,
+    # This will be our training dataset, and we're using Claude API to get those positive
+    # words for stocks, and then we'll compare it after
     model_of_data = LogisticRegression()
     model_of_data.fit(X_test, y_test)
 
@@ -71,3 +73,9 @@ def positivity_rating_training(stock: str):
 
 
 
+def obtain_positivity(stock: str, models_of_data, main_data) -> dict:
+    news_of_stock = news(stock=stock.upper())
+
+    if not news_of_stock:
+        return None, "No News is available"
+    
