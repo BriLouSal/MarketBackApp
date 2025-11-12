@@ -19,30 +19,12 @@ body{
 
 .navbar{
     padding: 10px 20px;
-    
     display: flex;
-    
     align-items: center;
-   
     flex-direction: row;
-    
     justify-content: center;
-   
-    color: white;
-
-    text-decoration: none;
-
-
-    gap: 15px;
     
 }
-
-.navbar, a:visited{
-    color: white;
-}
-
-
-
 
 .navbar a:hover{
     background: transparent;
@@ -63,16 +45,6 @@ body{
     font-family: 'Poppins', sans-serif;
     font-size: 15px;
     display: block;
-    align-items: center;
-    justify-content: center;
-}
-
-.stock_graph {
-    align-items: center;
-    justify-content: center;
-
-    display: flex;
-    flex-direction: column;
 }
 
 

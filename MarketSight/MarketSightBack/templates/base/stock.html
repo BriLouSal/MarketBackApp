@@ -6,14 +6,14 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="{% static 'stock.css' %}">
+   <link rel="stylesheet" href="{% static 'style.css' %}">
    <title>Document</title>
    
 </head>
 <body>
 
    
-   <nav>
+
       <div class="navbar">
       <a href="{% url 'assistance' %}">Support</a>
       <a href="{% url 'room' %}">Portfolio</a>
@@ -27,26 +27,28 @@
       <a href="{% url 'search' %}">Search</a>
       <!-- For Portfolio, I wanna have a redirection if the condiition is not met that will make sure users are signed up --> 
    </div>
-   <button class="drop-down"> 
-      <a href="{% url stock_tick=request.resolver_match.kwargs.stock_tick %}"></a>
-      
-
-   </button>
-   </nav>
-
-
-   <!-- Wanna click on the sidebar later on and make it appear -->
-
-   
-
 
  
+
+
+
+
+        <div class="stock">
+
+        <!-- Create a  -->
+        {% for stocks in ticker %}
+        <div>
+           <p>
+            {{stocks.id}}: {{stocks.stock}}
+           </p> 
+
+        </div>
+         {% endfor %}
+    </div>
+
 </div>
 
         <div class="stock_graph">
-         <h2>{{ request.resolver_match.kwargs.stock_tick }}</h2>
-
-         <canvas id="chart" width="800" height="400"></canvas>
 
 
         </div>
@@ -54,12 +56,13 @@
          <div class="stock_info">
          <h2>Details for {{ request.resolver_match.kwargs.stock_tick }}</h2>
          <!-- Create Animation for this one later on -->
-         <div class="gen-ai">
-            <p>{{ info|safe }}</p>
-         </div>
+         <div class="gen-ai" id="gen-ai-text" data-content="{{ info|safe }}"></div>
       </div>
 
+      <div class="stock_news">
+         <!-- For this one, I will add news via Alpaca -->
 
+      </div>
                   
 
 
@@ -71,7 +74,7 @@
 
 
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-   <script src="{% static 'stock.js'%}"></script>
+   <script src="{% static 'chart_stocks.js'%}"></script>
    
 
 

@@ -11,7 +11,7 @@ Roadmap
       Search Engine: Yahoo Query Calls.
       -
   
-      CLAUDE AI: USING CLAUDE AI FOR ITS POWERFUL USAGE, AND SPECIFIC BENEFITS THAT ALLOWS ME TO CREATE AMAZING PROMPTS!, Creating a News Positive Analysis via Sci-Kit Learn to train the model....
+      CLAUDE AI: USING CLAUDE AI FOR ITS POWERFUL USAGE, AND SPECIFIC BENEFITS THAT ALLOWS ME TO CREATE AMAZING PROMPTS!
         -
       Investment Strategies ~ Shareable with Communities to follow
             Adding Reputation System by using Upvotes system, and Downvote system
@@ -30,5 +30,5 @@ Roadmap
 
 -  Finished Products
     - 
-    User_Authentication, Stock Financial Report Summary, Search Engine
+    User_Authentication
 
