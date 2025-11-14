@@ -6,5 +6,6 @@ AAPL TESTED (2025-11-13):
 3rd test: 52.11
 4th test: Training accuracy: 45.16
 
-5th: Training accuracy: 86.0 IT'S ALMOST WORKING HAHA
+7th: Training accuracy: 86.0 IT'S ALMOST WORKING HAHA
 [2, 2]
+8th: 
