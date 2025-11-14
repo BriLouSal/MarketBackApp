@@ -30,7 +30,7 @@ Roadmap
 
 -  Finished Products
     - 
-    User_Authentication, Stock Financial Report Summary, Search Engine, News Analysis (Positivety Rating, and outlook of the current climate of the company)
+    User_Authentication, Stock Financial Report Summary, Search Engine, News Analysis, Improved Positvity Rating with (96.2 Accuracy), 
 
 
 
