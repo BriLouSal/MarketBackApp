@@ -7,7 +7,7 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link rel="stylesheet" href="{% static 'style.css' %}">
-   <title>Document</title>
+   <title>Portfolio Room</title>
    
 </head>
 <body>
@@ -32,43 +32,16 @@
 
 
 
+   <div class="stock-dashboard">
+    <!-- Plans: -->
+     <!-- Display Stocks -->
 
-        <div class="stock">
+   </div>
 
-        <!-- Create a  -->
-        {% for stocks in ticker %}
-        <div>
-           <p>
-            {{stocks.id}}: {{stocks.stock}}
-           </p> 
-
-        </div>
-         {% endfor %}
+    <div class="portfolio-summary">
+        <!-- Insert AI  -->
     </div>
 
-</div>
-
-        <div class="stock_graph">
-
-         <!-- Create a inside div to ask: Buy or Sell Stocks -->
-          <div class="orders">
-            
-          </div>
-
-
-        </div>
-      
-         <div class="stock_info">
-         <h2>Details for {{ request.resolver_match.kwargs.stock_tick }}</h2>
-         <!-- Create Animation for this one later on -->
-         <div class="gen-ai" id="gen-ai-text" data-content="{{ info|safe }}"></div>
-      </div>
-      
-
-      <div class="stock_news">
-         <!-- For this one, I will add news via Alpaca -->
-
-      </div>
                   
 
 
