@@ -47,8 +47,9 @@
     </div>
 
 </div>
+   <section class="stock-orders">
 
-        <div class="stock_graph">
+         <div class="stock_graph">
 
          <!-- Create a inside div to ask: Buy or Sell Stocks -->
           <div class="orders">
@@ -57,7 +58,13 @@
 
 
         </div>
+
+   </section>
+
+
       
+      <sectiom class="stock-information"> 
+         
          <div class="stock_info">
          <h2>Details for {{ request.resolver_match.kwargs.stock_tick }}</h2>
          <!-- Create Animation for this one later on -->
@@ -65,6 +72,8 @@
             <p>{{ info|safe }}</p>
          </div>
       </div>
+
+      </section>
       
 
       <div class="stock_news">

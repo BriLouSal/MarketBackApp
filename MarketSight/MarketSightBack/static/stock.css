@@ -69,3 +69,8 @@ a{
 
 
 
+.stock-information{
+    display: block;
+    position: relative;
+    top: 250px;
+}
