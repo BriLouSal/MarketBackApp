@@ -37,8 +37,18 @@ body{
                  0 0 10px #57A0C1,
                  0 0 20px #57A0C1;
     transition: all 0.3s ease;
+
 }
 
+
+
+
+a{
+    text-decoration: none;
+    padding: 10px 15px;
+    color: #fff;
+    
+}
 
 .stock_info *{
     color: white;
@@ -48,8 +58,13 @@ body{
 }
 
 
+.gen-ai{
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    display: block;
 
-
+}
 
 
 

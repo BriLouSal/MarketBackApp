@@ -10,6 +10,8 @@ import time
 
 MAX_LENGTH_OF_TITLE = 255
 
+
+MAX_CASH = 100000
 # This should be the most important part of determining relevancy
 # as it should carry more weigh
 ACTIVITY_PARAMETERS = 1.25
@@ -22,7 +24,7 @@ class Profile(models.Model):
     email = models.EmailField(null=True)
     password = models.CharField(max_length=100)
     created = models.DateField(auto_now_add=True)
-    money_owned = models.IntegerField(default=100000) # We want to have money for the Users to simulate stock trading. We'll do it in Model to remain dynamic and not remain static in views.
+    money_owned = models.IntegerField(default=MAX_CASH) # We want to have money for the Users to simulate stock trading. We'll do it in Model to remain dynamic and not remain static in views.
 
     def __str__(self):
         return self.username
