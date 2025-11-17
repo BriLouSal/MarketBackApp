@@ -7,7 +7,7 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link rel="stylesheet" href="{% static 'stock.css' %}">
-   <title>Document</title>
+   <title>{{request.resolver_match.kwargs.stock_tick}}</title>
    
 </head>
 <body>
@@ -53,13 +53,32 @@
 
          <!-- Create a inside div to ask: Buy or Sell Stocks -->
           <div class="orders">
+            <!-- Flex direction should be row -->
+             <!-- Furthermore, We want it to be a different div such as that stock orders is on the right -->
+            <form action="" method="POST">
+               {% csrf_token %}
+               {% for stocks in ticker %}
+               <div class="order">
+               <button type="button" id="toggleSide" aria-pressed="false">Sell</button>
+               <label>{{request.resolver_match.kwargs.stock_tick}}</label>
+               <input type="text" placeholder="How many shares of {{stocks.id} you would like to buy}", min="1">
+
+
+
+
+               </div>
+
+            </form>
+
             
           </div>
+               {% endfor %}
 
 
         </div>
 
    </section>
+
 
 
       
@@ -79,6 +98,7 @@
       <div class="stock_news">
          <!-- For this one, I will add news via Alpaca -->
 
+
       </div>
                   
 
@@ -91,7 +111,7 @@
 
 
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-   <script src="{% static 'chart_stocks.js'%}"></script>
+   <script src="{% static 'stock.js'%}"></script>
    
 
 

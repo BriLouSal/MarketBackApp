@@ -5,9 +5,26 @@ from ta.momentum import RSIIndicator
 from ta.trend import SMAIndicator
 from ta.volatility import BollingerBands
 
+
+
 # Obtain top loser from today's stock market
 from yahooquery import Screener
 import matplotlib.pyplot as plt 
+
+from alpaca.data.historical.stock import StockHistoricalDataClient
+from alpaca.data.requests import StockSnapshotRequest
+
+import os
+from dotenv import load_dotenv
+import datetime
+
+
+load_dotenv()
+
+API_KEY = os.getenv('ALPACA')
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+
 
 def get_asset_info(self, df=None):
         """
@@ -155,35 +172,12 @@ def get_losers():
         losers.append((company, ticker, daily_loss))
     return losers
 
-# def graph_losers():
-#     N = 10
-#     losers_information = get_losers()[:N] # LIMIT OF 10
-    
-
-    
-#     # Label
-#     ticker = [item[1] for item in losers_information]
-#     loss_daily = [item[2] for item in losers_information]
+# def getStockPrice(stock: str) -> float:
+#     stock = stock.upper()
+#     stock_client = StockHistoricalDataClient(API_KEY, SECRET_KEY)
+#     stock_price = stock_client.get_stock_snapshot(StockSnapshotRequest(symbol_or_symbols=stock))
+#     return stock_price.latest_trade.price
 
 
 
-#     for tick, loss in (zip(ticker, loss_daily)):
-#         print(tick, loss)
-        
-
-    
-#     # Top 10 losers:
-
-    
-    
-#     plt.figure(figsize=(10,6))
-
-
-# def stock_graph():
-#     pass 
-
-
-
-
-
-# print(graph_losers())
+# print(getStockPrice(stock='AAPL'))
