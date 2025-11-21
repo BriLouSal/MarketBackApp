@@ -6,7 +6,7 @@ from django.utils import timezone
 import yfinance as yf
 
 import time
-
+from .MSOAI import check_stock
 
 MAX_LENGTH_OF_TITLE = 255
 
@@ -65,6 +65,13 @@ class Chat(models.Model):
 class Portfolio(models.Model):
     name = models.CharField(max_length=100)
     ticker = models.CharField(max_length=10)
+
+    convert_ticker_string = str(ticker)
+
+
+    if check_stock(convert_ticker_string.upper()):
+        pass
+    
 
     
     def __str__(self):

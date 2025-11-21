@@ -61,7 +61,14 @@
                <div class="order">
                <button type="button" id="toggleSide" aria-pressed="false">Sell</button>
                <label>{{request.resolver_match.kwargs.stock_tick}}</label>
-               <input type="text" placeholder="How many shares of {{stocks.id} you would like to buy}", min="1">
+
+
+               <div id="buy_order">
+                  <input type="text" placeholder="How many shares of {{stocks.id}} you would like to buy", min="1", name="">
+
+               </div>
+
+               
 
 
 

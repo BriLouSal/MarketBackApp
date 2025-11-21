@@ -3,7 +3,8 @@
 // Now we wanna create a UI Client Side to create for 
 
 
-let order = document.getElementsByClassName('order')
+let buy_order = document.getElementsByClassName('buy_order')
+let sell_order = document.getElementsByClassName('sell_order')
 
 
 
