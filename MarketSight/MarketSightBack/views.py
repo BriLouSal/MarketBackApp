@@ -39,13 +39,16 @@ from .models import Profile, Portfolio
 # from alpaca.data.historical import CryptoHistoricalDataClient
 
 from .MSOAI import (
-    NewsSummary,
-    info_to_positivty_rating_positivety,
-    info_to_positivty_rating_negative,
-    info_to_positivty_rating_netural,
-    news,
-    gen_ai_parser,
-    StockSummary
+    StockSummary,
+    FinancialReport,
+    Company_Analysis,
+    Revenue_Analysis,
+    Returns_Efficiency_Ratios,
+    Growth_Analysis_Outlook,
+    Growth_of_Stock,
+    Company_Debt,
+    
+    
 )
 
 import yfinance as yf
@@ -157,6 +160,19 @@ def stock(request, stock_tick:str):
     summary_stock = markdown.markdown(summary_stock)
 
 
+    information_of_stock = {
+        'Financial_Reports': markdown.markdown(FinancialReport(stock=stock_url)),
+        'Analysis':  markdown.markdown(Company_Analysis(stock=stock_url)),
+        'Profitability_Metrics': markdown.markdown(Revenue_Analysis(stock=stock_url)),
+        'Profit_Analysis_Outlook': markdown.markdown(Growth_Analysis_Outlook(stock=stock_url)),
+        'Growth_of_Stock': markdown.markdown(Growth_of_Stock(stock=stock_url)),
+        'Company_Debt': markdown.markdown(Returns_Efficiency_Ratios(stock=stock_url)),
+        'Company_Debt': markdown.markdown(Company_Debt(stock=stock_url)),
+
+
+    }
+
+
 
 
     if request.method == 'POST':
@@ -166,7 +182,7 @@ def stock(request, stock_tick:str):
 
     # Create a matplotlib graph of stocks or any graphs
 
-    context = {'ticker': ticker, 'info': summary_stock}
+    context = {'ticker': ticker, 'info': information_of_stock}
 
     return render(request, 'base/stock.html', context)
 
@@ -288,8 +304,10 @@ def assistance(request):
 
 
 
-# def stock_portfolio(request):
-#     # We will fetch user's stock portfolio from database and display it here
-#     context = {}
-#     return render(request, 'MarketSightBack/stock_portfolio.html', context)
+def stock_portfolio(request):
+    # We will fetch user's stock portfolio from database and display it here
+    context = {}
+
+    # Check if there's nothing inside the portfolio (which would say, "Please Buy some Stocks for a deep analysis")
+    return render(request, 'MarketSightBack/stock_portfolio.html', context)
 

@@ -31,3 +31,41 @@ Earnings growth exploded at 91.2%,
 | Analyst rating score   | `recommendationMean`      | 2.0           |
 | Analyst recommendation | `recommendationKey`       | "buy"         |
 | Number of analysts     | `numberOfAnalystOpinions` | 41            |
+
+
+| Concept           | Dict Key            |
+| ----------------- | ------------------- |
+| Total revenue     | `totalRevenue`      |
+| Revenue per share | `revenuePerShare`   |
+| Revenue growth    | `revenueGrowth`     |
+| Total cash        | `totalCash`         |
+| Cash per share    | `totalCashPerShare` |
+
+
+| Concept            | Dict Key           |
+| ------------------ | ------------------ |
+| Gross margins      | `grossMargins`     |
+| Operating margins  | `operatingMargins` |
+| Net profit margins | `profitMargins`    |
+| EBITDA             | `ebitda`           |
+| EBITDA margins     | `ebitdaMargins`    |
+| Gross profits      | `grossProfits`     |
+
+
+| Concept         | Dict Key         |
+| --------------- | ---------------- |
+| Revenue growth  | `revenueGrowth`  |
+| Earnings growth | `earningsGrowth` |
+
+
+| Concept                | Dict Key         |
+| ---------------------- | ---------------- |
+| Return on Assets (ROA) | `returnOnAssets` |
+| Return on Equity (ROE) | `returnOnEquity` |
+
+| Concept        | Dict Key       |
+| -------------- | -------------- |
+| Quick ratio    | `quickRatio`   |
+| Current ratio  | `currentRatio` |
+| Debt-to-equity | `debtToEquity` |
+| Total debt     | `totalDebt`    |
