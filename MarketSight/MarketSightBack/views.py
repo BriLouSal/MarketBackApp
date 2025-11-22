@@ -47,6 +47,7 @@ from .MSOAI import (
     Growth_Analysis_Outlook,
     Growth_of_Stock,
     Company_Debt,
+    StockInfo
     
     
 )
@@ -145,6 +146,8 @@ def stock(request, stock_tick:str):
 
     # This will happen when the user has: Search.html -> Stock Checker ->
     money_owned = Profile.objects.all()
+    info = StockInfo(stock_url)
+
     
 
 
@@ -161,7 +164,7 @@ def stock(request, stock_tick:str):
 
 
     information_of_stock = {
-        'Financial_Reports': markdown.markdown(FinancialReport(stock=stock_url)),
+        'Financial_Reports': markdown.markdown(FinancialReport(stock=stock_url), info=info),
         'Analysis':  markdown.markdown(Company_Analysis(stock=stock_url)),
         'Profitability_Metrics': markdown.markdown(Revenue_Analysis(stock=stock_url)),
         'Profit_Analysis_Outlook': markdown.markdown(Growth_Analysis_Outlook(stock=stock_url)),
