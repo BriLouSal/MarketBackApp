@@ -47,7 +47,7 @@ from .MSOAI import (
     Growth_Analysis_Outlook,
     Growth_of_Stock,
     Company_Debt,
-    StockInfo
+    StockInfo,
     
     
 )
@@ -165,12 +165,12 @@ def stock(request, stock_tick:str):
 
     information_of_stock = {
         'Financial_Reports': markdown.markdown(FinancialReport(stock=stock_url), info=info),
-        'Analysis':  markdown.markdown(Company_Analysis(stock=stock_url)),
-        'Profitability_Metrics': markdown.markdown(Revenue_Analysis(stock=stock_url)),
-        'Profit_Analysis_Outlook': markdown.markdown(Growth_Analysis_Outlook(stock=stock_url)),
-        'Growth_of_Stock': markdown.markdown(Growth_of_Stock(stock=stock_url)),
-        'Company_Debt': markdown.markdown(Returns_Efficiency_Ratios(stock=stock_url)),
-        'Company_Debt': markdown.markdown(Company_Debt(stock=stock_url)),
+        'Analysis':  markdown.markdown(Company_Analysis(stock=stock_url), info=info),
+        'Profitability_Metrics': markdown.markdown(Revenue_Analysis(stock=stock_url), info=info),
+        'Profit_Analysis_Outlook': markdown.markdown(Growth_Analysis_Outlook(stock=stock_url, info=info)),
+        'Growth_of_Stock': markdown.markdown(Growth_of_Stock(stock=stock_url),info=info),
+        'Company_Debt': markdown.markdown(Returns_Efficiency_Ratios(stock=stock_url, info=info)),
+        'Company_Debt': markdown.markdown(Company_Debt(stock=stock_url , info=info)),
 
 
     }
