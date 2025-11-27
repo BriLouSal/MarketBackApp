@@ -39,7 +39,6 @@ from .models import Profile, Portfolio
 # from alpaca.data.historical import CryptoHistoricalDataClient
 
 from .MSOAI import (
-    StockSummary,
     FinancialReport,
     Company_Analysis,
     Revenue_Analysis,
@@ -146,10 +145,12 @@ def stock(request, stock_tick:str):
 
     # This will happen when the user has: Search.html -> Stock Checker ->
     money_owned = Profile.objects.all()
+
+    stock_url = stock_tick.upper()
+   
+   
+   
     info = StockInfo(stock_url)
-
-    
-
 
     
     for i in ticker:
@@ -158,17 +159,15 @@ def stock(request, stock_tick:str):
             
             stock_url = i
 
-    stock_url = stock_tick.upper()      
-    summary_stock = StockSummary(stock=stock_url)
-    summary_stock = markdown.markdown(summary_stock)
+    stock_url = stock_tick.upper()     
 
 
     information_of_stock = {
-        'Financial_Reports': markdown.markdown(FinancialReport(stock=stock_url), info=info),
-        'Analysis':  markdown.markdown(Company_Analysis(stock=stock_url), info=info),
-        'Profitability_Metrics': markdown.markdown(Revenue_Analysis(stock=stock_url), info=info),
+        'Financial_Reports': markdown.markdown(FinancialReport(stock=stock_url, info=info)),
+        'Analysis':  markdown.markdown(Company_Analysis(stock=stock_url, info=info)),
+        'Profitability_Metrics': markdown.markdown(Revenue_Analysis(stock=stock_url, info=info),),
         'Profit_Analysis_Outlook': markdown.markdown(Growth_Analysis_Outlook(stock=stock_url, info=info)),
-        'Growth_of_Stock': markdown.markdown(Growth_of_Stock(stock=stock_url),info=info),
+        'Growth_of_Stock': markdown.markdown(Growth_of_Stock(stock=stock_url, info=info)),
         'Company_Debt': markdown.markdown(Returns_Efficiency_Ratios(stock=stock_url, info=info)),
         'Company_Debt': markdown.markdown(Company_Debt(stock=stock_url , info=info)),
 
