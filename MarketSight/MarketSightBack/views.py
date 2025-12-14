@@ -75,7 +75,20 @@ recent_search = {}
 
 
 
+def build_stock_analyzer(stock_url, info) -> dict:
+    
+    information_of_stock = {
+        'Financial_Reports': markdown.markdown(FinancialReport(stock=stock_url, info=info)),
+        'Analysis':  markdown.markdown(Company_Analysis(stock=stock_url, info=info)),
+        'Profitability_Metrics': markdown.markdown(Revenue_Analysis(stock=stock_url, info=info),),
+        'Profit_Analysis_Outlook': markdown.markdown(Growth_Analysis_Outlook(stock=stock_url, info=info)),
+        'Growth_of_Stock': markdown.markdown(Growth_of_Stock(stock=stock_url, info=info)),
+        'Company_Debt': markdown.markdown(Returns_Efficiency_Ratios(stock=stock_url, info=info)),
+        'Company_Debt': markdown.markdown(Company_Debt(stock=stock_url , info=info)),
 
+
+    }
+    return information_of_stock
 
 
 
@@ -96,7 +109,7 @@ def check_stock(stock):
     
 
         if not info or 'regularMarketPrice' not in info:
-                return None
+                return messages.error("The stock does not exist. Please try again")
             
         return stock_info
 
@@ -145,6 +158,8 @@ def stock(request, stock_tick:str):
 
     # This will happen when the user has: Search.html -> Stock Checker ->
     money_owned = Profile.objects.all()
+    
+    
 
     stock_url = stock_tick.upper()
    
@@ -162,20 +177,6 @@ def stock(request, stock_tick:str):
     stock_url = stock_tick.upper()     
 
 
-    information_of_stock = {
-        'Financial_Reports': markdown.markdown(FinancialReport(stock=stock_url, info=info)),
-        'Analysis':  markdown.markdown(Company_Analysis(stock=stock_url, info=info)),
-        'Profitability_Metrics': markdown.markdown(Revenue_Analysis(stock=stock_url, info=info),),
-        'Profit_Analysis_Outlook': markdown.markdown(Growth_Analysis_Outlook(stock=stock_url, info=info)),
-        'Growth_of_Stock': markdown.markdown(Growth_of_Stock(stock=stock_url, info=info)),
-        'Company_Debt': markdown.markdown(Returns_Efficiency_Ratios(stock=stock_url, info=info)),
-        'Company_Debt': markdown.markdown(Company_Debt(stock=stock_url , info=info)),
-
-
-    }
-
-
-
 
     if request.method == 'POST':
         get_order = request.POST.get('buy')
@@ -184,7 +185,7 @@ def stock(request, stock_tick:str):
 
     # Create a matplotlib graph of stocks or any graphs
 
-    context = {'ticker': ticker, 'info': information_of_stock}
+    context = {'ticker': ticker, 'information_of_stock': build_stock_analyzer(stock_url=stock_url, info=info)}
 
     return render(request, 'base/stock.html', context)
 

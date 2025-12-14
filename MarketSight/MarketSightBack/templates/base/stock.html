@@ -1,5 +1,4 @@
-{% load static %}
-
+{% load static tailwind_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,6 +6,7 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link rel="stylesheet" href="{% static 'stock.css' %}">
+   {% tailwind_css %}
    <title>{{request.resolver_match.kwargs.stock_tick}}</title>
    
 </head>
@@ -14,7 +14,7 @@
 
    
 
-      <div class="navbar">
+      <div class="navbar" >
       <a href="{% url 'assistance' %}">Support</a>
       <a href="{% url 'room' %}">Portfolio</a>
       <a href="{% url 'home' %}">Home</a>
@@ -51,35 +51,8 @@
 
          <div class="stock_graph">
 
-         <!-- Create a inside div to ask: Buy or Sell Stocks -->
-          <div class="orders">
-            <!-- Flex direction should be row -->
-             <!-- Furthermore, We want it to be a different div such as that stock orders is on the right -->
-            <form action="" method="POST">
-               {% csrf_token %}
-               {% for stocks in ticker %}
-               <div class="order">
-               <button type="button" id="toggleSide" aria-pressed="false">Sell</button>
-               <label>{{request.resolver_match.kwargs.stock_tick}}</label>
+         <!-- Import matplotlib -->
 
-
-               <div id="buy_order">
-                  <input type="text" placeholder="How many shares of {{stocks.id}} you would like to buy", min="1", name="">
-
-               </div>
-
-               
-
-
-
-
-               </div>
-
-            </form>
-
-            
-          </div>
-               {% endfor %}
 
 
         </div>
@@ -89,15 +62,22 @@
 
 
       
-      <sectiom class="stock-information"> 
-         
+      <section class="stock-information"> 
+
+
+         {% for title, content in information_of_stock.items %}
          <div class="stock_info">
-         <h2>Details for {{ request.resolver_match.kwargs.stock_tick }}</h2>
-         <!-- Create Animation for this one later on -->
+            <h3>{{title}}</h3>
+  
          <div class="gen-ai" id="gen-ai-text">
-            <p>{{ info|safe }}</p>
+            <p>{{ content|safe }}</p>
          </div>
-      </div>
+
+         </div>
+         {% endfor %}
+         
+
+   
 
       </section>
       

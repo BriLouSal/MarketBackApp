@@ -55,6 +55,9 @@ host_user_of_email = environment_host
 
 # Application definition
 
+
+TAILWIND_APP_NAME = "MarketSightCSS"
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -63,7 +66,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "MarketSightBack.apps.MarketSightBackConfig",
+    "tailwind",
+    'MarketSightCSS', # Tailwind CSS Name
 ]
+
+if DEBUG:
+    # Add django_browser_reload only in DEBUG mode
+    INSTALLED_APPS += ["django_browser_reload"]
 
 AUTHENTICATION_BACKENDS = [
     "MarketSightBack.backend.EmailBackend",  
@@ -81,6 +90,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+if DEBUG:
+    # Add django_browser_reload middleware only in DEBUG mode
+    MIDDLEWARE += [
+        "django_browser_reload.middleware.BrowserReloadMiddleware",
+    ]
 
 
 

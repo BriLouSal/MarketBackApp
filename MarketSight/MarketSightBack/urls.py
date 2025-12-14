@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 from django.http import HttpResponse
+from django.conf import settings
 from . import views
 import yfinance as yf
 
@@ -27,7 +28,11 @@ urlpatterns = [
 
 
 
-
+if settings.DEBUG:
+    # Include django_browser_reload URLs only in DEBUG mode
+    urlpatterns += [
+        path("__reload__/", include("django_browser_reload.urls")),
+    ]
 
 
 
