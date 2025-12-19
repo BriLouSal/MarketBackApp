@@ -61,13 +61,12 @@
 
 
 
-      
-      <section class="stock-information"> 
-
+      <!-- Old class name: stock_info -->
+      <section class="font-serif text-[17px] max-w-5xl mx-auto px-6 py-10 space-y-8  bg-white rounded">  
 
          {% for title, content in information_of_stock.items %}
-         <div class="stock_info">
-            <h3>{{title}}</h3>
+         <div class="p-6 rounded-xl bg-black/40 border border-white/10 shadow-md">
+            <h3 class="">{{title}}</h3>
   
          <div class="gen-ai" id="gen-ai-text">
             <p>{{ content|safe }}</p>
