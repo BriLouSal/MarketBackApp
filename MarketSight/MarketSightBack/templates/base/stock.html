@@ -47,6 +47,7 @@
     </div>
 
 </div>
+<!-- Add matplotlib graph or chart.js -->
    <section class="stock-orders">
 
          <div class="stock_graph">
@@ -62,30 +63,37 @@
 
 
       <!-- Old class name: stock_info -->
-      <section class="font-serif text-[17px] max-w-5xl mx-auto px-6 py-10 space-y-8  bg-white rounded">  
 
-         {% for title, content in information_of_stock.items %}
-         <div class="p-6 rounded-xl bg-black/40 border border-white/10 shadow-md">
-            <h3 class="">{{title}}</h3>
-  
-         <div class="gen-ai" id="gen-ai-text">
-            <p>{{ content|safe }}</p>
-         </div>
-
-         </div>
-         {% endfor %}
-         
+   <!-- Card -->
+  <section>
+   {% for title, content in information_of_stock.items %}
+   <!-- Card container -->
+   <div class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
 
    
+   <h3 class="text-xl font-semibold mb-4 text-white">
+   {{ title }}
+   </h3>
 
-      </section>
-      
+   <div class="gen-ai text-body prose prose-invert max-w-none">
+   {{ content|linebreaks }}
+   </div>
 
-      <div class="stock_news">
-         <!-- For this one, I will add news via Alpaca -->
+  </div>
+  {% endfor %}
+
+  </section>
 
 
-      </div>
+   
+   
+   
+   
+   <div class="stock_news">
+      <!-- For this one, I will add news via Alpaca -->
+
+
+   </div>
                   
 
 
