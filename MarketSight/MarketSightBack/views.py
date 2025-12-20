@@ -47,6 +47,7 @@ from .MSOAI import (
     Growth_of_Stock,
     Company_Debt,
     StockInfo,
+    html_to_paragraph_text
     
     
 )
@@ -78,13 +79,13 @@ recent_search = {}
 def build_stock_analyzer(stock_url, info) -> dict:
     
     information_of_stock = {
-        'Financial_Reports': markdown.markdown(FinancialReport(stock=stock_url, info=info)),
-        'Analysis':  markdown.markdown(Company_Analysis(stock=stock_url, info=info)),
-        'Profitability_Metrics': markdown.markdown(Revenue_Analysis(stock=stock_url, info=info),),
-        'Profit_Analysis_Outlook': markdown.markdown(Growth_Analysis_Outlook(stock=stock_url, info=info)),
-        'Growth_of_Stock': markdown.markdown(Growth_of_Stock(stock=stock_url, info=info)),
-        'Company_Debt': markdown.markdown(Returns_Efficiency_Ratios(stock=stock_url, info=info)),
-        'Company_Debt': markdown.markdown(Company_Debt(stock=stock_url , info=info)),
+        'Financial_Reports': html_to_paragraph_text(markdown.markdown(FinancialReport(stock=stock_url, info=info))),
+        'Analysis':  html_to_paragraph_text(markdown.markdown(Company_Analysis(stock=stock_url, info=info))),
+        'Profitability_Metrics': html_to_paragraph_text(markdown.markdown(Revenue_Analysis(stock=stock_url, info=info))),
+        'Profit_Analysis_Outlook':html_to_paragraph_text(markdown.markdown(Growth_Analysis_Outlook(stock=stock_url, info=info))),
+        'Growth_of_Stock': html_to_paragraph_text(markdown.markdown(Growth_of_Stock(stock=stock_url, info=info))),
+        'Company_Debt': html_to_paragraph_text(markdown.markdown(Returns_Efficiency_Ratios(stock=stock_url, info=info))),
+        'Company_Debt': html_to_paragraph_text(markdown.markdown(Company_Debt(stock=stock_url , info=info))),
 
 
     }
