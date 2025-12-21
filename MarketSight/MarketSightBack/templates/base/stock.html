@@ -65,20 +65,23 @@
       <!-- Old class name: stock_info -->
 
    <!-- Card -->
-  <section>
+  <section class="max-w-7xl mx-auto px-6 py-8">
 
-   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+   <div class="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-3 gap-6">
       {% for title, content in information_of_stock.items %}
    
          <!-- Card container -->
-         <div class="bg-amber-200 flex flex-row w-full p-6 rounded-xl  shadow-md text-center border-amber-200 items-center justify-center content-center">
+         <div class="min-[100px] rounded-lg bg-blue-700 shadow block 
+         justify-center items-center text-center">
 
-            
-            <h3 class="text-xl font-semibold mb-4 text-white">
+
+
+            <!-- Titles -->
+            <h3 class="text-lg font-bold mb-4 text-gray-900">
             {{ title }}
             </h3>
 
-            <div class="gen-ai text-body prose prose-invert max-w-none">
+            <div class="gen-ai text-gray-800 leading-relaxed space-y-4">
             {{ content|linebreaks }}
             </div>
 
