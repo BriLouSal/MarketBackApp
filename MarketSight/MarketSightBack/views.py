@@ -23,7 +23,19 @@ from .backend import EmailBackend
 from django.core.mail import send_mail
 from django.conf import settings
 
+
+
 # Investment Endeavors Library
+
+
+from alpaca.data.requests import StockBarsRequest
+from alpaca.data.timeframe import TimeFrame
+from alpaca.data.historical import StockHistoricalDataClient
+from alpaca.data.requests import StockBarsRequest
+from alpaca.data.timeframe import TimeFrame
+from datetime import datetime
+
+
 
 from django.contrib import messages
 
@@ -48,7 +60,8 @@ from .MSOAI import (
     Growth_of_Stock,
     Company_Debt,
     StockInfo,
-    html_to_paragraph_text
+    html_to_paragraph_text,
+    json_data_api,
     
     
 )
@@ -57,6 +70,8 @@ import yfinance as yf
 import yahooquery as yq
 
 import json
+import os 
+from dotenv import load_dotenv
 
 
 
@@ -78,21 +93,26 @@ recent_search = {}
 
 
 
+
+
+
 def build_stock_analyzer(stock_url, info) -> dict:
     
     information_of_stock = {
         'Financial Reports': html_to_paragraph_text(markdown.markdown(FinancialReport(stock=stock_url, info=info))),
         'Analysis':  html_to_paragraph_text(markdown.markdown(Company_Analysis(stock=stock_url, info=info))),
         'Profitability Metrics': html_to_paragraph_text(markdown.markdown(Revenue_Analysis(stock=stock_url, info=info))),
-        'Profit_Analysis Outlook':html_to_paragraph_text(markdown.markdown(Growth_Analysis_Outlook(stock=stock_url, info=info))),
+        'Profit Analysis Outlook':html_to_paragraph_text(markdown.markdown(Growth_Analysis_Outlook(stock=stock_url, info=info))),
         'Growth of Stock': html_to_paragraph_text(markdown.markdown(Growth_of_Stock(stock=stock_url, info=info))),
-        'Retturn Efficency': html_to_paragraph_text(markdown.markdown(Returns_Efficiency_Ratios(stock=stock_url, info=info))),
+        'Return Efficency': html_to_paragraph_text(markdown.markdown(Returns_Efficiency_Ratios(stock=stock_url, info=info))),
         'Company Debt': html_to_paragraph_text(markdown.markdown(Company_Debt(stock=stock_url , info=info))),
 
 
     }
     return information_of_stock
 
+def json_data_alpaca(request, stock):
+    pass
 
 
 
@@ -159,6 +179,11 @@ def portfolio_room(request):
     context = {'ticker': ticker}
     return render(request, 'base/portfolio_room.html', context)
 
+def json_alpaca_data(stock):
+    pass
+
+
+
 def stock(request, stock_tick:str):
 
     # This will happen when the user has: Search.html -> Stock Checker ->
@@ -191,7 +216,7 @@ def stock(request, stock_tick:str):
     
     # Create a matplotlib graph of stocks or any graphs
 
-    context = {'ticker': ticker, 'information_of_stock': build_stock_analyzer(stock_url=stock_url, info=info),}
+    context = {'ticker': ticker, 'information_of_stock': build_stock_analyzer(stock_url=stock_url, info=info), 'stock_graph': json_data_api(stock=stock_url)}
 
     return render(request, 'base/stock.html', context)
 
