@@ -32,6 +32,7 @@ import matplotlib.pyplot as pl
 import csv as cs
 import alpaca
 
+
 import markdown
 
 
@@ -53,6 +54,7 @@ from .MSOAI import (
 )
 
 import yfinance as yf
+import yahooquery as yq
 
 import json
 
@@ -92,6 +94,9 @@ def build_stock_analyzer(stock_url, info) -> dict:
     return information_of_stock
 
 
+def stock_logo(stock):
+    logo = yf.Ticker(stock)
+    return logo.info.get("logo_url")
 
 def check_stock(stock):
     try:
@@ -111,6 +116,7 @@ def check_stock(stock):
 
         if not info or 'regularMarketPrice' not in info:
                 return messages.error("The stock does not exist. Please try again")
+
             
         return stock_info
 
@@ -133,7 +139,7 @@ def search(request):
         if search_stock:
             search_stock = str(search_stock.upper())
 
-        # ask for check_stock
+        # ask for check_stocks
             stock_checked = check_stock(stock=search_stock)
 
             if stock_checked is None:
@@ -184,9 +190,10 @@ def stock(request, stock_tick:str):
         if get_order == 'buy':
             pass
 
+    
     # Create a matplotlib graph of stocks or any graphs
 
-    context = {'ticker': ticker, 'information_of_stock': build_stock_analyzer(stock_url=stock_url, info=info)}
+    context = {'ticker': ticker, 'information_of_stock': build_stock_analyzer(stock_url=stock_url, info=info), 'logo': stock_logo(stock=stock_url)}
 
     return render(request, 'base/stock.html', context)
 

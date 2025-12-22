@@ -9,6 +9,9 @@ import string
 
 import random
 
+import yahooquery
+
+
 
 class EmailBackend(BaseBackend):
     def authenticate(self, request, username = None, password = None, **kwargs):
@@ -67,6 +70,11 @@ def verification():
 
 
 
+
+
+
+
+# Create Exception handling
 
 
 

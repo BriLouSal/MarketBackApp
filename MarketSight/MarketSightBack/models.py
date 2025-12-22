@@ -88,6 +88,3 @@ class Portfolio(models.Model):
 
 
 
-
-
-
