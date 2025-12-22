@@ -71,17 +71,18 @@
       {% for title, content in information_of_stock.items %}
    
          <!-- Card container -->
-         <div class="min-[100px] rounded-lg bg-blue-800 shadow block 
-         justify-center items-center text-center hover:bg-blue-300 transition-transform  duration-300">
+         <div class=" group min-[100px] rounded-lg bg-blue-800 shadow block 
+         justify-center items-center text-center hover:bg-blue-300 transition-transform  duration-300 hover:scale-105">
 
 
 
             <!-- Titles -->
-            <h3 class="text-lg font-bold mb-4 text-white text-shadow-white">
+            <h3 class="text-lg font-bold mb-4 text-white text-shadow-white
+             group-hover:text-blue-950 transition-transform  duration-300">
             {{ title }}
             </h3>
 
-            <div class="gen-ai text-white text-shadow-white leading-relaxed space-y-4">
+            <div class="gen-ai text-white text-shadow-white space-y-4 group-hover:text-blue-950 leading-relaxed transition-colors duration-300  ">
             {{ content|linebreaks }}
             </div>
 

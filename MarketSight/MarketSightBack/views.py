@@ -94,9 +94,7 @@ def build_stock_analyzer(stock_url, info) -> dict:
     return information_of_stock
 
 
-def stock_logo(stock):
-    logo = yf.Ticker(stock)
-    return logo.info.get("logo_url")
+
 
 def check_stock(stock):
     try:
@@ -193,7 +191,7 @@ def stock(request, stock_tick:str):
     
     # Create a matplotlib graph of stocks or any graphs
 
-    context = {'ticker': ticker, 'information_of_stock': build_stock_analyzer(stock_url=stock_url, info=info), 'logo': stock_logo(stock=stock_url)}
+    context = {'ticker': ticker, 'information_of_stock': build_stock_analyzer(stock_url=stock_url, info=info),}
 
     return render(request, 'base/stock.html', context)
 
