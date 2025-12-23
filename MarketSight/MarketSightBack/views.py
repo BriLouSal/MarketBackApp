@@ -111,8 +111,6 @@ def build_stock_analyzer(stock_url, info) -> dict:
     }
     return information_of_stock
 
-def json_data_alpaca(request, stock):
-    pass
 
 
 
@@ -213,10 +211,22 @@ def stock(request, stock_tick:str):
         if get_order == 'buy':
             pass
 
+
+    # Gather Json data API
+
+    data_json = json_data_api(stock=stock_url)
+
+
+    label_graph = json.dump( data_json['chart_label'])
+    label_price = json.dump(data_json['chart_price'])
+
+
+
     
     # Create a matplotlib graph of stocks or any graphs
 
-    context = {'ticker': ticker, 'information_of_stock': build_stock_analyzer(stock_url=stock_url, info=info), 'stock_graph': json_data_api(stock=stock_url)}
+    context = {'ticker': ticker, 'information_of_stock': build_stock_analyzer(stock_url=stock_url, info=info), 'stock_graph': label_graph, 'stock_price':
+               label_price}
 
     return render(request, 'base/stock.html', context)
 
