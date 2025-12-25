@@ -49,12 +49,26 @@
 </div>
 <!-- Add matplotlib graph or chart.js -->
    <section class="stock-orders">
+      <!-- Structure: add buttons in order to change the time and use django to do requests -->
+         <!-- Buttons -->
+         <div class="flex space-x-2 mb-4 flex-row">
+            <!-- 1d should be active -->
+            <button class="interval bg-blue-500 items-center justify-center content-center
+             hover:bg-blue-300 hover:text-white">1D</button>
+            <button class="interval bg-blue-800 items-center justify-center content-center
+             text-gray-950 hover:bg-blue-300 hover:text-white">1W</button>
+            <button class="interval bg-blue-800 items-center justify-center content-center text-gray-950 hover:bg-blue-300 hover:text-white">1M</button>
+            <button class="interval bg-blue-800 items-center justify-center content-center  text-gray-950 hover:bg-blue-300 hover:text-white">1Y</button>
 
-         <div class="stock_graph">
+         </div>
+      
+         <!-- Graph -->
+         <div class="stock_graph relative-h-[400px]">
 
-         <canvas></canvas>
+         
+         <canvas id="stockGraph"></canvas>
 
-         <!-- Import matplotlib -->
+         <!-- Import chart.js -->
 
 
 
@@ -116,6 +130,9 @@
 <!-- News Anaylsis in the Bottom -->
     <!-- Use AI to indicate bias  -->
    <script>
+   const chartLabels = {{ chart_labels|safe }};
+   const chartPrices = {{ chart_prices|safe }};
+   const stockTicker = "{{ request.resolver_match.kwargs.stock_tick }}";
       
       
    </script>

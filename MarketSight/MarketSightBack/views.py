@@ -190,11 +190,11 @@ def stock(request, stock_tick:str):
     
 
     stock_url = stock_tick.upper()
-   
-   
-   
+
     info = StockInfo(stock_url)
 
+    date_time = request.get('interval', '1d')
+    
     
     for i in ticker:
         
@@ -205,7 +205,6 @@ def stock(request, stock_tick:str):
     stock_url = stock_tick.upper()     
 
 
-
     if request.method == 'POST':
         get_order = request.POST.get('buy')
         if get_order == 'buy':
@@ -214,13 +213,13 @@ def stock(request, stock_tick:str):
 
     # Gather Json data API
 
-    data_json = json_data_api(stock=stock_url)
+    data_json = json_data_api(date_api=date_time, stock=stock_url)
 
 
     label_graph = json.dump( data_json['chart_label'])
     label_price = json.dump(data_json['chart_price'])
 
-
+    # Button
 
     
     # Create a matplotlib graph of stocks or any graphs
