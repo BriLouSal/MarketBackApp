@@ -193,7 +193,7 @@ def stock(request, stock_tick:str):
 
     info = StockInfo(stock_url)
 
-    date_time = request.get('interval', '1d')
+    date_time = request.GET.get('interval', '1D')
     
     
     for i in ticker:
@@ -216,8 +216,8 @@ def stock(request, stock_tick:str):
     data_json = json_data_api(date_api=date_time, stock=stock_url)
 
 
-    label_graph = json.dump( data_json['chart_label'])
-    label_price = json.dump(data_json['chart_price'])
+    label_graph = json.dumps(data_json['chart_label'])
+    label_price = json.dumps(data_json['chart_price'])
 
     # Button
 

@@ -3,18 +3,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+   {% tailwind_css %}
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link rel="stylesheet" href="{% static 'stock.css' %}">
-   {% tailwind_css %}
-   <title>{{request.resolver_match.kwargs.stock_tick}}</title>
-   
+   <title>{{ request.resolver_match.kwargs.stock_tick }}</title>
 </head>
+
 <body>
 
-   
-
-      <div class="navbar" >
+   <div class="navbar">
       <a href="{% url 'assistance' %}">Support</a>
       <a href="{% url 'room' %}">Portfolio</a>
       <a href="{% url 'home' %}">Home</a>
@@ -24,135 +22,71 @@
       {% else %}
          <a href="{% url 'login' %}">Login</a>
       {% endif %}
+
       <a href="{% url 'search' %}">Search</a>
-      <!-- For Portfolio, I wanna have a redirection if the condiition is not met that will make sure users are signed up --> 
    </div>
 
- 
-
-
-
-
-        <div class="stock">
-
-        <!-- Create a  -->
-        {% for stocks in ticker %}
-        <div>
-           <p>
-            {{stocks.id}}: {{stocks.stock}}
-           </p> 
-
-        </div>
-         {% endfor %}
-    </div>
-
-</div>
-<!-- Add matplotlib graph or chart.js -->
-   <section class="stock-orders">
-      <!-- Structure: add buttons in order to change the time and use django to do requests -->
-         <!-- Buttons -->
-         <div class="flex space-x-2 mb-4 flex-row">
-            <!-- 1d should be active -->
-            <button class="interval bg-blue-500 items-center justify-center content-center
-             hover:bg-blue-300 hover:text-white">1D</button>
-            <button class="interval bg-blue-800 items-center justify-center content-center
-             text-gray-950 hover:bg-blue-300 hover:text-white">1W</button>
-            <button class="interval bg-blue-800 items-center justify-center content-center text-gray-950 hover:bg-blue-300 hover:text-white">1M</button>
-            <button class="interval bg-blue-800 items-center justify-center content-center  text-gray-950 hover:bg-blue-300 hover:text-white">1Y</button>
-
+   <div class="stock">
+      {% for stocks in ticker %}
+         <div>
+            <p>{{ stocks.id }}: {{ stocks.stock }}</p>
          </div>
-      
-         <!-- Graph -->
-         <div class="stock_graph relative-h-[400px]">
+      {% endfor %}
+   </div>
 
-         
+   <!-- removed extra stray </div> here -->
+
+   <section class="stock-orders flex flex-row py-6 gap-4">
+
+      <div>
+         <button class="interval bg-blue-500 hover:bg-blue-300 hover:text-white"
+                 data-interval="1D">1D</button>
+
+         <button class="interval bg-blue-800 text-gray-950 hover:bg-blue-300 hover:text-white"
+                 data-interval="1W">1W</button>
+
+         <button class="interval bg-blue-800 text-gray-950 hover:bg-blue-300 hover:text-white"
+                 data-interval="1M">1M</button>
+
+         <button class="interval bg-blue-800 text-gray-950 hover:bg-blue-300 hover:text-white"
+                 data-interval="1Y">1Y</button>
+      </div>
+
+      <div class="stock_graph relative h-[400px]">
          <canvas id="stockGraph"></canvas>
-
-         <!-- Import chart.js -->
-
-
-
-        </div>
+      </div>
 
    </section>
 
+   <section class="max-w-7xl mx-auto px-6 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-3 gap-6">
 
+         {% for title, content in information_of_stock.items %}
 
-      <!-- Old class name: stock_info -->
+            <div class="group rounded-lg bg-blue-800 shadow text-center hover:bg-blue-300 transition-transform duration-300 hover:scale-105">
 
-   <!-- Card -->
-  <section class="max-w-7xl mx-auto px-6 py-8">
+               <h3 class="text-lg font-bold mb-4 text-white group-hover:text-blue-950 duration-300">
+                  {{ title }}
+               </h3>
 
-   <div class="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-3 gap-6">
-      {% for title, content in information_of_stock.items %}
-   
-         <!-- Card container -->
-         <div class=" group min-[100px] rounded-lg bg-blue-800 shadow block 
-         justify-center items-center text-center hover:bg-blue-300 transition-transform  duration-300 hover:scale-105">
+               <div class="gen-ai text-white group-hover:text-blue-950 space-y-4 leading-relaxed duration-300">
+                  {{ content|linebreaks }}
+               </div>
 
-
-
-            <!-- Titles -->
-            <h3 class="text-lg font-bold mb-4 text-white text-shadow-white
-             group-hover:text-blue-950 transition-transform  duration-300">
-            {{ title }}
-            </h3>
-
-            <div class="gen-ai text-white text-shadow-white space-y-4 group-hover:text-blue-950 leading-relaxed transition-colors duration-300  ">
-            {{ content|linebreaks }}
             </div>
 
-         </div>
-      {% endfor %}
+         {% endfor %}
 
-    </div>
+      </div>
+   </section>
 
-
-
-  </section>
-
-
-   
-   
-   
-   
    <div class="stock_news">
-      <!-- For this one, I will add news via Alpaca -->
-
-
+      <!-- news goes here -->
    </div>
-                  
 
-
-<!-- Yahoo Finance Display -->
-
-
-<!-- News Anaylsis in the Bottom -->
-    <!-- Use AI to indicate bias  -->
-   <script>
-   const chartLabels = {{ chart_labels|safe }};
-   const chartPrices = {{ chart_prices|safe }};
-   const stockTicker = "{{ request.resolver_match.kwargs.stock_tick }}";
-      
-      
-   </script>
-
+   <!-- scripts -->
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-   <script src="{% static 'stock.js'%}"></script>
-   
+   <script src="{% static 'stock.js' %}"></script>
 
-
-
- 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-

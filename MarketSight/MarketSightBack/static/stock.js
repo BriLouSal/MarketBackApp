@@ -2,42 +2,40 @@
 
 // Now we wanna create a UI Client Side to create for 
 
-const stock_graph = document.getElementById('stockGraph').getContext('2d');
-
-
-
-const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-gradient.addColorStop(0, 'rgba(30, 58, 138, 0.2)'); 
-gradient.addColorStop(1, 'rgba(30, 58, 138, 0)');
-
-
-
-  new Chart(stock_graph, {
+const ctx = document.getElementById('stockGraph').getContext('2d');
+let myChart = new myChart(ctx, {
     type: 'line',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: ${chartLabels},
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1,
-        
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
+        labels: chartLabels,
+        datasets: [{
+            label: `${stockTicker} Price`,
+            data: chartPrices,
+            borderColor: '#3b82f6',
+            fill: false,
+            tension: 0.1
+        }]
     }
-  });
+});;
+
+
 
 
 // Buttoms
 const buttons = document.querySelectorAll('.interval')
 
-buttons.forEach(btn =>{
+function buttonUpdate() {
+    buttons.forEach(btn =>{
     btn.addEventListener('click', function() {
-
+        buttons.forEach(b => {
+            // Not inactive anymore
+            b.classList.remove('bg-blue-500') 
+            b.classList.add('bg-blue-800')
+        })
+        this.classList.remove('bg-blue-500')
+        this.classList.add('bg-blue-800')
     })
 })
+
+}
+buttonUpdate();
+console.log("Test!");

@@ -2,9 +2,6 @@
 
 
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
 
 
 *{
@@ -62,7 +59,6 @@ a{
     font-family: 'Poppins', sans-serif;
     font-size: 15px;
     display: block;
-    @apply "font-serif text-[17px] max-w-5xl mx-auto px-6 py-10 space-y-8  bg-neutral-primary-soft  border-default rounded-base"
 }
 
 
