@@ -48,4 +48,7 @@ function buttonUpdate() {
 }
 buttonUpdate();
 
-// 1. Select the buttons using the class you defined in HTML
+
+
+// Grab the Card div to create a gsap animation
+
