@@ -13,6 +13,7 @@
 <body>
 
    <div class="navbar">
+
       <a href="{% url 'assistance' %}">Support</a>
       <a href="{% url 'room' %}">Portfolio</a>
       <a href="{% url 'home' %}">Home</a>
@@ -25,6 +26,8 @@
 
       <a href="{% url 'search' %}">Search</a>
    </div>
+
+ 
 
    <div class="stock">
       {% for stocks in ticker %}

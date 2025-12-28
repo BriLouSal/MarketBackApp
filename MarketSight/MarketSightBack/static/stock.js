@@ -28,15 +28,16 @@ function buttonUpdate() {
     buttons.forEach(btn =>{
     btn.addEventListener('click', function() {
         buttons.forEach(b => {
-            // Not inactive anymore
-            b.classList.remove('bg-blue-500') 
-            b.classList.add('bg-blue-800')
+            
+            b.classList.remove('bg-blue-500'); 
+            b.classList.add('bg-blue-800');
         })
-        this.classList.remove('bg-blue-500')
-        this.classList.add('bg-blue-800')
+        this.classList.remove('bg-blue-500');
+        this.classList.add('bg-blue-800');
     })
 })
 
 }
 buttonUpdate();
-console.log("Test!");
+
+// 1. Select the buttons using the class you defined in HTML
