@@ -2,20 +2,21 @@
 
 // Now we wanna create a UI Client Side to create for 
 
-const ctx = document.getElementById('stockGraph').getContext('2d');
-let myChart = new myChart(ctx, {
-    type: 'line',
-    data: {
-        labels: chartLabels,
-        datasets: [{
-            label: `${stockTicker} Price`,
-            data: chartPrices,
-            borderColor: '#3b82f6',
-            fill: false,
-            tension: 0.1
-        }]
-    }
-});;
+// Fix these syntax errors later
+// const ctx = document.getElementById('stockGraph').getContext('2d');
+// let myChart = new myChart(ctx, {
+//     type: 'line',
+//     data: {
+//         labels: chartLabels,
+//         datasets: [{
+//             label: `${stockTicker} Price`,
+//             data: chartPrices,
+//             borderColor: '#3b82f6',
+//             fill: false,
+//             tension: 0.1
+//         }]
+//     }
+// });;
 
 
 
