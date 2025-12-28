@@ -221,11 +221,14 @@
   .grid {
     display: grid;
   }
-  .h-\[400px\] {
-    height: 400px;
+  .h-\[500px\] {
+    height: 500px;
   }
   .h-screen {
     height: 100vh;
+  }
+  .w-1\/2 {
+    width: calc(1/2 * 100%);
   }
   .max-w-7xl {
     max-width: var(--container-7xl);
@@ -242,8 +245,8 @@
   .justify-center {
     justify-content: center;
   }
-  .gap-4 {
-    gap: calc(var(--spacing) * 4);
+  .gap-2 {
+    gap: calc(var(--spacing) * 2);
   }
   .gap-6 {
     gap: calc(var(--spacing) * 6);

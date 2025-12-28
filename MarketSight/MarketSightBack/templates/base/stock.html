@@ -39,7 +39,7 @@
 
    <!-- removed extra stray </div> here -->
 
-   <section class="stock-orders flex flex-row py-6 gap-4">
+   <section class="stock-orders flex flex-row py-6 gap-2">
 
       <div>
          <button class="interval bg-blue-500 hover:bg-blue-300 hover:text-white"
@@ -54,8 +54,8 @@
          <button class="interval bg-blue-800 text-gray-950 hover:bg-blue-300 hover:text-white"
                  data-interval="1Y">1Y</button>
       </div>
-
-      <div class="stock_graph relative h-[400px]">
+      <!-- Half the width by 50%  -->
+      <div class="stock_graph relative h-[500px] w-1/2 mx-auto ">
          <canvas id="stockGraph"></canvas>
       </div>
 
@@ -89,6 +89,12 @@
 
    <!-- scripts -->
    {% block scripts %}
+   <script>
+   const chartLabels = {{ stock_graph|safe }};
+   const chartPrices = {{ stock_price|safe }};
+   const stockTicker = "{{ request.resolver_match.kwargs.stock_tick }}";
+
+   </script>
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
    <script src="{% static 'stock.js' %}"></script>
    {% endblock scripts %}

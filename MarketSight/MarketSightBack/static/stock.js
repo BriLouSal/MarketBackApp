@@ -4,20 +4,26 @@
 
 // Fix these syntax errors later
 const ctx = document.getElementById('stockGraph').getContext('2d');
-let myChart = new myChart(ctx, {
+
+// Graph for the Stock
+let myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: chartLabels,
+        labels: chartLabels, // From my Django connected via stock.html
         datasets: [{
             label: `${stockTicker} Price`,
-            data: chartPrices,
+            data: chartPrices, 
             borderColor: '#3b82f6',
-            fill: false,
-            tension: 0.1
+            fill: true,
+            tension: 0.1,
+            backgroundColor: '#2d485c',
         }]
+    },
+    options: {
+        responsive: true,          
+        maintainAspectRatio: false, 
     }
-});;
-
+});
 
 
 
