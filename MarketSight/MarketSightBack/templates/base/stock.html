@@ -38,8 +38,12 @@
    </div>
 
    <!-- removed extra stray </div> here -->
+   
+   <section class="stock-orders flex flex-col py-6 gap-2">
 
-   <section class="stock-orders flex flex-row py-6 gap-2">
+      <div class="stock_graph relative h-[500px] w-1/2 mx-auto ">
+         <canvas id="stockGraph"></canvas>
+      </div>
 
       <div>
          <button class="interval bg-blue-500 hover:bg-blue-300 hover:text-white"
@@ -55,9 +59,7 @@
                  data-interval="1Y">1Y</button>
       </div>
       <!-- Half the width by 50%  -->
-      <div class="stock_graph relative h-[500px] w-1/2 mx-auto ">
-         <canvas id="stockGraph"></canvas>
-      </div>
+      
 
    </section>
 
@@ -65,8 +67,8 @@
       <div class="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-3 gap-6">
 
          {% for title, content in information_of_stock.items %}
-
-            <div class="group rounded-lg bg-blue-800 shadow text-center hover:bg-blue-300 transition-transform duration-300 hover:scale-105">
+            <!-- Conn -->
+            <div class="flexcard group rounded-lg bg-blue-800 shadow text-center hover:bg-blue-300 transition-transform duration-300 hover:scale-105">
 
                <h3 class="text-lg font-bold mb-4 text-white group-hover:text-blue-950 duration-300">
                   {{ title }}

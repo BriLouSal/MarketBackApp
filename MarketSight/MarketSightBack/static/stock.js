@@ -22,6 +22,20 @@ let myChart = new Chart(ctx, {
     options: {
         responsive: true,          
         maintainAspectRatio: false, 
+        scales: {
+            x: {
+                ticks : {
+                    maxTicksLimit: 10,
+                    autoSkip: true
+
+                },
+                grid: {
+                    display: false
+
+                }
+            }
+
+        },
     }
 });
 
@@ -35,13 +49,12 @@ function buttonUpdate() {
     btn.addEventListener('click', function() {
         buttons.forEach(b => {
             
-            b.classList.remove('bg-blue-500'); 
-            b.classList.add('bg-blue-800');
-            b.classList.add('text-gray-950');
+            b.classList.remove('bg-blue-500', 'text-gray-950'); 
+            b.classList.add('bg-blue-800', 'text-white' );
         });
-            this.classList.remove('bg-blue-800');
-            this.classList.add('bg-blue-500');
-            this.classList.add('text-white');
+            this.classList.remove('bg-blue-800', 'text-white');
+            this.classList.add('bg-blue-500', 'text-gray-950');
+
         });
     });
 
@@ -52,3 +65,13 @@ buttonUpdate();
 
 // Grab the Card div to create a gsap animation
 
+const cards = document.querySelectorAll('.flexcard')
+
+
+
+gsap.from(cards, {
+    opactiy: 0,
+    y: 50,
+    duration: 4,
+    ease: 'power3.out',
+})

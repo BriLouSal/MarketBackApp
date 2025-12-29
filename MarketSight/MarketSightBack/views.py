@@ -97,6 +97,7 @@ recent_search = {}
 
 
 def build_stock_analyzer(stock_url, info) -> dict:
+
     
     information_of_stock = {
         'Financial Reports': html_to_paragraph_text(markdown.markdown(FinancialReport(stock=stock_url, info=info))),
