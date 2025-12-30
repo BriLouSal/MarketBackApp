@@ -45,21 +45,23 @@ let myChart = new Chart(ctx, {
 const buttons = document.querySelectorAll('.interval')
 
 function buttonUpdate() {
-    buttons.forEach(btn =>{
-    btn.addEventListener('click', function() {
-        buttons.forEach(b => {
-            
-            b.classList.remove('bg-blue-500', 'text-gray-950'); 
-            b.classList.add('bg-blue-800', 'text-white' );
-        });
-            this.classList.remove('bg-blue-800', 'text-white');
-            this.classList.add('bg-blue-500', 'text-gray-950');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            buttons.forEach(b => {
+                b.classList.remove('bg-blue-500', 'text-white'); 
+                b.classList.add('bg-blue-800', 'text-gray-950');
+            });
 
+            this.classList.remove('bg-blue-800', 'text-gray-950');
+            this.classList.add('bg-blue-500', 'text-white');
+
+            const interval = this.getAttribute('data-interval');
+            console.log("Fetching data for:", interval);
         });
     });
-
 }
 buttonUpdate();
+
 
 
 

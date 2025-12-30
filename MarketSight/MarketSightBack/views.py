@@ -12,6 +12,8 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
+# Used for Performance
+from django.core.cache import cache
 
 from .backend import EmailBackend
 
@@ -34,6 +36,7 @@ from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame
 from datetime import datetime
+from yahooquery import Ticker
 
 
 
@@ -61,7 +64,6 @@ from .MSOAI import (
     Company_Debt,
     StockInfo,
     html_to_paragraph_text,
-    json_data_api,
     
     
 )
@@ -113,6 +115,44 @@ def build_stock_analyzer(stock_url, info) -> dict:
     return information_of_stock
 
 
+def json_data_api(date_api:str, stock: str) -> dict:
+    stock = stock.upper()
+    ticker = Ticker(symbols=stock)
+
+    if date_api == '1D':
+        period = '1d'
+        interval = '1m'
+        interval_format = '%a %H:00'
+        
+    elif date_api == '1W':
+        period = '1wk'
+        interval = '30m'
+        interval_format = '%a %H:%M'
+    elif date_api == '1M':
+        period = '1mo'
+        interval = '1h'
+        interval_format = '%b %d'
+        
+    # Do years
+    else:
+       period = '1y'
+       interval = '1wk'
+       interval_format = '%y-%W'
+
+    stock_bars = ticker.history(period=period, interval=interval)
+    
+    stock_bars = stock_bars.reset_index()
+    print(stock_bars)
+
+    stock_bars['date'] = pd.to_datetime(stock_bars['date'])
+ 
+
+    graph_label = stock_bars['date'].dt.strftime(interval_format).tolist()
+    graph_price = stock_bars['close'].tolist()
+    return {
+        'chart_label': graph_label,
+        'chart_price': graph_price,
+    }
 
 
 def check_stock(stock):
