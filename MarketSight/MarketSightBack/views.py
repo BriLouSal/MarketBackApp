@@ -64,10 +64,17 @@ from .MSOAI import (
     Company_Debt,
     StockInfo,
     html_to_paragraph_text,
+    autocomplete
     
     
 )
+# Performance
+from asgiref.sync import sync_to_async, async_to_sync
+import asyncio
+from django.core.cache import cache
 
+
+# Stock backup (INCASE IT'S NEEDED FOR VIEWS.PY IN ORDER FOR IT TO BE SEAMLESS)
 import yfinance as yf
 import yahooquery as yq
 
@@ -98,21 +105,40 @@ recent_search = {}
 
 
 
-def build_stock_analyzer(stock_url, info) -> dict:
+
+async def build_stock_analyzer(stock_url, info) -> dict:
+    cache_key = f"analysis:{stock_url}"
+    
+    
+    cached = cache.get(cache_key)
+    if cached:
+        return cached
 
     
-    information_of_stock = {
-        'Financial Reports': html_to_paragraph_text(markdown.markdown(FinancialReport(stock=stock_url, info=info))),
-        'Analysis':  html_to_paragraph_text(markdown.markdown(Company_Analysis(stock=stock_url, info=info))),
-        'Profitability Metrics': html_to_paragraph_text(markdown.markdown(Revenue_Analysis(stock=stock_url, info=info))),
-        'Profit Analysis Outlook':html_to_paragraph_text(markdown.markdown(Growth_Analysis_Outlook(stock=stock_url, info=info))),
-        'Growth of Stock': html_to_paragraph_text(markdown.markdown(Growth_of_Stock(stock=stock_url, info=info))),
-        'Return Efficency': html_to_paragraph_text(markdown.markdown(Returns_Efficiency_Ratios(stock=stock_url, info=info))),
-        'Company Debt': html_to_paragraph_text(markdown.markdown(Company_Debt(stock=stock_url , info=info))),
+    stock_info = await asyncio.gather(
+        sync_to_async(FinancialReport)(stock_url, info),
+        sync_to_async(Company_Analysis)(stock_url, info),
+        sync_to_async(Revenue_Analysis)(stock_url, info),
+        sync_to_async(Growth_Analysis_Outlook)(stock_url, info),
+        sync_to_async(Growth_of_Stock)(stock_url, info),
+        sync_to_async(Returns_Efficiency_Ratios)(stock_url, info),
+        sync_to_async(Company_Debt)(stock_url, info),
+    )
+    
 
-
+    results = {
+        "Financial Reports": html_to_paragraph_text(markdown.markdown(stock_info[0])),
+        "Company Analysis": html_to_paragraph_text(markdown.markdown(stock_info[1])),
+        "Profitability Metrics": html_to_paragraph_text(markdown.markdown(stock_info[2])),
+        "Profit Analysis Outlook": html_to_paragraph_text(markdown.markdown(stock_info[3])),
+        "Growth of Stock": html_to_paragraph_text(markdown.markdown(stock_info[4])),
+        "Returns Efficiency": html_to_paragraph_text(markdown.markdown(stock_info[5])),
+        "Company Debt": html_to_paragraph_text(markdown.markdown(stock_info[6])),
     }
-    return information_of_stock
+    cache.set(cache_key, results, timeout=60 * 30)
+    return results
+
+
 
 
 def json_data_api(date_api:str, stock: str) -> dict:
@@ -154,6 +180,12 @@ def json_data_api(date_api:str, stock: str) -> dict:
         'chart_price': graph_price,
     }
 
+# Grab the Autocomplete Stock
+
+# async def get_stock_suggestion(request):
+#     query = request.GET.get('term', '')
+
+
 
 def check_stock(stock):
     try:
@@ -183,6 +215,9 @@ def check_stock(stock):
     # Catch JSONDecodeError and any unexpected error
         print(f"Error fetching stock {stock}: {e}")
         return None
+
+
+
 
 
 
@@ -218,8 +253,6 @@ def portfolio_room(request):
     context = {'ticker': ticker}
     return render(request, 'base/portfolio_room.html', context)
 
-def json_alpaca_data(stock):
-    pass
 
 
 
@@ -253,19 +286,22 @@ def stock(request, stock_tick:str):
 
 
     # Gather Json data API
-
-    data_json = json_data_api(date_api=date_time, stock=stock_url)
+    # Not needed for Async.
+    data_json =  json_data_api(date_api=date_time, stock=stock_url)
 
 
     label_graph = json.dumps(data_json['chart_label'])
     label_price = json.dumps(data_json['chart_price'])
 
+
+    # needed
+    data_stock =  async_to_sync(build_stock_analyzer)(stock_url=stock_url, info=info)
     # Button
 
     
     # Create a matplotlib graph of stocks or any graphs
 
-    context = {'ticker': ticker, 'information_of_stock': build_stock_analyzer(stock_url=stock_url, info=info), 'stock_graph': label_graph, 'stock_price':
+    context = {'ticker': ticker, 'information_of_stock': data_stock, 'stock_graph': label_graph, 'stock_price':
                label_price}
 
     return render(request, 'base/stock.html', context)

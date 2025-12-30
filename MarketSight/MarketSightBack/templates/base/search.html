@@ -38,6 +38,9 @@
          <form method="GET", action="{% url 'search' %}">
           <input type="text" placeholder="Search for Stocks..." name="search" required>
          <button type="submit">Search</button>
+         <div class="autocompleted search">
+            <!-- Add the Body html here for autocomplete -->
+         </div>
 
        </form>
 
@@ -65,9 +68,12 @@
    {% endif %}
  </div>
 
-<script src="search.js"></script>
+{% block scripts %}
+<script src="{% static 'search.js' %}"></script>
 
-<canvas id="star-canva"></canvas>
+{% endblock scripts %}
+
+
 
 
 
