@@ -99,7 +99,7 @@ const cards = document.querySelectorAll('.flexcard')
 
 
 gsap.from(cards, {
-    opactiy: 0,
+    opacity: 0,
     y: 50,
     duration: 4,
     ease: 'power3.out',
