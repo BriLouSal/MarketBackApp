@@ -8,11 +8,14 @@
     --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
     monospace;
+    --color-red-600: oklch(57.7% 0.245 27.325);
+    --color-green-600: oklch(62.7% 0.194 149.214);
     --color-blue-300: oklch(80.9% 0.105 251.813);
     --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-blue-800: oklch(42.4% 0.199 265.638);
     --color-blue-950: oklch(28.2% 0.091 267.935);
     --color-gray-50: oklch(98.5% 0.002 247.839);
+    --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-950: oklch(13% 0.028 261.692);
     --color-black: #000;
     --color-white: #fff;
@@ -22,6 +25,7 @@
     --text-lg--line-height: calc(1.75 / 1.125);
     --text-5xl: 3rem;
     --text-5xl--line-height: 1;
+    --font-weight-light: 300;
     --font-weight-bold: 700;
     --tracking-normal: 0em;
     --leading-normal: 1.5;
@@ -239,14 +243,26 @@
   .flex-col {
     flex-direction: column;
   }
+  .content-start {
+    align-content: flex-start;
+  }
   .items-center {
     align-items: center;
+  }
+  .items-start {
+    align-items: flex-start;
   }
   .justify-center {
     justify-content: center;
   }
+  .justify-start {
+    justify-content: flex-start;
+  }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
+  }
+  .gap-3 {
+    gap: calc(var(--spacing) * 3);
   }
   .gap-6 {
     gap: calc(var(--spacing) * 6);
@@ -273,6 +289,9 @@
   }
   .bg-gray-50 {
     background-color: var(--color-gray-50);
+  }
+  .bg-transparent {
+    background-color: transparent;
   }
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
@@ -309,6 +328,10 @@
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
   }
+  .font-light {
+    --tw-font-weight: var(--font-weight-light);
+    font-weight: var(--font-weight-light);
+  }
   .tracking-normal {
     --tw-tracking: var(--tracking-normal);
     letter-spacing: var(--tracking-normal);
@@ -316,8 +339,17 @@
   .text-black {
     color: var(--color-black);
   }
+  .text-gray-200 {
+    color: var(--color-gray-200);
+  }
   .text-gray-950 {
     color: var(--color-gray-950);
+  }
+  .text-green-600 {
+    color: var(--color-green-600);
+  }
+  .text-red-600 {
+    color: var(--color-red-600);
   }
   .text-white {
     color: var(--color-white);

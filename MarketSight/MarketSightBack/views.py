@@ -2,7 +2,7 @@
 # Main Django library
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -36,7 +36,7 @@ from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame
 from datetime import datetime
-from yahooquery import Ticker
+from yahooquery import Ticker, search
 
 
 
@@ -140,7 +140,6 @@ async def build_stock_analyzer(stock_url, info) -> dict:
 
 
 
-
 def json_data_api(date_api:str, stock: str) -> dict:
     stock = stock.upper()
     ticker = Ticker(symbols=stock)
@@ -175,6 +174,8 @@ def json_data_api(date_api:str, stock: str) -> dict:
 
     graph_label = stock_bars['date'].dt.strftime(interval_format).tolist()
     graph_price = stock_bars['close'].tolist()
+
+
     return {
         'chart_label': graph_label,
         'chart_price': graph_price,
@@ -186,6 +187,24 @@ def json_data_api(date_api:str, stock: str) -> dict:
 #     query = request.GET.get('term', '')
 
 
+# Grab name and ztock price used for our html. The difference is that we can do async call from Javascript in order to update it constantly
+
+@sync_to_async
+def grab_current_price(stock: str) -> dict:
+    stock = stock.upper()
+    result_search = Ticker(stock)
+    price = result_search.history(period="1d")["close"].iloc[-1]
+    if price > 10:
+        return float(round(price, 1))
+    elif price > 4.5:
+        return float(round(price, 2))
+    else:
+        return float(round(price, 3))
+    
+async def latest_price(request, stock):
+    price = await grab_current_price(stock=stock)
+    return JsonResponse({"price": price})
+    
 
 def check_stock(stock):
     try:
@@ -295,7 +314,7 @@ def stock(request, stock_tick:str):
 
 
     # needed
-    data_stock =  async_to_sync(build_stock_analyzer)(stock_url=stock_url, info=info)
+    data_stock = async_to_sync(build_stock_analyzer)(stock_url=stock_url, info=info)
     # Button
 
     

@@ -23,6 +23,9 @@ urlpatterns = [
     path('signup/',views.signup, name='signup'),
     path('support/',views.assistance, name='assistance'),
     path('logout/', views.logout_page, name='logout_page'),
+    # Create a autoupdating stock path for Javascript
+    path("api/latest-price/<str:stock>/", views.latest_price, name="latest_price"),
+
 ]
 
 

@@ -65,6 +65,39 @@ buttonUpdate();
 
 
 
+setInterval(StockUpdate, 1000);
+StockUpdate();
+
+// Change this line:
+// const PriceData = document.getElementsByClassName("livePrice");
+
+// To this:
+const PriceData = document.querySelector(".livePrice"); 
+
+async function StockUpdate(){
+    const symbolPrice = await fetch(`/api/latest-price/${stockTicker}/`);
+    const data = await symbolPrice.json();
+
+    // Safety check: ensure PriceData exists and data is valid
+    if (!PriceData || data === undefined) return;
+
+    // Use optional chaining (?.) if your data is an object, e.g., data.price?.last
+    // If your API returns just a number, parseFloat(data) is fine
+    const newPrice = parseFloat(data.price);
+    const oldPrice = parseFloat(PriceData.dataset.last || newPrice);
+
+    PriceData.dataset.last = newPrice;
+    PriceData.innerText = `$${newPrice.toFixed(2)}`; // Update the UI text
+
+    if (newPrice > oldPrice){
+        PriceData.classList.add('text-green-600');
+        setTimeout(() => PriceData.classList.remove('text-green-600'), 500);
+    } 
+    else if (newPrice < oldPrice) {
+        PriceData.classList.add('text-red-600'); 
+        setTimeout(() => PriceData.classList.remove('text-red-600'), 500);
+    }
+}
 // Grab the Card div to create a gsap animation
 
 const cards = document.querySelectorAll('.flexcard')

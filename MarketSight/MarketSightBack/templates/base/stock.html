@@ -40,6 +40,15 @@
    <!-- removed extra stray </div> here -->
    
    <section class="stock-orders flex flex-col py-6 gap-2">
+      <div class="stockPrice flex flex-col gap-3 py-6 bg-transparent items-start justify-start content-start">
+         <!-- Ticker Name, and I want company name beside it -->
+         <h2 class="text-gray-200  font-bold ">{{request.resolver_match.kwargs.stock_tick}}</h2>
+         <h3 class="text-gray 200 font-light"></h3>
+         <p class="livePrice text-white font-light"></p>
+         
+
+
+      </div>
 
       <div class="stock_graph relative h-[500px] w-1/2 mx-auto ">
          <canvas id="stockGraph"></canvas>
@@ -98,8 +107,9 @@
 
    </script>
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-   <script src="{% static 'stock.js' %}"></script>
    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/gsap.min.js"></script>
+   <script src="{% static 'stock.js' %}"></script>
+
 
 
    {% endblock scripts %}
