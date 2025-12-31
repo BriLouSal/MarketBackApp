@@ -68,10 +68,7 @@ buttonUpdate();
 setInterval(StockUpdate, 1000);
 StockUpdate();
 
-// Change this line:
-// const PriceData = document.getElementsByClassName("livePrice");
 
-// To this:
 const PriceData = document.querySelector(".livePrice"); 
 
 async function StockUpdate(){
@@ -79,7 +76,6 @@ async function StockUpdate(){
     const data = await symbolPrice.json();
 
     if (!PriceData || data === undefined) return;
-
 
     const newPrice = parseFloat(data.price);
     const oldPrice = parseFloat(PriceData.dataset.last || newPrice);
