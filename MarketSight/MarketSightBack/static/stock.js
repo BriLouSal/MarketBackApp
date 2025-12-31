@@ -78,16 +78,14 @@ async function StockUpdate(){
     const symbolPrice = await fetch(`/api/latest-price/${stockTicker}/`);
     const data = await symbolPrice.json();
 
-    // Safety check: ensure PriceData exists and data is valid
     if (!PriceData || data === undefined) return;
 
-    // Use optional chaining (?.) if your data is an object, e.g., data.price?.last
-    // If your API returns just a number, parseFloat(data) is fine
+
     const newPrice = parseFloat(data.price);
     const oldPrice = parseFloat(PriceData.dataset.last || newPrice);
 
     PriceData.dataset.last = newPrice;
-    PriceData.innerText = `$${newPrice.toFixed(2)}`; // Update the UI text
+    PriceData.innerText = `$${newPrice.toFixed(2)}`; 
 
     if (newPrice > oldPrice){
         PriceData.classList.add('text-green-600');
