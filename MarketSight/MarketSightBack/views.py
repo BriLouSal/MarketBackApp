@@ -64,7 +64,7 @@ from .MSOAI import (
     Company_Debt,
     StockInfo,
     html_to_paragraph_text,
-    autocomplete
+
     
     
 )
@@ -204,7 +204,36 @@ def grab_current_price(stock: str) -> dict:
 async def latest_price(request, stock):
     price = await grab_current_price(stock=stock)
     return JsonResponse({"price": price})
+
+
+
+# This will be for our autocomplete stuff
+
+@sync_to_async
+def autocomplete(data: str):
     
+    data = data.upper()
+    if len(data) < 1:
+        return []
+    result_search = search(data)
+    return result_search.get('quotes', [])[:10]
+
+
+async def information_letter(request, letters):
+    quotes = await autocomplete(letters)
+    results = []
+    for q in quotes:
+        results.append({
+        'symbol': q.get('symbol'),
+        'name': q.get('shortname'),
+        'exchange': q.get('exchange'),
+    })
+
+
+    return JsonResponse({'results': results})
+
+
+
 
 def check_stock(stock):
     try:

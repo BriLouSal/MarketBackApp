@@ -24,7 +24,9 @@ urlpatterns = [
     path('support/',views.assistance, name='assistance'),
     path('logout/', views.logout_page, name='logout_page'),
     # Create a autoupdating stock path for Javascript
+    # URL FOR API CALLS FOR JS
     path("api/latest-price/<str:stock>/", views.latest_price, name="latest_price"),
+    path("api/autocomplete/<str:letters>/", views.information_letter, name="information_letter"),
 
 ]
 
