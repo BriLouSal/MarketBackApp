@@ -29,12 +29,10 @@ from django.conf import settings
 
 # Investment Endeavors Library
 
+from alpaca.trading.client import TradingClient
+from alpaca.trading.requests import GetAssetsRequest
+from alpaca.trading.enums import AssetClass, AssetStatus
 
-from alpaca.data.requests import StockBarsRequest
-from alpaca.data.timeframe import TimeFrame
-from alpaca.data.historical import StockHistoricalDataClient
-from alpaca.data.requests import StockBarsRequest
-from alpaca.data.timeframe import TimeFrame
 from datetime import datetime
 from yahooquery import Ticker, search
 
@@ -82,6 +80,8 @@ import json
 import os 
 from dotenv import load_dotenv
 
+load_dotenv()
+
 
 
 # Side Library
@@ -99,6 +99,7 @@ ticker = []
 
 # This will be used as a feature to store recent_search of a user stock
 recent_search = {}
+
 
 
 
@@ -209,14 +210,68 @@ async def latest_price(request, stock):
 
 # This will be for our autocomplete stuff
 
+
+API_KEY = os.getenv('ALPACA')
+
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+
+CLAUDE = os.getenv('CLAUDE')
+
+
+alpaca_client = TradingClient(api_key=API_KEY, secret_key=SECRET_KEY)
+
 @sync_to_async
 def autocomplete(data: str):
     
     data = data.upper()
-    if len(data) < 1:
-        return []
-    result_search = search(data)
-    return result_search.get('quotes', [])[:10]
+    try:
+        stock_param = GetAssetsRequest(
+            status= AssetStatus.ACTIVE,
+            asset_class= AssetClass.US_EQUITY,
+
+        )
+        asset = alpaca_client.get_all_assets(stock_param)
+        # Stock rec using  list comp
+        stock_rec = [a for a in asset if a.symbol.upper().startswith(data.upper())]
+        return stock_rec[:10]
+    except Exception as e:
+        return(f"Status: {e}")
+
+
+# # Output: 
+# [{   'asset_class': <AssetClass.US_EQUITY: 'us_equity'>,
+#     'attributes': [],
+#     'easy_to_borrow': True,
+#     'exchange': <AssetExchange.OTC: 'OTC'>,
+#     'fractionable': True,
+#     'id': UUID('47e9ed33-ed7b-4beb-9fdb-46b918d211c2'),
+#     'maintenance_margin_requirement': 100.0,
+#     'marginable': False,
+#     'min_order_size': None,
+#     'min_trade_increment': None,
+#     'name': 'ABB LTD American Depositary Receipts - Sponsored',
+#     'price_increment': None,
+#     'shortable': True,
+#     'status': <AssetStatus.ACTIVE: 'active'>,
+#     'symbol': 'ABBNY',
+#     'tradable': False}, {   'asset_class': <AssetClass.US_EQUITY: 'us_equity'>,
+#     'attributes': [],
+#     'easy_to_borrow': False,
+#     'exchange': <AssetExchange.OTC: 'OTC'>,
+#     'fractionable': False,
+#     'id': UUID('e3d28abe-4e29-408d-8cc1-356777ae3c8a'),
+#     'maintenance_margin_requirement': 100.0,
+#     'marginable': False,
+#     'min_order_size': None,
+#     'min_trade_increment': None,
+#     'name': 'AppHarvest, Inc. Common Stock',
+#     'price_increment': None,
+#     'shortable': False,
+#     'status': <AssetStatus.ACTIVE: 'active'>,
+#     'symbol': 'APPHQ',
+#     'tradable': False}, {   'asset_class': <AssetClass.
 
 
 async def information_letter(request, letters):
@@ -224,9 +279,9 @@ async def information_letter(request, letters):
     results = []
     for q in quotes:
         results.append({
-        'symbol': q.get('symbol'),
-        'name': q.get('shortname'),
-        'exchange': q.get('exchange'),
+        'symbol': q.symbol ,
+        'name': q.name or '',
+        'exchange': q.exchange,
     })
 
 
