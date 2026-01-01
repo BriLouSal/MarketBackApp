@@ -21,11 +21,28 @@ input.addEventListener('input', async () => {
         autocomplete.classList.remove('hidden');
 
         autocomplete.innerHTML = data.results.map(stock => `
-            <div class="p-3 hover:bg-blue-700 cursor-pointer flex justify-between border-b border-blue-800"
+
+            <div 
+                class="px-4 py-2 flex justify-between items-center cursor-pointer 
+                       hover:bg-blue-800/40 transition"
                 onclick="window.location.href='/stock/${stock.symbol}/'">
-                <span class="font-bold text-white">${stock.symbol}</span>
-                <span class="text-blue-300 text-sm">${stock.name}</span>
+
+                <div>
+                    <div class="text-white font-semibold text-sm">
+                        ${stock.symbol ?? ''}
+                    </div>
+
+                    <div class="text-slate-400 text-xs truncate max-w-xs">
+                        ${stock.name ?? ''}
+                    </div>
+                </div>
+
+                <div class="text-slate-300 text-xs">
+                    ${stock.exchange ?? ''}
+                </div>
+
             </div>
+
         `).join('');
 
     } else {
