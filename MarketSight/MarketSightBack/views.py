@@ -224,6 +224,23 @@ alpaca_client = TradingClient(api_key=API_KEY, secret_key=SECRET_KEY)
 
 @sync_to_async
 def autocomplete(data: str):
+    # Do multi-key sort
+
+    # Ensure add caching in order to make the performance better of this autocomplete program
+    # It's valid as the stock market wouldn't change by a lot and the existing stocks would ensure that caching 
+    # will be the best choice for the memory management.
+
+    cache_key = f"autocomplete:{data}"
+    cached = cache.get(cache_key)
+    if cached:
+        return cached
+
+    TOP_EXCHANGE = {
+        'NASDAQ': 0,
+        'NYSE': 0,
+        
+
+    }
     
     data = data.upper()
     try:
@@ -234,8 +251,42 @@ def autocomplete(data: str):
         )
         asset = alpaca_client.get_all_assets(stock_param)
         # Stock rec using  list comp
-        stock_rec = [a for a in asset if a.symbol.upper().startswith(data.upper())]
-        return stock_rec[:10]
+            
+        # We want to short via marketCapshare for the trendiest stock to be int he top of the autocomplete.
+        # For better User Experience
+        stock_rec = [a for a in asset if a.symbol.upper().startswith(data.upper()) and a.tradable][:80]
+        stock_ticker = Ticker(symbols=stock_rec)
+
+        data_price = stock_ticker.price
+        # Needed for popularity of stock sorting
+
+        def grab_market_cap(esc):
+            return data_price.get(esc, {}).get("marketCap", 0) or 0
+        def grab_top_exchange_rate(a):
+            return TOP_EXCHANGE.get(a.exchange, 1)
+        def grab_volume(sym):
+            return data_price.get(sym, {}).get('regularMarketVolume',  0) or 0
+        
+        
+        stock_rec.sort(
+            key=lambda a: (
+                grab_top_exchange_rate(a),
+                grab_volume(a.symbol),
+                grab_market_cap(a.symbol),
+            ),
+            reverse=True
+        )
+
+        result = stock_rec[:11]
+        cache.set(cache_key, result, timeout=60 * 5)
+        
+        return result
+
+
+    
+    
+        # We want to short via marketCapshare for the trendiest stock to be int he top of the autocomplete.
+
     except Exception as e:
         return(f"Status: {e}")
 
