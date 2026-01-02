@@ -254,7 +254,8 @@ def autocomplete(data: str):
             
         # We want to short via marketCapshare for the trendiest stock to be int he top of the autocomplete.
         # For better User Experience
-        stock_rec = [a for a in asset if a.symbol.upper().startswith(data.upper()) and a.tradable][:80]
+        # Filter out Leverage ETF, and OTC.
+        stock_rec = [a for a in asset if a.symbol.upper().startswith(data.upper()) and a.tradable and (a.exchange.value != 'OTC') and (a.exchange.value != 'BATS')][:80]
         stock_ticker = Ticker(symbols=stock_rec)
 
         data_price = stock_ticker.price
