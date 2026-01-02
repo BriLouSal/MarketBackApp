@@ -36,20 +36,29 @@
    <div class="search-bar">
       <h1 id="market">MarketSight</h1>
       <div class="search-container">
-         <form method="GET", action="{% url 'search' %}">
-         <input type="text" id="stockSearch" placeholder="Search for Stocks..." name="search" required 
-         class="w-full px-4 py-2 text-black bg-white rounded-md focus:outline-none" autocomplete="off">
-         <button type="submit">Search</button>
-         <div class="autocomplete hidden absolute top-full left-0 w-full
-                     bg-gray-900 border border-gray-600 mt-1 rounded-b-lg
-                     shadow-xl z-50 max-h-64 overflow-y-auto">
+         <!-- Wrapper for the autocomplete -->
+         <div class="search-container  w-full max-w-2xl mx-auto">
+            <div class="relative">
+            <form method="GET", action="{% url 'search' %}"></form>
+            <input type="text" id="stockSearch" placeholder="Search for Stocks..." name="search" required 
+            class="w-full px-4 py-2 text-black bg-white rounded-md focus:outline-none" autocomplete="off">
+            <button type="submit">Search</button>
+            
+            </form>
+            <div class="autocomplete hidden absolute top-full left-0 w-full
+                        bg-gray-900 border border-gray-600 mt-1 rounded-b-lg
+                        shadow-xl z-50 max-h-64 overflow-y-auto">
+            </div>
+
+
+            </div>
          </div>
 
 
-       </form>
 
       
       </div>
+
 
    </div>
 
