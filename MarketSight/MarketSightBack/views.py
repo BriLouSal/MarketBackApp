@@ -255,7 +255,11 @@ def autocomplete(data: str):
         # We want to short via marketCapshare for the trendiest stock to be int he top of the autocomplete.
         # For better User Experience
         # Filter out Leverage ETF, and OTC.
-        stock_rec = [a for a in asset if a.symbol.upper().startswith(data.upper()) and a.tradable and (a.exchange.value != 'OTC') and (a.exchange.value != 'BATS')][:80]
+
+
+        RESTRICTED_WORD = 'ETF'
+        stock_rec = [a for a in asset if a.symbol.upper().startswith(data.upper()) and a.tradable and (a.exchange.value != 'OTC') 
+                     and (a.exchange.value != 'BATS') and RESTRICTED_WORD not in (a.name or '').upper() ][:80]
         stock_ticker = Ticker(symbols=stock_rec)
 
         data_price = stock_ticker.price
@@ -324,6 +328,14 @@ def autocomplete(data: str):
 #     'status': <AssetStatus.ACTIVE: 'active'>,
 #     'symbol': 'APPHQ',
 #     'tradable': False}, {   'asset_class': <AssetClass.
+
+
+
+# Bullish Indicator
+
+
+def bullish_indicator(stock: str):
+    pass
 
 
 async def information_letter(request, letters):
