@@ -62,6 +62,7 @@ from .MSOAI import (
     Company_Debt,
     StockInfo,
     html_to_paragraph_text,
+    news
 
     
     
@@ -104,7 +105,9 @@ ticker = []
 # This will be used as a feature to store recent_search of a user stock
 recent_search = {}
 
-
+def news_parser(stock: str):
+    # News gives an output for html tags
+    pass
 
 
 
@@ -146,8 +149,21 @@ async def build_stock_analyzer(stock_url, info) -> dict:
 
 
 def json_data_api(date_api:str, stock: str) -> dict:
+    # Grab stock information for our graphs and also exchangeNames and CompanyNames for
+    # our UI
+    """ This will prepare our data from YahooQuery in to create a graph, Long Names, and Exchanges for better UI/UX. 
+    Arguments(): Data API will be used for us to connect with the buttons to change the graph of the stock via intervals. We'll be using date_api statements to create an interval.
+    Stock is mostly reliant from our stock views. We can neglect stock checker
+    
+
+    """
+    
     stock = stock.upper()
     ticker = Ticker(symbols=stock)
+    summary = stock.price.get(stock, {})
+    company_name = summary.get("shortName") or summary.get("longName")
+    exchange = summary.get("exchange")  or summary.get("exchDisp")
+
 
     if date_api == '1D':
         period = '1d'
@@ -184,6 +200,8 @@ def json_data_api(date_api:str, stock: str) -> dict:
     return {
         'chart_label': graph_label,
         'chart_price': graph_price,
+        'name': company_name,
+        'exchange': exchange,
     }
 
 # Grab the Autocomplete Stock
@@ -238,6 +256,10 @@ def autocomplete(data: str):
     cached = cache.get(cache_key)
     if cached:
         return cached
+    
+    ASSET_CACHE_KEY = "alpaca_all_assets"
+
+    cache_asset = cache.get(ASSET_CACHE_KEY)
 
     TOP_EXCHANGE = {
         'NASDAQ': 0,
@@ -254,6 +276,8 @@ def autocomplete(data: str):
 
         )
         asset = alpaca_client.get_all_assets(stock_param)
+       
+       
         # Stock rec using  list comp
             
         # We want to short via marketCapshare for the trendiest stock to be int he top of the autocomplete.
@@ -264,6 +288,9 @@ def autocomplete(data: str):
         RESTRICTED_WORD = 'ETF'
         stock_rec = [a for a in asset if a.symbol.upper().startswith(data.upper()) and a.tradable and (a.exchange.value != 'OTC') 
                      and (a.exchange.value != 'BATS') and RESTRICTED_WORD not in (a.name or '').upper() ][:80]
+        
+        cache.set(ASSET_CACHE_KEY, stock_rec, 86400)
+        
         stock_ticker = Ticker(symbols=stock_rec)
 
         data_price = stock_ticker.price
@@ -299,7 +326,7 @@ def autocomplete(data: str):
     except Exception as e:
         return(f"Status: {e}")
 
-
+# Output: [{'exchange': 'NYQ', 'shortname': 'Agilent Technologies, Inc.', 'quoteType': 'EQUITY', 'symbol': 'A', 'index': 'quotes', 'score': 10046500.0, 'typeDisp': 'Equity', 'longname': 'Agilent Technologies, Inc.', 'exchDisp': 'NYSE', 'sector': 'Healthcare', 'sectorDisp': 'Healthcare', 'industry': 'Diagnostics & Research', 'industryDisp': 'Diagnostics & Research', 'dispSecIndFlag': False, 'isYahooFinance': True}, {'exchange': 'NYM', 'shortname': 'Platinum Apr 26', 'quoteType': 'FUTURE', 'symbol': 'PL=F', 'index': 'quotes', 'score': 3003200.0, 'typeDisp': 'Futures', 'exchDisp': 'NY Mercantile', 'isYahooFinance': True}, {'exchange': 'CMX', 'shortname': 'Aluminum Futures,Mar-2026', 'quoteType': 'FUTURE', 'symbol': 'ALI=F', 'index': 'quotes', 'score': 3000600.0, 'typeDisp': 'Futures', 'exchDisp': 'New York Commodity Exchange', 'isYahooFinance': True}, {'exchange': 'NGM', 'quoteType': 'EQUITY', 'symbol': 'SVAQU', 'index': 'quotes', 'score': 100004.0, 'typeDisp': 'Equity', 'longname': 'Silicon Valley Acquisition Corp.', 'exchDisp': 'NASDAQ', 'sector': 'Financial Services', 'sectorDisp': 'Financial Services', 'industry': 'Shell Companies', 'industryDisp': 'Shell Companies', 'isYahooFinance': True}, {'exchange': 'NCM', 'quoteType': 'EQUITY', 'symbol': 'NBRGU', 'index': 'quotes', 'score': 100002.0, 'typeDisp': 'Equity', 'longname': 'Newbridge Acquisition Limited', 'exchDisp': 'NASDAQ', 'sector': 'Financial Services', 'sectorDisp': 'Financial Services', 'industry': 'Shell Companies', 'industryDisp': 'Shell Companies', 'isYahooFinance': True}, {'exchange': 'NGM', 'quoteType': 'EQUITY', 'symbol': 'IGACR', 'index': 'quotes', 'score': 100001.0, 'typeDisp': 'Equity', 'longname': 'Invest Green Acquisition Corporation', 'exchDisp': 'NASDAQ', 'isYahooFinance': True}, {'exchange': 'CCY', 'shortname': 'AUD/USD', 'quoteType': 'CURRENCY', 'symbol': 'AUDUSD=X', 'index': 'quotes', 'score': 30109.0, 'typeDisp': 'Currency', 'longname': 'AUD/USD', 'exchDisp': 'CCY', 'isYahooFinance': True}]
 
 
 # Bullish Indicator
@@ -340,7 +367,8 @@ def bullish_indicator(stock: str, period='6mo', interval="1d"):
     # Oversold: Below 30 (or 20/10).
     # Neutral Zone: Between 30 and 70. 
 
-    # if Oversold it should be higher score
+    # if Oversold it should be higher score, as it's a great sign for a breakout:
+
 
     df["rsi"] = ta.momentum.rsi(df["close"], windows=14)
     
@@ -485,6 +513,9 @@ def stock(request, stock_tick:str):
     label_graph = json.dumps(data_json['chart_label'])
     label_price = json.dumps(data_json['chart_price'])
 
+    exchange = data_json["exchange"]
+    stock_name = data_json["name"]
+
 
     # needed
     data_stock = async_to_sync(build_stock_analyzer)(stock_url=stock_url, info=info)
@@ -494,7 +525,7 @@ def stock(request, stock_tick:str):
     # Create a matplotlib graph of stocks or any graphs
 
     context = {'ticker': ticker, 'information_of_stock': data_stock, 'stock_graph': label_graph, 'stock_price':
-               label_price}
+               label_price, "exchange": exchange, "longName": stock_name}
 
     return render(request, 'base/stock.html', context)
 

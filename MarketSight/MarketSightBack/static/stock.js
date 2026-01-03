@@ -72,17 +72,20 @@ StockUpdate();
 const PriceData = document.querySelector(".livePrice"); 
 
 async function StockUpdate(){
+    // Grab update on Stock Price by calling our urls.py that is connected with our views
     const symbolPrice = await fetch(`/api/latest-price/${stockTicker}/`);
+    // Return in JSON
     const data = await symbolPrice.json();
 
-    if (!PriceData || data === undefined) return;
-
+    // Error Handling
+    if (!PriceData || data === undefined) return;   
+    // Parse it into a float for JS
     const newPrice = parseFloat(data.price);
     const oldPrice = parseFloat(PriceData.dataset.last || newPrice);
 
     PriceData.dataset.last = newPrice;
     PriceData.innerText = `$${newPrice.toFixed(2)}`; 
-
+    // Inspired by Yahoo Finance:
     if (newPrice > oldPrice){
         PriceData.classList.add('text-green-600');
         setTimeout(() => PriceData.classList.remove('text-green-600'), 500);
@@ -96,7 +99,7 @@ async function StockUpdate(){
 
 const cards = document.querySelectorAll('.flexcard')
 
-
+// Animation :)
 
 gsap.from(cards, {
     opacity: 0,

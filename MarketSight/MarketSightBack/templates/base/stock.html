@@ -42,17 +42,18 @@
    <section class="stock-orders flex flex-col py-6 gap-2">
       <div class="stockPrice flex flex-col gap-3 py-6 bg-transparent items-start justify-start content-start">
          <!-- Ticker Name, and I want company name beside it -->
-         <h2 class="text-gray-200  font-bold ">{{request.resolver_match.kwargs.stock_tick}}</h2>
+         <h2 class="text-gray-200  font-bold ">{{request.resolver_match.kwargs.stock_name}}   ({{request.resolver_match.kwargs.stock_tick}})</h2>
          <!-- Stock price -->
          <h3 class="livePrice text-white font-light"></h3>
          <!-- The Data Label. -->
-          <p class="text-gray-200 font-bold ">{{request.resolver_match.kwargs.stock_label}}</p>
+          <p class="text-gray-200 font-bold "></p>
+
          
 
 
       </div>
 
-      <div class="stock_graph relative h-[500px] w-1/2 mx-auto border shadow-[0_0_45px_rgba(37, 80, 150, 0.8)] border-cyan-400/40">
+      <div class="stock_graph relative h-[500px] w-1/2 mx-auto border bg-gradient-to-r from-[#57A0C1] via-cyan-400 to-blue-500shadow-[0_0_5px_#fff,0_0_10px_#57A0C1,0_0_20px_#57A0C1] ">
          <canvas id="stockGraph"></canvas>
       </div>
 
