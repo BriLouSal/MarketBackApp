@@ -39,9 +39,9 @@
          <!-- Wrapper for the autocomplete -->
          <div class="search-container  w-full max-w-2xl mx-auto">
             <div class="relative">
-            <form method="GET", action="{% url 'search' %}"></form>
+            <form method="GET", action="{% url 'search' %}">
             <input type="text" id="stockSearch" placeholder="Search for Stocks..." name="search" required 
-            class="w-full px-4 py-2 text-black bg-white rounded-md focus:outline-none" autocomplete="off">
+            class="w-full px-4 py-2 text-black bg-white rounded-md focus:outline-none" autocomplete="off ">
             <button type="submit">Search</button>
             
             </form>
@@ -52,6 +52,8 @@
 
 
             </div>
+            </form>
+
          </div>
 
 
