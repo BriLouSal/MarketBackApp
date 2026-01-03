@@ -75,16 +75,20 @@ from django.core.cache import cache
 # Stock backup (INCASE IT'S NEEDED FOR VIEWS.PY IN ORDER FOR IT TO BE SEAMLESS)
 import yfinance as yf
 import yahooquery as yq
+import ta
+
 
 import json
 import os 
 from dotenv import load_dotenv
 
+
+
+
 load_dotenv()
 
 
 
-# Side Library
 
 
 
@@ -296,46 +300,55 @@ def autocomplete(data: str):
         return(f"Status: {e}")
 
 
-# # Output: 
-# [{   'asset_class': <AssetClass.US_EQUITY: 'us_equity'>,
-#     'attributes': [],
-#     'easy_to_borrow': True,
-#     'exchange': <AssetExchange.OTC: 'OTC'>,
-#     'fractionable': True,
-#     'id': UUID('47e9ed33-ed7b-4beb-9fdb-46b918d211c2'),
-#     'maintenance_margin_requirement': 100.0,
-#     'marginable': False,
-#     'min_order_size': None,
-#     'min_trade_increment': None,
-#     'name': 'ABB LTD American Depositary Receipts - Sponsored',
-#     'price_increment': None,
-#     'shortable': True,
-#     'status': <AssetStatus.ACTIVE: 'active'>,
-#     'symbol': 'ABBNY',
-#     'tradable': False}, {   'asset_class': <AssetClass.US_EQUITY: 'us_equity'>,
-#     'attributes': [],
-#     'easy_to_borrow': False,
-#     'exchange': <AssetExchange.OTC: 'OTC'>,
-#     'fractionable': False,
-#     'id': UUID('e3d28abe-4e29-408d-8cc1-356777ae3c8a'),
-#     'maintenance_margin_requirement': 100.0,
-#     'marginable': False,
-#     'min_order_size': None,
-#     'min_trade_increment': None,
-#     'name': 'AppHarvest, Inc. Common Stock',
-#     'price_increment': None,
-#     'shortable': False,
-#     'status': <AssetStatus.ACTIVE: 'active'>,
-#     'symbol': 'APPHQ',
-#     'tradable': False}, {   'asset_class': <AssetClass.
-
 
 
 # Bullish Indicator
 
 
-def bullish_indicator(stock: str):
-    pass
+
+
+
+def bullish_indicator(stock: str, period='6mo', interval="1d"):
+    # Grab RSI indicators,  Moving Average Trend, etc. Weight it accordingly to create it for bullish indicator and connect it to my stock. 
+    # Use pandas and pandas_ta for this endeavour
+
+    # First grab the ticker itself, and ensure that we rename the keys into a lowercase
+
+    # THe score should be out of 100
+    score = 0
+
+    stock = stock.upper()
+    ticker_of_stock = Ticker(symbols=stock)
+
+    df = ticker_of_stock.history(period=period, interval=interval)
+
+
+    df = df.rename(columns={
+        "Open": "open",
+        "High": "high",
+        "Low": "low",
+        "Close": "close",
+        "Volume": "volume"
+        
+    })
+
+    # For our RSI strength
+
+    # RSI Range & Key Levels
+    # 0 to 100: The fundamental range for the RSI oscillator.
+    # Overbought: Above 70 (or 80/90).
+    # Oversold: Below 30 (or 20/10).
+    # Neutral Zone: Between 30 and 70. 
+
+    # if Oversold it should be higher score
+
+    df["rsi"] = ta.momentum.rsi(df["close"], windows=14)
+    
+    df[""]
+
+
+
+
 
 
 async def information_letter(request, letters):
@@ -416,6 +429,15 @@ def home(request):
     return render(request, 'base/home.html')
 
 
+# Order for Stocks and will add portfolio
+def order(request):
+    if request.method == 'POST':
+        get_order = request.POST.get('buy')
+        if get_order == 'buy':
+            pass
+
+
+
 def portfolio_room(request):
     context = {'ticker': ticker}
     return render(request, 'base/portfolio_room.html', context)
@@ -450,6 +472,9 @@ def stock(request, stock_tick:str):
         get_order = request.POST.get('buy')
         if get_order == 'buy':
             pass
+
+
+
 
 
     # Gather Json data API

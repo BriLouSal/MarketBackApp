@@ -43,14 +43,16 @@
       <div class="stockPrice flex flex-col gap-3 py-6 bg-transparent items-start justify-start content-start">
          <!-- Ticker Name, and I want company name beside it -->
          <h2 class="text-gray-200  font-bold ">{{request.resolver_match.kwargs.stock_tick}}</h2>
-         <h3 class="text-gray 200 font-light"></h3>
-         <p class="livePrice text-white font-light"></p>
+         <!-- Stock price -->
+         <h3 class="livePrice text-white font-light"></h3>
+         <!-- The Data Label. -->
+          <p class="text-gray-200 font-bold ">{{request.resolver_match.kwargs.stock_label}}</p>
          
 
 
       </div>
 
-      <div class="stock_graph relative h-[500px] w-1/2 mx-auto ">
+      <div class="stock_graph relative h-[500px] w-1/2 mx-auto border ">
          <canvas id="stockGraph"></canvas>
       </div>
 
