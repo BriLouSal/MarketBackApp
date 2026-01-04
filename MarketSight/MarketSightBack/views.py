@@ -161,9 +161,9 @@ def json_data_api(date_api:str, stock: str) -> dict:
     
     stock = stock.upper()
     ticker = Ticker(symbols=stock)
-    summary = stock.price.get(stock, {})
+    summary = ticker.price.get(stock, {})
     company_name = summary.get("shortName") or summary.get("longName")
-    exchange = summary.get("exchange")  or summary.get("exchDisp")
+    exchange =  summary.get("exchangeName")
 
 
     if date_api == '1D':
@@ -189,7 +189,6 @@ def json_data_api(date_api:str, stock: str) -> dict:
     stock_bars = ticker.history(period=period, interval=interval)
     
     stock_bars = stock_bars.reset_index()
-    print(stock_bars)
 
     stock_bars['date'] = pd.to_datetime(stock_bars['date'])
  
@@ -204,6 +203,8 @@ def json_data_api(date_api:str, stock: str) -> dict:
         'name': company_name,
         'exchange': exchange,
     }
+
+# Output: {'maxAge': 1, 'preMarketSource': 'FREE_REALTIME', 'postMarketChangePercent': -0.00018197265, 'postMarketChange': -0.049316406, 'postMarketTime': '2026-01-02 17:59:55', 'postMarketPrice': 270.9607, 'postMarketSource': 'FREE_REALTIME', 'regularMarketChangePercent': -0.00312652, 'regularMarketChange': -0.849976, 'regularMarketTime': '2026-01-02 14:00:00', 'priceHint': 2, 'regularMarketPrice': 271.01, 'regularMarketDayHigh': 277.8248, 'regularMarketDayLow': 269.02, 'regularMarketVolume': 37746172, 'regularMarketPreviousClose': 271.86, 'regularMarketSource': 'FREE_REALTIME', 'regularMarketOpen': 272.05, 'exchange': 'NMS', 'exchangeName': 'NasdaqGS', 'exchangeDataDelayedBy': 0, 'marketState': 'CLOSED', 'quoteType': 'EQUITY', 'symbol': 'AAPL', 'underlyingSymbol': None, 'shortName': 'Apple Inc.', 'longName': 'Apple Inc.', 'currency': 'USD', 'quoteSourceName': 'Nasdaq Real Time Price', 'currencySymbol': '$', 'fromCurrency': None, 'toCurrency': None, 'lastMarket': None, 'marketCap': 4021894250496}
 
 # Grab the Autocomplete Stock
 
