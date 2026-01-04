@@ -42,7 +42,7 @@
    <section class="stock-orders flex flex-col py-6 gap-2">
       <div class="stockPrice flex flex-col gap-3 py-6 bg-transparent items-start justify-start content-start">
          <!-- Ticker Name, and I want company name beside it -->
-         <h2 class="text-gray-200  font-bold ">{{request.resolver_match.kwargs.stock_name}}   ({{request.resolver_match.kwargs.stock_tick}})</h2>
+         <h2 class="text-gray-200  font-bold ">{{exchange | safe}}   ({{request.resolver_match.kwargs.stock_tick}})</h2>
          <!-- Stock price -->
          <h3 class="livePrice text-white font-light"></h3>
          <!-- The Data Label. -->

@@ -42,8 +42,9 @@ from django.contrib import messages
 
 import pandas as pd
 import matplotlib.pyplot as pl
-import csv as cs
-import alpaca
+
+
+
 
 
 import markdown
@@ -358,6 +359,7 @@ def bullish_indicator(stock: str, period='6mo', interval="1d"):
         "Volume": "volume"
         
     })
+    closing = df["close"]
 
     # For our RSI strength
 
@@ -370,9 +372,38 @@ def bullish_indicator(stock: str, period='6mo', interval="1d"):
     # if Oversold it should be higher score, as it's a great sign for a breakout:
 
 
-    df["rsi"] = ta.momentum.rsi(df["close"], windows=14)
+    df["rsi"] = ta.momentum.rsi(closing, windows=14)
+
+    value_rsi = df["rsi"].iloc[-1]
+
+    if value_rsi > 30:
+        point += 20
+    elif 30 <= value_rsi >= 70:
+        point += 10
+    else:
+        point += 0
+
+    # Grab SMA averages for 50 days and 200 days and aggergate it towards the score
+
+    df["50SMA"]= ta.trend.sma_indicator(closing, window="50")
+    df["200SMA"].iloc[-1] = ta.trend.sma_indicator(closing, window="200")
+
+    sma_average_fifty = df["50SMA"].iloc[-1]
+    sma_average_two_hundred = df["200SMA"].iloc[-1]
+
+    # Aggregates for strong recent growth
+    if sma_average_fifty > sma_average_two_hundred:
+        point += 30
+    else:
+        point = 0
+
     
-    df[""]
+
+
+
+
+    
+
 
 
 

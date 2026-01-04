@@ -94,8 +94,13 @@ async function StockUpdate(){
         PriceData.classList.add('text-red-600'); 
         setTimeout(() => PriceData.classList.remove('text-red-600'), 500);
     }
+
+
+
 }
 // Grab the Card div to create a gsap animation
+
+
 
 const cards = document.querySelectorAll('.flexcard')
 
