@@ -6,7 +6,6 @@ from django.utils import timezone
 import yfinance as yf
 
 import time
-from .MSOAI import check_stock
 
 MAX_LENGTH_OF_TITLE = 255
 
@@ -61,16 +60,16 @@ class Chat(models.Model):
 # User's owner of that Portfolio
 # Requirements: Name and the Ticker of the Stock. The Book Cost, and the Total Return of that stock. 
 
-#  In order to find the 
+# Important Database: Owner of the Portfolio and the name of it, and it was created
 class Portfolio(models.Model):
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="portfolios")
     name = models.CharField(max_length=100)
-    ticker = models.CharField(max_length=10)
 
-    convert_ticker_string = str(ticker)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
-    if check_stock(convert_ticker_string.upper()):
-        pass
+
+
     
 
     
@@ -78,6 +77,23 @@ class Portfolio(models.Model):
         return f"{self.name} ({self.ticker})"
 
 
+
+
+class StockOrder(models.Model):
+
+    # Let Buy = 0
+    # Let sell = 1
+
+    TRANSACTION_METHOD = {
+        "BUY": 0,
+        "SELL": 1
+
+    }
+
+
+
+
+    ticker = models.CharField(max_length=10 , unique=True) # All Tickers are unique
 
 
 

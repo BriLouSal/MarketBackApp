@@ -26,7 +26,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 
-
+from functools import cache
 # Investment Endeavors Library
 
 from alpaca.trading.client import TradingClient
@@ -114,7 +114,6 @@ def news_parser(stock: str):
 
 
 
-
 async def build_stock_analyzer(stock_url, info) -> dict:
     cache_key = f"analysis:{stock_url}"
     
@@ -164,6 +163,8 @@ def json_data_api(date_api:str, stock: str) -> dict:
     summary = ticker.price.get(stock, {})
     company_name = summary.get("shortName") or summary.get("longName")
     exchange =  summary.get("exchangeName")
+    date = summary.get("regularMarketTime")
+    
 
 
     if date_api == '1D':
@@ -202,6 +203,7 @@ def json_data_api(date_api:str, stock: str) -> dict:
         'chart_price': graph_price,
         'name': company_name,
         'exchange': exchange,
+        'date': date,
     }
 
 # Output: {'maxAge': 1, 'preMarketSource': 'FREE_REALTIME', 'postMarketChangePercent': -0.00018197265, 'postMarketChange': -0.049316406, 'postMarketTime': '2026-01-02 17:59:55', 'postMarketPrice': 270.9607, 'postMarketSource': 'FREE_REALTIME', 'regularMarketChangePercent': -0.00312652, 'regularMarketChange': -0.849976, 'regularMarketTime': '2026-01-02 14:00:00', 'priceHint': 2, 'regularMarketPrice': 271.01, 'regularMarketDayHigh': 277.8248, 'regularMarketDayLow': 269.02, 'regularMarketVolume': 37746172, 'regularMarketPreviousClose': 271.86, 'regularMarketSource': 'FREE_REALTIME', 'regularMarketOpen': 272.05, 'exchange': 'NMS', 'exchangeName': 'NasdaqGS', 'exchangeDataDelayedBy': 0, 'marketState': 'CLOSED', 'quoteType': 'EQUITY', 'symbol': 'AAPL', 'underlyingSymbol': None, 'shortName': 'Apple Inc.', 'longName': 'Apple Inc.', 'currency': 'USD', 'quoteSourceName': 'Nasdaq Real Time Price', 'currencySymbol': '$', 'fromCurrency': None, 'toCurrency': None, 'lastMarket': None, 'marketCap': 4021894250496}
@@ -278,6 +280,7 @@ def autocomplete(data: str):
 
         )
         asset = alpaca_client.get_all_assets(stock_param)
+        cache_asset.set(ASSET_CACHE_KEY, asset, 86400)
        
        
         # Stock rec using  list comp
@@ -291,7 +294,7 @@ def autocomplete(data: str):
         stock_rec = [a for a in asset if a.symbol.upper().startswith(data.upper()) and a.tradable and (a.exchange.value != 'OTC') 
                      and (a.exchange.value != 'BATS') and RESTRICTED_WORD not in (a.name or '').upper() ][:80]
         
-        cache.set(ASSET_CACHE_KEY, stock_rec, 86400)
+        
         
         stock_ticker = Ticker(symbols=stock_rec)
 
@@ -387,7 +390,7 @@ def bullish_indicator(stock: str, period='6mo', interval="1d"):
     # Grab SMA averages for 50 days and 200 days and aggergate it towards the score
 
     df["50SMA"]= ta.trend.sma_indicator(closing, window="50")
-    df["200SMA"].iloc[-1] = ta.trend.sma_indicator(closing, window="200")
+    df["200SMA"]= ta.trend.sma_indicator(closing, window="200") # Fixed the bug
 
     sma_average_fifty = df["50SMA"].iloc[-1]
     sma_average_two_hundred = df["200SMA"].iloc[-1]
@@ -535,7 +538,7 @@ def stock(request, stock_tick:str):
 
 
 
-
+    
 
     # Gather Json data API
     # Not needed for Async.
@@ -547,17 +550,21 @@ def stock(request, stock_tick:str):
 
     exchange = data_json["exchange"]
     stock_name = data_json["name"]
+    date = data_json["date"]
 
 
     # needed
     data_stock = async_to_sync(build_stock_analyzer)(stock_url=stock_url, info=info)
+
+
+
     # Button
 
     
     # Create a matplotlib graph of stocks or any graphs
 
     context = {'ticker': ticker, 'information_of_stock': data_stock, 'stock_graph': label_graph, 'stock_price':
-               label_price, "exchange": exchange, "longName": stock_name}
+               label_price, "exchange": exchange, "longName": stock_name, 'date': date,}
 
     return render(request, 'base/stock.html', context)
 
