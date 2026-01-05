@@ -50,7 +50,7 @@ import matplotlib.pyplot as pl
 import markdown
 
 
-from .models import Profile, Portfolio
+from .models import Profile, Portfolio, StockOrder, StockPosition
 # from alpaca.data.historical import CryptoHistoricalDataClient
 
 from .MSOAI import (
@@ -106,10 +106,8 @@ ticker = []
 # This will be used as a feature to store recent_search of a user stock
 recent_search = {}
 
-def news_parser(stock: str):
-    # News gives an output for html tags
+def stockOrder():
     pass
-
 
 
 
@@ -280,7 +278,7 @@ def autocomplete(data: str):
 
         )
         asset = alpaca_client.get_all_assets(stock_param)
-        cache_asset.set(ASSET_CACHE_KEY, asset, 86400)
+        cache.set(ASSET_CACHE_KEY, asset, 86400)
        
        
         # Stock rec using  list comp
@@ -347,12 +345,15 @@ def bullish_indicator(stock: str, period='6mo', interval="1d"):
     # First grab the ticker itself, and ensure that we rename the keys into a lowercase
 
     # THe score should be out of 100
-    score = 0
+    point = 0
 
     stock = stock.upper()
     ticker_of_stock = Ticker(symbols=stock)
 
     df = ticker_of_stock.history(period=period, interval=interval)
+
+    # Also grab VIX for fear-indicator and it will be served as a modifer for our bullish sentiment
+
 
 
     df = df.rename(columns={
