@@ -112,3 +112,5 @@ gsap.from(cards, {
     duration: 4,
     ease: 'power3.out',
 })
+
+

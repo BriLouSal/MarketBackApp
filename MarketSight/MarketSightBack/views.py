@@ -403,6 +403,8 @@ def bullish_indicator(stock: str, period='6mo', interval="1d"):
 
     
 
+    
+
 
 
 
