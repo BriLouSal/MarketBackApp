@@ -109,8 +109,8 @@ const cards = document.querySelectorAll('.flexcard')
 
 gsap.from(cards, {
     opacity: 0,
-    y: 50,
-    duration: 4,
+    y: 100,
+    duration: 1.5,
     ease: 'power3.out',
 })
 
@@ -133,11 +133,24 @@ const centerText = {
   afterDraw(chart) {
     const { ctx, chartArea: { width, height } } = chart;
     ctx.save();
-    ctx.font = 'bold 26px sans-serif';
+
+
+    ctx.font = 'bold 12px sans-serif';
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(`${score}%`, width / 2, height * 0.9);
+    ctx.fillText('Bullish Indicator', width / 2, height / 2 - 30);
+
+
+    //  Muddle
+    ctx.font = 'bold 26px sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(`${score}%`, width / 2, height / 2) ;
+
+    // Subtitle 
+    ctx.font = ' 14px sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(`Bullish Score`, width / 2, height / 2 + 28) ;
     ctx.restore();
   }
 };
