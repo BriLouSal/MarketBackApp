@@ -46,11 +46,15 @@
          <!-- Ticker Name, and I want company name beside it -->
          <h2 class="text-gray-200  font-bold  text-[23px] ">{{longName | safe}}   ({{request.resolver_match.kwargs.stock_tick}})</h2>
          <!-- Stock price -->
-         <h3 class="livePrice text-white font-light text-[23px]"></h3>
+         <h3 class="livePrice text-white font-bold text-[23px]"></h3>
          <!-- The Data Label. -->
           <p class="text-gray-200 font-bold text-[20px]">As of right now at {{date | safe}} UTC</p>
 
-         <!-- Have the -->
+         <!-- Have the Bullish chart here -->
+          <div class="bullish_circle relative h-[500px] w-1/2 mx-auto  border-2 border-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.8),inset_0_0_15px_rgba(34,211,238,0.5)]">
+            <canvas id="bullishIndicator"></canvas>
+
+          </div>
 
 
       </div>

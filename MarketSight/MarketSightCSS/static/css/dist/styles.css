@@ -11,7 +11,6 @@
     --color-red-600: oklch(57.7% 0.245 27.325);
     --color-green-600: oklch(62.7% 0.194 149.214);
     --color-cyan-300: oklch(86.5% 0.127 207.078);
-    --color-cyan-400: oklch(78.9% 0.154 211.53);
     --color-blue-300: oklch(80.9% 0.105 251.813);
     --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-blue-800: oklch(42.4% 0.199 265.638);
@@ -431,10 +430,6 @@
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
-  }
-  .font-light {
-    --tw-font-weight: var(--font-weight-light);
-    font-weight: var(--font-weight-light);
   }
   .font-semibold {
     --tw-font-weight: var(--font-weight-semibold);

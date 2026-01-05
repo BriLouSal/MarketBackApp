@@ -340,7 +340,7 @@ def autocomplete(data: str):
 
 
 
-def bullish_indicator(stock: str, period='6mo', interval="1d"):
+def bullish_indicator(stock: str, period='1y', interval="1d"):
     # Grab RSI indicators,  Moving Average Trend, etc. Weight it accordingly to create it for bullish indicator and connect it to my stock. 
     # Use pandas and pandas_ta for this endeavour
 
@@ -379,33 +379,31 @@ def bullish_indicator(stock: str, period='6mo', interval="1d"):
     # if Oversold it should be higher score, as it's a great sign for a breakout:
 
 
-    df["rsi"] = ta.momentum.rsi(closing, windows=14)
+    df["rsi"] = ta.momentum.rsi(closing, window=14)
 
     value_rsi = df["rsi"].iloc[-1]
 
     if value_rsi > 30:
         point += 20
-    elif 30 <= value_rsi >= 70:
+    elif 30 <= value_rsi <= 70:
         point += 10
     else:
         point += 0
 
     # Grab SMA averages for 50 days and 200 days and aggergate it towards the score
 
-    df["50SMA"]= ta.trend.sma_indicator(closing, window="50")
-    df["200SMA"]= ta.trend.sma_indicator(closing, window="200") # Fixed the bug
+    df["50SMA"]= ta.trend.sma_indicator(closing, window=50)
+    df["200SMA"]= ta.trend.sma_indicator(closing, window=200) # Fixed the bug
 
     sma_average_fifty = df["50SMA"].iloc[-1]
     sma_average_two_hundred = df["200SMA"].iloc[-1]
-
-    
 
     # Aggregates for strong recent growth
     if sma_average_fifty > sma_average_two_hundred:
         point += 30
     else:
-        point = 0
-
+        point += 0
+    
 
     # Volatility: Bollinger Bonds. 
 
@@ -423,18 +421,14 @@ def bullish_indicator(stock: str, period='6mo', interval="1d"):
         point += 30 
     elif 20 <= fear_indicator < 30:
         point += 15
+
+
     
     return point
 
     
 
     
-
-
-
-
-    
-
 
 
 
