@@ -1,20 +1,17 @@
 
-## Roadmap
+# Project Title: MARKETSIGHT
+
+MarketSight is a Python-powered analytics platform that backtests trading strategies, visualizes performance, and integrates with real financial APIs like Yahoo query and Alpaca. This will be a way for users to actively create strategy with AI assisting them in their future endeavors. To me, Information is power, especially in investment. Powered by Anthropic AI, we're planning to help Retail investors to make wise decisions on their investment in order to retire early. To me, everyone deserves to have the sense of victory when they see their stock grow so rapidly. I had that experience with Bitcoin, PNG.V, etc. I used AI tools to dumb down the informations for me and how the news and macroeconomics could impact my stock. 
 
 
-Roadmap: In Progress
-
-- Adding Community feature, Bullish Indicators, etc.
-    
-    
-
--  Finished Products
-    - 
-    User_Authentication, Stock Financial Report Summary, Search Engine, News Analysis, Improved Positvity Rating with (96.2 Accuracy),
-    -
-       Autocomplete, Chart of Stocks. Stock Summary and its financial seamlessingly integrated from Anthropic AI, Autocomplete feature, etc.
+# PLANS:
+We've made the Anthropic API work to its perfection and created many features to support User experience. But the job is not finished yet
 
 
 
 
+## Demo:
+
+![App DEMO!](https://github.com/BriLouSal/MarketBackApp/blob/main/MarketSight.png)
+![DEMO 2!](https://github.com/BriLouSal/MarketBackApp/blob/main/MarketSight.png)
 
