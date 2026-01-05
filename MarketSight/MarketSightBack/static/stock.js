@@ -116,9 +116,8 @@ gsap.from(cards, {
 
 
 // Create a function to grab the colors of the bullish indicator
+// Create a function to grab the colors of the bullish indicator
 const score = points
-
-
 
 function pieGraphColor(score) {
   if (score < 20) return '#d32f2f';
@@ -131,29 +130,29 @@ function pieGraphColor(score) {
 // Add centre text for bulish indicator
 const centerText = {
   id: 'centerText',
-  afterDraw(chart, args, pluginOptions) {
-    const { ctx_chart, chartArea: { width, height } } = chart;
-
-    ctx_chart.save();
-    ctx_chart.font = 'bold 28px sans-serif';
-    ctx_chart.fillStyle = '#333';
-    ctx_chart.textAlign = 'center';
-    ctx_chart.textBaseline = 'middle';
-    ctx_chart.fillText(`${score}%`, width / 2, height / 1.1);
-    ctx_chart.restore();
+  afterDraw(chart) {
+    const { ctx, chartArea: { width, height } } = chart;
+    ctx.save();
+    ctx.font = 'bold 26px sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`${score}%`, width / 2, height * 0.9);
+    ctx.restore();
   }
 };
 
-
+// Grab the chart for bullish indicator
 const ctx_chart = document.getElementById("bullishIndicator")
-new BullishChart(ctx_chart, {
+
+new Chart(ctx_chart, {
     type: "doughnut",
     plugins: [centerText],
+    data: {                                  
         datasets: [{
-            data: chartPrices, 
+            data: [score, 100 - score], 
             backgroundColor: [pieGraphColor(score), "#eeeeee"],
+            borderWidth: 0
         }]
-    
-
-
-}) 
+    },
+});
