@@ -104,6 +104,7 @@ async function StockUpdate(){
 
 const cards = document.querySelectorAll('.flexcard')
 
+
 // Animation :)
 
 gsap.from(cards, {
@@ -113,4 +114,30 @@ gsap.from(cards, {
     ease: 'power3.out',
 })
 
+
+// Create a function to grab the colors of the bullish indicator
+
+function pieGraphColor(score) {
+  if (score < 20) return '#d32f2f';
+  if (score < 40) return '#f57c00';
+  if (score < 60) return '#fbc02d';
+  if (score < 80) return '#7cb342';
+  return '#2e7d32';
+}
+
+// Add centre text for bulish indicator
+const centerText = {
+  id: 'centerText',
+  afterDraw(chart, args, pluginOptions) {
+    const { ctx, chartArea: { width, height } } = chart;
+
+    ctx.save();
+    ctx.font = 'bold 28px sans-serif';
+    ctx.fillStyle = '#333';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`${score}%`, width / 2, height / 1.1);
+    ctx.restore();
+  }
+};
 

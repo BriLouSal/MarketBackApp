@@ -109,6 +109,7 @@
    const chartLabels = {{ stock_graph|safe }};
    const chartPrices = {{ stock_price|safe }};
    const stockTicker = "{{ request.resolver_match.kwargs.stock_tick }}";
+   const points = {{bullish_indicator | safe}}
 
    </script>
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
