@@ -93,7 +93,7 @@
 <div class="flex flex-row flex-wrap gap-4 py-6 items-start mb-100">
 {% for stocks in gainers %}
    <div class="w-[320px] flex flex-col items-center self-start ">
-      <h3 class="text-gray-200 text-[16px]  mb-2 leading-none m-0 ">{{stocks.ticker}}</h3>
+      <h3 class="text-gray-200 text-[16px]  mb-2 leading-none m-0 ">{{stocks.ticker}}: {{stocks.percent}}%</h3>
 
       <div class="relative h-[160px] w-[320px]"> 
          <canvas class="gainerGraph border-2 border-green-300 shadow-[0_0_15px_rgba(21,128,61,0.8)]">
@@ -107,7 +107,7 @@
 {% block scripts %}
 <script>
    const ticker = {{label_ticker | safe}}
-   const percentage = {{label_percentage | safe}}
+   const price = {{label_percentage | safe}}
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/gsap.min.js"></script>

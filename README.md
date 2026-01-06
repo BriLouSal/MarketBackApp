@@ -15,6 +15,5 @@ We've made the Anthropic API work to its perfection and created many features to
 ![App DEMO!](https://github.com/BriLouSal/MarketBackApp/blob/main/MarketSight.png)
 ![DEMO 2!](https://github.com/BriLouSal/MarketBackApp/blob/main/MarketSight2.png)
 ![DEMO 3!](https://github.com/BriLouSal/MarketBackApp/blob/main/MarketSight3.png)
-![DEMO 4 NEW UPDATE!](https://github.com/BriLouSal/MarketBackApp/blob/main/MarketSight4.png)
-
+![DEMO 4 UPDATED!](https://github.com/BriLouSal/MarketBackApp/blob/main/MarketSight4Update.png)
 ![DEMO 5 NEW UPDATE!](https://github.com/BriLouSal/MarketBackApp/blob/main/MarketSight5.png)

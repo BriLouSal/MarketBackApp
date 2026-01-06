@@ -122,13 +122,16 @@ def dailyWinners():
     result = []
     for stock in sorted_gainers:
         symbol = stock.get('symbol')
+        percentage = stock.get('regularMarketChangePercent')
         price = Ticker(symbol)
 
         hist = price.history(period='1d', interval='15m').reset_index()
-        percentage_gain = hist["close"].tolist()
+        price = hist["close"].tolist()
         result.append({
             'ticker':  symbol,
-            'percentage_gain': percentage_gain
+            'price': price,
+            'percent': round(float(percentage), 2)
+
         })
     return result
 
@@ -543,7 +546,7 @@ def search(request):
     # Mistake: We forgot it was a list. So we hav eto use list comphrension to get the data needed
     data_json =  dailyWinners()
     label_ticker = json.dumps([item['ticker'] for item in data_json])
-    label_percentage = json.dumps([item['percentage_gain'] for item in data_json])
+    label_percentage = json.dumps([item['price'] for item in data_json])
     gainers = {
         'gainers': data_json,
         'label_ticker': label_ticker,
