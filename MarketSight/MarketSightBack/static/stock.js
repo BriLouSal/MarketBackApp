@@ -14,7 +14,7 @@ let myChart = new Chart(ctx, {
             borderColor: '#3b82f6',
             fill: true,
             tension: 0.1,
-            backgroundColor: '#2d485c',
+            backgroundColor: graph_colour(),
         }]
     },
     options: {
@@ -37,7 +37,27 @@ let myChart = new Chart(ctx, {
     }
 });
 
+function graph_colour() {
+    const currentPrice = chartPrices[chartPrices.length - 1];
+    const previousPrice = Chart_yesterday_price;
+    // Stock currentPrice should be green!
+    if (currentPrice > previousPrice) return '#36ff0f';
 
+    // If the price of the stock is same, return blue (normal colour:)
+    else if (currentPrice === previousPrice) return '#7df0ff';
+
+    // Else it should be red
+    else return '#FF3131';
+
+
+
+    
+}
+
+
+
+setInterval(graph_colour, 1000);
+graph_colour();
 
 // Buttoms
 const buttons = document.querySelectorAll('.interval')
@@ -60,8 +80,13 @@ function buttonUpdate() {
 }
 buttonUpdate();
 
-
-
+// Graph Animation
+gsap.to(ctx, {
+    opacity: 0,
+    y: 100,
+    duration: 1.5,
+    ease: 'power3.out',
+})
 
 setInterval(StockUpdate, 1000);
 StockUpdate();
@@ -110,6 +135,10 @@ gsap.from(cards, {
     y: 100,
     duration: 1.5,
     ease: 'power3.out',
+    onUpdate() {
+         chart.update('none')
+    }
+
 })
 
 
@@ -124,6 +153,7 @@ function pieGraphColor(score) {
   if (score < 80) return '#7cb342';
   return '#2e7d32';
 }
+
 
 // Add centre text for bulish indicator
 const centerText = {

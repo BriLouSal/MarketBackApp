@@ -227,6 +227,10 @@ def json_data_api(date_api:str, stock: str) -> dict:
     stock_bars = stock_bars.reset_index()
 
     stock_bars['date'] = pd.to_datetime(stock_bars['date'])
+
+
+    yesterday_price = ticker.history(period="2d", interval="1d")
+    yesterday_price_data = yesterday_price.iloc[-2]["close"]
  
 
     graph_label = stock_bars['date'].dt.strftime(interval_format).tolist()
@@ -239,6 +243,7 @@ def json_data_api(date_api:str, stock: str) -> dict:
         'name': company_name,
         'exchange': exchange,
         'date': date,
+        'yesterday_price': yesterday_price_data,
     }
 
 # Output: {'maxAge': 1, 'preMarketSource': 'FREE_REALTIME', 'postMarketChangePercent': -0.00018197265, 'postMarketChange': -0.049316406, 'postMarketTime': '2026-01-02 17:59:55', 'postMarketPrice': 270.9607, 'postMarketSource': 'FREE_REALTIME', 'regularMarketChangePercent': -0.00312652, 'regularMarketChange': -0.849976, 'regularMarketTime': '2026-01-02 14:00:00', 'priceHint': 2, 'regularMarketPrice': 271.01, 'regularMarketDayHigh': 277.8248, 'regularMarketDayLow': 269.02, 'regularMarketVolume': 37746172, 'regularMarketPreviousClose': 271.86, 'regularMarketSource': 'FREE_REALTIME', 'regularMarketOpen': 272.05, 'exchange': 'NMS', 'exchangeName': 'NasdaqGS', 'exchangeDataDelayedBy': 0, 'marketState': 'CLOSED', 'quoteType': 'EQUITY', 'symbol': 'AAPL', 'underlyingSymbol': None, 'shortName': 'Apple Inc.', 'longName': 'Apple Inc.', 'currency': 'USD', 'quoteSourceName': 'Nasdaq Real Time Price', 'currencySymbol': '$', 'fromCurrency': None, 'toCurrency': None, 'lastMarket': None, 'marketCap': 4021894250496}
@@ -565,11 +570,7 @@ def home(request):
 
 
 # Order for Stocks and will add portfolio
-def order(request):
-    if request.method == 'POST':
-        get_order = request.POST.get('buy')
-        if get_order == 'buy':
-            pass
+
 
 
 
@@ -630,15 +631,14 @@ def stock(request, stock_tick:str):
 
 
 
-    # Button
-
+    # Grab the yesterday price so that we can change the colour of the graph depending if it's green or red.
+    yesterday_price = data_json["yesterday_price"]
     
-    # Create a matplotlib graph of stocks or any graphs
-
+    # NEEDED for bullish chart.js
     points = bullish_indicator(stock=stock_url)
 
     context = {'ticker': ticker, 'information_of_stock': data_stock, 'stock_graph': label_graph, 'stock_price':
-               label_price, "exchange": exchange, "longName": stock_name, 'date': date, 'bullish_indicator': points}
+               label_price, "exchange": exchange, "longName": stock_name, "date": date, "bullish_indicator": points, "yesterday_price": yesterday_price}
 
     return render(request, 'base/stock.html', context)
 

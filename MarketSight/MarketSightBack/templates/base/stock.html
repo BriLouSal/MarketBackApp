@@ -120,6 +120,7 @@
    const chartPrices = {{ stock_price|safe }};
    const stockTicker = "{{ request.resolver_match.kwargs.stock_tick }}";
    const points = {{bullish_indicator | safe}}
+   const Chart_yesterday_price = {{yesterday_price | safe}}
 
    </script>
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
