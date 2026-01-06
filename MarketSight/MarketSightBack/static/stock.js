@@ -1,5 +1,3 @@
-
-
 // Now we wanna create a UI Client Side to create for 
 
 // Fix these syntax errors later
@@ -158,14 +156,32 @@ const centerText = {
 // Grab the chart for bullish indicator
 const ctx_chart = document.getElementById("bullishIndicator")
 
-new Chart(ctx_chart, {
+const chart = new Chart(ctx_chart, {
     type: "doughnut",
     plugins: [centerText],
     data: {                                  
         datasets: [{
-            data: [score, 100 - score], 
+            data: [0.001, 99.999],
             backgroundColor: [pieGraphColor(score), "#eeeeee"],
             borderWidth: 0
         }]
     },
 });
+
+let animation_score = {v: 0}
+
+gsap.to(animation_score, {
+    v: score,
+    duration: 1.5,
+    ease: 'power3.out',
+    onUpdate(){
+        const v = Math.max(animation_score.v, 0.0001);
+
+        chart.data.datasets[0].data = [v, 100 - v];
+        chart.data.datasets[0].backgroundColor = [pieGraphColor(v), '#222831'];
+
+        chart.update('none');
+    }
+})
+
+// Breakdown. We would use onUpdate() on our chart.js for doughnut and we shuld have our value empty first, so data is [0,100] and append the score on [0] index. Data[0, 100 - score]
