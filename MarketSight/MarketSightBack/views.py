@@ -110,7 +110,7 @@ recent_search = {}
 
 def dailyWinners():
     s = Screener()
-    stocks = s.get_screeners(['day_gainers'], count=10)
+    stocks = s.get_screeners(['day_gainers'], count=5)
     gainers_list = stocks.get('day_gainers', {}).get('quotes', [])
     sorted_gainers = sorted(
         gainers_list, 
@@ -122,7 +122,10 @@ def dailyWinners():
     result = []
     for stock in sorted_gainers:
         symbol = stock.get('symbol')
-        percentage_gain = stock.get('regularMarketChangePercent')
+        price = Ticker(symbol)
+
+        hist = price.history(period='1d', interval='15m').reset_index()
+        percentage_gain = hist["close"].tolist()
         result.append({
             'ticker':  symbol,
             'percentage_gain': percentage_gain

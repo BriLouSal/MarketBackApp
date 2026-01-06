@@ -86,16 +86,22 @@
 
 <!-- Daily winner stock -->
  
-
-<div class="flex flex-row py-6">
+ 
+<h1 class="font-bold text-[28px] text-gray-200 text-center w-full mt-4">
+  Top Gainer Today!
+</h1>
+<div class="flex flex-row flex-wrap gap-4 py-6 items-start mb-100">
 {% for stocks in gainers %}
-   <h3 class="text-gray-200 -[16px]">{{label_ticker | safe}}</h3>
-   <canvas class="gainerGraph  relative h-[150px] w-auto mx-auto border-2 border-green-300 shadow-shadow-[0_0_15px_rgba(21,128,61,0.8),inset_0_0_15px_rgba(21,128,61,0.5)]
- "></canvas>
+   <div class="w-[320px] flex flex-col items-center self-start ">
+      <h3 class="text-gray-200 text-[16px]  mb-2 leading-none m-0 ">{{stocks.ticker}}</h3>
+
+      <div class="relative h-[160px] w-[320px]"> 
+         <canvas class="gainerGraph border-2 border-green-300 shadow-[0_0_15px_rgba(21,128,61,0.8)]">
+         </canvas>
+      </div>
+   </div>
 {% endfor %}
 </div>
-
-
 
 
 {% block scripts %}

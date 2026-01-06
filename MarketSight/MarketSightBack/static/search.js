@@ -61,12 +61,12 @@ canvases.forEach((canvas, index) => {
     // Create chart for each stock
     new Chart(canvas, {
         type: 'line',
-
-        data: {
-            labels: [ticker[index]],            
+       
+        data: {           
+            labels: percentage[index].map((_, i) => i), 
             datasets: [{
-                label: "Top Gainer Today",
-                data: [percentage[index]],       
+                label: ticker[index],
+                data:  percentage[index],       
                 borderColor: '#4fc51c',
                 backgroundColor: '#166534',
             }]
