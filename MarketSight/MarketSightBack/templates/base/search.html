@@ -83,7 +83,28 @@
    {% endif %}
  </div>
 
+
+<!-- Daily winner stock -->
+ 
+
+<div class="flex flex-row py-6">
+{% for stocks in gainers %}
+   <h3 class="text-gray-200 -[16px]">{{label_ticker | safe}}</h3>
+   <canvas class="gainerGraph  relative h-[150px] w-auto mx-auto border-2 border-green-300 shadow-shadow-[0_0_15px_rgba(21,128,61,0.8),inset_0_0_15px_rgba(21,128,61,0.5)]
+ "></canvas>
+{% endfor %}
+</div>
+
+
+
+
 {% block scripts %}
+<script>
+   const ticker = {{label_ticker | safe}}
+   const percentage = {{label_percentage | safe}}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/gsap.min.js"></script>
 <script src="{% static 'search.js' %}"></script>
 
 {% endblock scripts %}

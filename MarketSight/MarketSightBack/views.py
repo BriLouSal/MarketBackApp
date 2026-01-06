@@ -76,13 +76,14 @@ from django.core.cache import cache
 
 # Stock backup (INCASE IT'S NEEDED FOR VIEWS.PY IN ORDER FOR IT TO BE SEAMLESS)
 import yfinance as yf
-import yahooquery as yq
+
 import ta
 
 
 import json
 import os 
 from dotenv import load_dotenv
+from yahooquery import Screener
 
 
 
@@ -105,6 +106,36 @@ ticker = []
 
 # This will be used as a feature to store recent_search of a user stock
 recent_search = {}
+
+
+def dailyWinners():
+    s = Screener()
+    stocks = s.get_screeners(['day_gainers'], count=10)
+    gainers_list = stocks.get('day_gainers', {}).get('quotes', [])
+    sorted_gainers = sorted(
+        gainers_list, 
+        key=lambda x: x.get('regularMarketChangePercent', 0), 
+        reverse=True
+    )
+
+    # Prepare it for JSON dump and call it in search views.py
+    result = []
+    for stock in sorted_gainers:
+        symbol = stock.get('symbol')
+        percentage_gain = stock.get('regularMarketChangePercent')
+        result.append({
+            'ticker':  symbol,
+            'percentage_gain': percentage_gain
+        })
+    return result
+
+
+
+
+# Output [{'language': 'en-US', 'region': 'US', 'quoteType': 'EQUITY', 'typeDisp': 'Equity', 'quoteSourceName': 'Delayed Quote', 'triggerable': False, 'customPriceAlertConfidence': 'LOW', 'lastCloseTevEbitLtm': -2692.96816, 'lastClosePriceToNNWCPerShare': 2614.730468229444, 'currency': 'USD', 'bid': 12.78, 'postMarketChange': -0.040000916, 'regularMarketChange': 6.5, 'regularMarketTime': 1767646800, 'regularMarketPrice': 27.04, 'regularMarketDayHigh': 29.43, 'regularMarketDayRange': '23.26 - 29.43', 'regularMarketDayLow': 23.26, 'regularMarketVolume': 1849988, 'regularMarketPreviousClose': 20.54, 'bidSize': 2, 'askSize': 2, 'market': 'us_market', 'messageBoardId': 'finmb_695870118', 'fullExchangeName': 'NasdaqCM', 'longName': 'Regencell Bioscience Holdings Limited', 'regularMarketOpen': 24.0, 'averageDailyVolume3Month': 222263, 'averageDailyVolume10Day': 402740, 'corporateActions': [], 'fiftyTwoWeekLowChange': 26.947212, 'fiftyTwoWeekLowChangePercent': 290.41385, 'fiftyTwoWeekRange': '0.092789 - 83.6', 'fiftyTwoWeekHighChange': -56.559998, 'fiftyTwoWeekHighChangePercent': -0.676555, 'fiftyTwoWeekChangePercent': 16426.0, 'earningsTimestampStart': 1763499600, 'earningsTimestampEnd': 1763499600, 'isEarningsDateEstimate': True, 'trailingAnnualDividendRate': 0.0, 'trailingAnnualDividendYield': 0.0, 'marketState': 'POSTPOST', 'epsTrailingTwelveMonths': -0.01, 'sharesOutstanding': 494488908, 'bookValue': 0.01, 'fiftyDayAverage': 15.9566, 'fiftyDayAverageChange': 11.083401, 'fiftyDayAverageChangePercent': 0.69459665, 'twoHundredDayAverage': 13.722529, 'twoHundredDayAverageChange': 13.3174715, 'twoHundredDayAverageChangePercent': 0.9704823, 'priceToBook': 2704.0002, 'sourceInterval': 15, 'exchangeDataDelayedBy': 0, 'exchangeTimezoneName': 'America/New_York', 'exchangeTimezoneShortName': 'EST', 'gmtOffSetMilliseconds': -18000000, 'ipoExpectedDate': '2021-07-16', 'esgPopulated': False, 'tradeable': False, 'cryptoTradeable': False, 'exchange': 'NCM', 'fiftyTwoWeekHigh': 83.6, 'fiftyTwoWeekLow': 0.092789, 'financialCurrency': 'USD', 'shortName': 'Regencell Bioscience Holdings L', 'ask': 21.88, 'marketCap': 13370980352, 'regularMarketChangePercent': 31.6456, 'hasPrePostMarketData': True, 'firstTradeDateMilliseconds': 1626442200000, 'priceHint': 2, 'postMarketChangePercent': -0.14793238, 'postMarketTime': 1767661190, 'postMarketPrice': 27.0, 'symbol': 'RGC'}]
+ 
+
+
 
 def stockOrder():
     pass
@@ -502,12 +533,26 @@ def search(request):
                 messages.error(request, "Please Try Again, This Stock Does not Exist")
                 return render(request, 'base/search.html')
 
-
+    
             # This will give the stock the i = stock_checked. Since it's existing right?
             else:
                 return redirect('stock', stock_tick=search_stock)
+    # Mistake: We forgot it was a list. So we hav eto use list comphrension to get the data needed
+    data_json =  dailyWinners()
+    label_ticker = json.dumps([item['ticker'] for item in data_json])
+    label_percentage = json.dumps([item['percentage_gain'] for item in data_json])
+    gainers = {
+        'gainers': data_json,
+        'label_ticker': label_ticker,
+        'label_percentage': label_percentage,
+    }
+    
+
+
+            
+    # Grab the json_dump
         # Now check if the stock exists
-    return render(request, 'base/search.html')
+    return render(request, 'base/search.html', gainers)
 
 def home(request):
     return render(request, 'base/home.html')

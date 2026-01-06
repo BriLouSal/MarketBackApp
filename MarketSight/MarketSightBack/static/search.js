@@ -52,3 +52,34 @@ input.addEventListener('input', async () => {
         autocomplete.innerHTML = '';
     }
 });
+const canvases = document.querySelectorAll('.gainerGraph');
+
+
+canvases.forEach((canvas, index) => {
+
+
+    // Create chart for each stock
+    new Chart(canvas, {
+        type: 'line',
+
+        data: {
+            labels: [ticker[index]],            
+            datasets: [{
+                label: "Top Gainer Today",
+                data: [percentage[index]],       
+                borderColor: '#4fc51c',
+                backgroundColor: '#166534',
+            }]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: { display: false }      
+            },
+
+        }
+    });
+});
