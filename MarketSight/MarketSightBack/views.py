@@ -417,12 +417,11 @@ def bullish_indicator(stock: str, period='1y', interval="1d"):
     ticker_of_stock = Ticker(symbols=stock)
 
     # Current price
-    current_price = ticker_of_stock.price["regularMarketPrice"]
+    
 
     df = ticker_of_stock.history(period=period, interval=interval)
 
     # Also grab VIX for fear-indicator and it will be served as a modifer for our bullish sentiment
-
 
 
     df = df.rename(columns={
@@ -434,6 +433,7 @@ def bullish_indicator(stock: str, period='1y', interval="1d"):
         
     })
     closing = df["close"]
+    current_price = closing.iloc[-1]
 
     # For our RSI strength
 
@@ -479,7 +479,7 @@ def bullish_indicator(stock: str, period='1y', interval="1d"):
 
     # Important knowledge: https://technical-analysis-library-in-python.readthedocs.io/en/latest/ta.html
     
-    indicator_of_bollinger = ta.volatility.BollingerBands(Window=20, window_dev=2)
+    indicator_of_bollinger = ta.volatility.BollingerBands(closing, window=20, window_dev=2)
 
     df["upper"] = indicator_of_bollinger.bollinger_hband()
     df['middle'] = indicator_of_bollinger.bollinger_mavg()
