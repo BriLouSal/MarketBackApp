@@ -212,7 +212,7 @@ def json_data_api(date_api:str, stock: str) -> dict:
     stock = stock.upper()
     ticker = Ticker(symbols=stock)
     summary = ticker.price.get(stock, {})
-    company_name = summary.get("shortName") 
+    company_name = summary.get("shortName") or summary.get("longName")
     exchange =  summary.get("exchangeName")
     date = summary.get("regularMarketTime")
     
@@ -416,6 +416,9 @@ def bullish_indicator(stock: str, period='1y', interval="1d"):
     stock = stock.upper()
     ticker_of_stock = Ticker(symbols=stock)
 
+    # Current price
+    current_price = ticker_of_stock.price["regularMarketPrice"]
+
     df = ticker_of_stock.history(period=period, interval=interval)
 
     # Also grab VIX for fear-indicator and it will be served as a modifer for our bullish sentiment
@@ -470,8 +473,49 @@ def bullish_indicator(stock: str, period='1y', interval="1d"):
     
 
     # Volatility: Bollinger Bonds. 
+    # Important formula (The Bollinger Bandwidth Formula): \(\text{BBW}=\frac{\text{Upper\ Band}-\text{Lower\ Band}}{\text{Middle\ Band}}\)
+    # So grab the Upper, Lower, and Middle band
 
+
+    # Important knowledge: https://technical-analysis-library-in-python.readthedocs.io/en/latest/ta.html
     
+    indicator_of_bollinger = ta.volatility.BollingerBands(Window=20, window_dev=2)
+
+    df["upper"] = indicator_of_bollinger.bollinger_hband()
+    df['middle'] = indicator_of_bollinger.bollinger_mavg()
+    df["lower"]  = indicator_of_bollinger.bollinger_lband()
+
+    upper = df["upper"].iloc[-1]
+    lower = df["lower"].iloc[-1]
+    middle = df['middle'].iloc[-1]
+
+    # Compare current price vs lower bollinger, etc.:
+    if current_price > upper :
+        point += 12
+    elif current_price > middle:
+        point += 8
+
+    elif current_price < middle and current_price >= lower:
+        point += 0
+    # We would want to subtract this
+    elif current_price < lower:
+        point -= 5
+
+
+    BBW = (upper - lower) / middle
+    
+    if middle == 0:
+        bbw = None
+
+
+    if BBW < 0.04:
+        point += 13              
+    elif BBW < 0.06:
+        point += 8
+    elif BBW < 0.10:
+        point += 4
+
+
 
     # Info needed; VIX as a Bullish Indicator (Contrarian View)
     # High VIX = Buy Signal: When the VIX surges (e.g., above 30), it implies extreme fear, which historically precedes market bottoms and rallies.
