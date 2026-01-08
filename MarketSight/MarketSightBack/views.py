@@ -1,7 +1,7 @@
 
 # Main Django library
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.forms import UserCreationForm
 
@@ -109,6 +109,8 @@ recent_search = {}
 
 
 def dailyWinners():
+
+
     s = Screener()
     stocks = s.get_screeners(['day_gainers'], count=5)
     gainers_list = stocks.get('day_gainers', {}).get('quotes', [])
@@ -141,10 +143,24 @@ def dailyWinners():
 # Output [{'language': 'en-US', 'region': 'US', 'quoteType': 'EQUITY', 'typeDisp': 'Equity', 'quoteSourceName': 'Delayed Quote', 'triggerable': False, 'customPriceAlertConfidence': 'LOW', 'lastCloseTevEbitLtm': -2692.96816, 'lastClosePriceToNNWCPerShare': 2614.730468229444, 'currency': 'USD', 'bid': 12.78, 'postMarketChange': -0.040000916, 'regularMarketChange': 6.5, 'regularMarketTime': 1767646800, 'regularMarketPrice': 27.04, 'regularMarketDayHigh': 29.43, 'regularMarketDayRange': '23.26 - 29.43', 'regularMarketDayLow': 23.26, 'regularMarketVolume': 1849988, 'regularMarketPreviousClose': 20.54, 'bidSize': 2, 'askSize': 2, 'market': 'us_market', 'messageBoardId': 'finmb_695870118', 'fullExchangeName': 'NasdaqCM', 'longName': 'Regencell Bioscience Holdings Limited', 'regularMarketOpen': 24.0, 'averageDailyVolume3Month': 222263, 'averageDailyVolume10Day': 402740, 'corporateActions': [], 'fiftyTwoWeekLowChange': 26.947212, 'fiftyTwoWeekLowChangePercent': 290.41385, 'fiftyTwoWeekRange': '0.092789 - 83.6', 'fiftyTwoWeekHighChange': -56.559998, 'fiftyTwoWeekHighChangePercent': -0.676555, 'fiftyTwoWeekChangePercent': 16426.0, 'earningsTimestampStart': 1763499600, 'earningsTimestampEnd': 1763499600, 'isEarningsDateEstimate': True, 'trailingAnnualDividendRate': 0.0, 'trailingAnnualDividendYield': 0.0, 'marketState': 'POSTPOST', 'epsTrailingTwelveMonths': -0.01, 'sharesOutstanding': 494488908, 'bookValue': 0.01, 'fiftyDayAverage': 15.9566, 'fiftyDayAverageChange': 11.083401, 'fiftyDayAverageChangePercent': 0.69459665, 'twoHundredDayAverage': 13.722529, 'twoHundredDayAverageChange': 13.3174715, 'twoHundredDayAverageChangePercent': 0.9704823, 'priceToBook': 2704.0002, 'sourceInterval': 15, 'exchangeDataDelayedBy': 0, 'exchangeTimezoneName': 'America/New_York', 'exchangeTimezoneShortName': 'EST', 'gmtOffSetMilliseconds': -18000000, 'ipoExpectedDate': '2021-07-16', 'esgPopulated': False, 'tradeable': False, 'cryptoTradeable': False, 'exchange': 'NCM', 'fiftyTwoWeekHigh': 83.6, 'fiftyTwoWeekLow': 0.092789, 'financialCurrency': 'USD', 'shortName': 'Regencell Bioscience Holdings L', 'ask': 21.88, 'marketCap': 13370980352, 'regularMarketChangePercent': 31.6456, 'hasPrePostMarketData': True, 'firstTradeDateMilliseconds': 1626442200000, 'priceHint': 2, 'postMarketChangePercent': -0.14793238, 'postMarketTime': 1767661190, 'postMarketPrice': 27.0, 'symbol': 'RGC'}]
  
 
+# Reminder: from .models import Profile, Portfolio, StockOrder, StockPosition
+
+# Connect this via url.py in order to connect it in our forms in stock.html
 
 
-def stockOrder():
-    pass
+
+# def stockOrder(request, ticker):
+#     # Grab the current price of the stock
+#     current_price = Ticker(ticker)
+
+
+#     # Grab the Portfolio and its owner
+#     porfolio =  get_object_or_404(Portfolio)
+#     user = porfolio.owner
+
+#     capital_user = user.money_owned()
+#     if request.method == "POST":
+#         buy_order = request.get('BUY')
 
 
 
@@ -181,7 +197,7 @@ async def build_stock_analyzer(stock_url, info) -> dict:
     cache.set(cache_key, results, timeout=60 * 30)
     return results
 
-
+# I forgot to connect it in my url router 💀
 
 def json_data_api(date_api:str, stock: str) -> dict:
     # Grab stock information for our graphs and also exchangeNames and CompanyNames for
@@ -196,7 +212,7 @@ def json_data_api(date_api:str, stock: str) -> dict:
     stock = stock.upper()
     ticker = Ticker(symbols=stock)
     summary = ticker.price.get(stock, {})
-    company_name = summary.get("shortName") or summary.get("longName")
+    company_name = summary.get("shortName") 
     exchange =  summary.get("exchangeName")
     date = summary.get("regularMarketTime")
     
@@ -245,6 +261,12 @@ def json_data_api(date_api:str, stock: str) -> dict:
         'date': date,
         'yesterday_price': yesterday_price_data,
     }
+def json_data_view(request, stock, interval):
+    interval = request.GET.get("interval", "1D")
+    api_data = json_data_api(interval, stock)
+    prices = api_data["chart_price"]
+    labels = api_data["chart_label"]
+    return JsonResponse(prices, labels, safe=True)
 
 # Output: {'maxAge': 1, 'preMarketSource': 'FREE_REALTIME', 'postMarketChangePercent': -0.00018197265, 'postMarketChange': -0.049316406, 'postMarketTime': '2026-01-02 17:59:55', 'postMarketPrice': 270.9607, 'postMarketSource': 'FREE_REALTIME', 'regularMarketChangePercent': -0.00312652, 'regularMarketChange': -0.849976, 'regularMarketTime': '2026-01-02 14:00:00', 'priceHint': 2, 'regularMarketPrice': 271.01, 'regularMarketDayHigh': 277.8248, 'regularMarketDayLow': 269.02, 'regularMarketVolume': 37746172, 'regularMarketPreviousClose': 271.86, 'regularMarketSource': 'FREE_REALTIME', 'regularMarketOpen': 272.05, 'exchange': 'NMS', 'exchangeName': 'NasdaqGS', 'exchangeDataDelayedBy': 0, 'marketState': 'CLOSED', 'quoteType': 'EQUITY', 'symbol': 'AAPL', 'underlyingSymbol': None, 'shortName': 'Apple Inc.', 'longName': 'Apple Inc.', 'currency': 'USD', 'quoteSourceName': 'Nasdaq Real Time Price', 'currencySymbol': '$', 'fromCurrency': None, 'toCurrency': None, 'lastMarket': None, 'marketCap': 4021894250496}
 

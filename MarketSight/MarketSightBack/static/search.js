@@ -58,6 +58,10 @@ const canvases = document.querySelectorAll('.gainerGraph');
 canvases.forEach((canvas, index) => {
 
 
+    canvas.addEventListener('click', () => {
+        window.location.href = `/stock/${ticker[index]}/`;
+    });
+
     // Create chart for each stock
     new Chart(canvas, {
         type: 'line',

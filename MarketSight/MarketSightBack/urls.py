@@ -23,10 +23,16 @@ urlpatterns = [
     path('signup/',views.signup, name='signup'),
     path('support/',views.assistance, name='assistance'),
     path('logout/', views.logout_page, name='logout_page'),
-    # Create a autoupdating stock path for Javascript
+    # Create a autoupdating stock path for Javascript, AND ALSO FOR STOCK ORDERS
     # URL FOR API CALLS FOR JS
+    path("api/json_data_api/<str:stock>/<str:interval>", views.json_data_view, name=""),
+    path("api/json_data_api/<str:stock>/<str:interval>", views.json_data_view, name=""),
     path("api/latest-price/<str:stock>/", views.latest_price, name="latest_price"),
     path("api/autocomplete/<str:letters>/", views.information_letter, name="information_letter"),
+    # path("trade/<str:ticker>/", views.stockOrder, name="stockOrder"),
+
+
+
 
 ]
 

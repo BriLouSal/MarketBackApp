@@ -64,7 +64,7 @@ const buttons = document.querySelectorAll('.interval')
 
 function buttonUpdate() {
     buttons.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', async function() {
             buttons.forEach(b => {
                 b.classList.remove('bg-blue-500', 'text-white'); 
                 b.classList.add('bg-blue-800', 'text-gray-950');
@@ -75,6 +75,18 @@ function buttonUpdate() {
 
             const interval = this.getAttribute('data-interval');
             console.log("Fetching data for:", interval);
+        const response = await fetch(`/api/json_data_api/${stockTicker}/${interval}/`);
+
+        const data = await response.json();
+
+        myChart.data.labels = data.labels;
+        myChart.data.datasets[0].data = data.prices;
+        console.log("API DATA:", data);
+
+        myChart.update();
+
+
+
         });
     });
 }
@@ -117,6 +129,8 @@ async function StockUpdate(){
         PriceData.classList.add('text-red-600'); 
         setTimeout(() => PriceData.classList.remove('text-red-600'), 500);
     }
+
+    
 
 
 
