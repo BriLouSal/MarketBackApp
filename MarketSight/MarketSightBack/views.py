@@ -63,7 +63,7 @@ from .MSOAI import (
     Company_Debt,
     StockInfo,
     html_to_paragraph_text,
-    news
+    bullish
 
     
     
@@ -182,6 +182,7 @@ async def build_stock_analyzer(stock_url, info) -> dict:
         sync_to_async(Growth_of_Stock)(stock_url, info),
         sync_to_async(Returns_Efficiency_Ratios)(stock_url, info),
         sync_to_async(Company_Debt)(stock_url, info),
+        sync_to_async(bullish)(stock_url),
     )
     
 
@@ -193,6 +194,7 @@ async def build_stock_analyzer(stock_url, info) -> dict:
         "Growth of Stock": html_to_paragraph_text(markdown.markdown(stock_info[4])),
         "Returns Efficiency": html_to_paragraph_text(markdown.markdown(stock_info[5])),
         "Company Debt": html_to_paragraph_text(markdown.markdown(stock_info[6])),
+        "Bullish Summary": html_to_paragraph_text(markdown.markdown(stock_info[7])),
     }
     cache.set(cache_key, results, timeout=60 * 30)
     return results
@@ -233,7 +235,7 @@ def json_data_api(date_api:str, stock: str) -> dict:
         interval_format = '%b %d'
         
     # Do years
-    else:
+    elif  date_api == '1Y':
        period = '1y'
        interval = '1wk'
        interval_format = '%y-%W'
