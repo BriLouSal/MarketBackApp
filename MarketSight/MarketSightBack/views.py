@@ -225,7 +225,7 @@ def json_data_api(date_api:str, stock: str) -> dict:
         
     elif date_api == '1W':
         period = '1wk'
-        interval = '30m'
+        interval = '15m'
         interval_format = '%a %H:%M'
     elif date_api == '1M':
         period = '1mo'
@@ -262,11 +262,13 @@ def json_data_api(date_api:str, stock: str) -> dict:
         'yesterday_price': yesterday_price_data,
     }
 def json_data_view(request, stock, interval):
-    interval = request.GET.get("interval", "1D")
-    api_data = json_data_api(interval, stock)
-    prices = api_data["chart_price"]
-    labels = api_data["chart_label"]
-    return JsonResponse(prices, labels, safe=True)
+    api_data = json_data_api(interval.upper(), stock)
+    response_data = {
+        "labels": api_data["chart_label"],
+        "prices": api_data["chart_price"],
+        "yesterday_price": api_data["yesterday_price"]
+    }
+    return JsonResponse(response_data, safe=True)
 
 # Output: {'maxAge': 1, 'preMarketSource': 'FREE_REALTIME', 'postMarketChangePercent': -0.00018197265, 'postMarketChange': -0.049316406, 'postMarketTime': '2026-01-02 17:59:55', 'postMarketPrice': 270.9607, 'postMarketSource': 'FREE_REALTIME', 'regularMarketChangePercent': -0.00312652, 'regularMarketChange': -0.849976, 'regularMarketTime': '2026-01-02 14:00:00', 'priceHint': 2, 'regularMarketPrice': 271.01, 'regularMarketDayHigh': 277.8248, 'regularMarketDayLow': 269.02, 'regularMarketVolume': 37746172, 'regularMarketPreviousClose': 271.86, 'regularMarketSource': 'FREE_REALTIME', 'regularMarketOpen': 272.05, 'exchange': 'NMS', 'exchangeName': 'NasdaqGS', 'exchangeDataDelayedBy': 0, 'marketState': 'CLOSED', 'quoteType': 'EQUITY', 'symbol': 'AAPL', 'underlyingSymbol': None, 'shortName': 'Apple Inc.', 'longName': 'Apple Inc.', 'currency': 'USD', 'quoteSourceName': 'Nasdaq Real Time Price', 'currencySymbol': '$', 'fromCurrency': None, 'toCurrency': None, 'lastMarket': None, 'marketCap': 4021894250496}
 

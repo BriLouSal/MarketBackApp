@@ -1,5 +1,6 @@
 // Now we wanna create a UI Client Side to create for 
 
+
 // Fix these syntax errors later
 const ctx = document.getElementById('stockGraph').getContext('2d');
 
@@ -53,6 +54,7 @@ function graph_colour() {
 
     
 }
+console.log(myChart.data.datasets[0].data, "HI");
 
 
 
@@ -74,14 +76,13 @@ function buttonUpdate() {
             this.classList.add('bg-blue-500', 'text-white');
 
             const interval = this.getAttribute('data-interval');
-            console.log("Fetching data for:", interval);
+            // console.log("Fetching data for:", interval);
         const response = await fetch(`/api/json_data_api/${stockTicker}/${interval}/`);
 
         const data = await response.json();
-
+    
         myChart.data.labels = data.labels;
-        myChart.data.datasets[0].data = data.prices;
-        console.log("API DATA:", data);
+        myChart.data.datasets[0].data = data.prices.map(Number);
 
         myChart.update();
 
@@ -93,9 +94,9 @@ function buttonUpdate() {
 buttonUpdate();
 
 // Graph Animation
-gsap.to(ctx, {
+gsap.from(ctx, {
     opacity: 0,
-    y: 100,
+    y: 50,
     duration: 1.5,
     ease: 'power3.out',
 })
