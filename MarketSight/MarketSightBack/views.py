@@ -64,6 +64,7 @@ from .MSOAI import (
     StockInfo,
     html_to_paragraph_text,
     bullish,
+    bullish_indicator
 
     
     
@@ -244,9 +245,9 @@ def json_data_api(date_api:str, stock: str) -> dict:
     elif  date_api == '1Y':
        period = '1y'
        interval = '1wk'
-       yester_interval = '3mo'
-       period_inter = '2y'
-       interval_format = '%y-%W'
+       yester_period = '2y'     
+       yester_interval = '1mo'   
+       interval_format = '%Y-%b'
 
     stock_bars = ticker.history(period=period, interval=interval)
     
@@ -411,141 +412,6 @@ def autocomplete(data: str):
 
 # Bullish Indicator
 
-
- 
-
-
-
-
-def bullish_indicator(stock: str, period='1y', interval="1d"):
-    # Grab RSI indicators,  Moving Average Trend, etc. Weight it accordingly to create it for bullish indicator and connect it to my stock. 
-    # Use pandas and pandas_ta for this endeavour
-
-    # First grab the ticker itself, and ensure that we rename the keys into a lowercase
-
-    # THe score should be out of 100
-    point = 0
-
-    stock = stock.upper()
-    ticker_of_stock = Ticker(symbols=stock)
-
-    # Current price
-    
-
-    df = ticker_of_stock.history(period=period, interval=interval)
-
-    # Also grab VIX for fear-indicator and it will be served as a modifer for our bullish sentiment
-
-
-    df = df.rename(columns={
-        "Open": "open",
-        "High": "high",
-        "Low": "low",
-        "Close": "close",
-        "Volume": "volume"
-        
-    })
-    closing = df["close"]
-    current_price = closing.iloc[-1]
-
-    # For our RSI strength
-
-    # RSI Range & Key Levels
-    # 0 to 100: The fundamental range for the RSI oscillator.
-    # Overbought: Above 70 (or 80/90).
-    # Oversold: Below 30 (or 20/10).
-    # Neutral Zone: Between 30 and 70. 
-
-    # if Oversold it should be higher score, as it's a great sign for a breakout:
-
-    # Use RSI_14 MODEL (14-day average)
-    df["rsi"] = ta.momentum.rsi(closing, window=14)
-
-    value_rsi = df["rsi"].iloc[-1]
-
-    if value_rsi > 30:
-        point += 20
-    elif 30 <= value_rsi <= 70:
-        point += 10
-    else:
-        point += 0
-
-    # Grab SMA averages for 50 days and 200 days and aggergate it towards the score
-
-    df["50SMA"]= ta.trend.sma_indicator(closing, window=50)
-    df["200SMA"]= ta.trend.sma_indicator(closing, window=200) # Fixed the bug
-
-    sma_average_fifty = df["50SMA"].iloc[-1]
-    sma_average_two_hundred = df["200SMA"].iloc[-1]
-
-    # Aggregates for strong recent growth
-    if sma_average_fifty > sma_average_two_hundred:
-        point += 30
-    else:
-        point += 0
-    
-
-    # Volatility: Bollinger Bonds. 
-    # Important formula (The Bollinger Bandwidth Formula): \(\text{BBW}=\frac{\text{Upper\ Band}-\text{Lower\ Band}}{\text{Middle\ Band}}\)
-    # So grab the Upper, Lower, and Middle band
-
-
-    # Important knowledge: https://technical-analysis-library-in-python.readthedocs.io/en/latest/ta.html
-    
-    indicator_of_bollinger = ta.volatility.BollingerBands(closing, window=20, window_dev=2)
-
-    df["upper"] = indicator_of_bollinger.bollinger_hband()
-    df['middle'] = indicator_of_bollinger.bollinger_mavg()
-    df["lower"]  = indicator_of_bollinger.bollinger_lband()
-
-    upper = df["upper"].iloc[-1]
-    lower = df["lower"].iloc[-1]
-    middle = df['middle'].iloc[-1]
-
-    # Compare current price vs lower bollinger, etc.:
-    if current_price > upper :
-        point += 12
-    elif current_price > middle:
-        point += 8
-
-    elif current_price < middle and current_price >= lower:
-        point += 0
-    # We would want to subtract this
-    elif current_price < lower:
-        point -= 5
-
-
-    BBW = (upper - lower) / middle
-    
-    if middle == 0:
-        bbw = None
-
-
-    if BBW < 0.04:
-        point += 13              
-    elif BBW < 0.06:
-        point += 8
-    elif BBW < 0.10:
-        point += 4
-
-
-
-    # Info needed; VIX as a Bullish Indicator (Contrarian View)
-    # High VIX = Buy Signal: When the VIX surges (e.g., above 30), it implies extreme fear, which historically precedes market bottoms and rallies.
-    # Extreme Spikes: Values over 40 or 50 (like during COVID-19) often mark significant turning points where buying dips becomes attractive.
-    # High VIX vs. Moving Averages: A VIX significantly above its long-term average suggests fear is very high, signaling a potential reversal. 
-   
-    VIX = "^VIX"
-    fear_indicator = Ticker(symbols=VIX).history(period="1d")["close"].iloc[-1]
-    # Attack when everyone is fearful in the market!
-    if fear_indicator > 30:
-        point += 30 
-    elif 20 <= fear_indicator < 30:
-        point += 15
-
-
-    
-    return point
 
     
 
