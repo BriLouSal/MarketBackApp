@@ -58,7 +58,7 @@ console.log(myChart.data.datasets[0].data, "HI");
 
 
 
-setInterval(graph_colour, 1000);
+setInterval(graph_colour, 10000);
 graph_colour();
 
 // Buttoms
@@ -101,7 +101,7 @@ gsap.from(ctx, {
     ease: 'power3.out',
 })
 
-setInterval(StockUpdate, 1000);
+setInterval(StockUpdate, 10000);
 StockUpdate();
 
 
@@ -230,3 +230,38 @@ gsap.to(animation_score, {
 })
 
 // Breakdown. We would use onUpdate() on our chart.js for doughnut and we shuld have our value empty first, so data is [0,100] and append the score on [0] index. Data[0, 100 - score]
+
+
+
+// Grab the div class for the sales buttons, etc.
+
+
+
+
+const buy_button = document.getElementById('buy-button');
+const sell_button = document.getElementById('sell-button');
+const text_changer = document.getElementById('text-changer');
+const input_changer = document.getElementById('input-changer');
+
+
+// If the button is clicked, we want to also grab the url for the stockOrders which will be worked on early (so we're gonna add that feature later)
+buy_button.addEventListener('click', () => {
+    text_changer.innerHTML =  `"Buy some ${stockTicker}"`;
+    input_changer.placeholder = `"Buy some ${stockTicker}"`;
+
+    // Do the logic of buttons
+    buy_button.classList.replace('bg-blue-700', 'bg-blue-400');
+    sell_button.classList.replace('bg-blue-400', 'bg-blue-700');
+
+})
+
+
+sell_button.addEventListener('click', () => {
+    text_changer.innerHTML =  `"Sell some ${stockTicker}"`;
+    input_changer.placeholder = `"Sell some ${stockTicker}"`;
+
+    // Do the logic of buttons
+    sell_button.classList.replace('bg-blue-700', 'bg-blue-400');
+    buy_button.classList.replace('bg-blue-400', 'bg-blue-700');
+
+})
