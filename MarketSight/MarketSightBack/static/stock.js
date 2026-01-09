@@ -242,26 +242,38 @@ const buy_button = document.getElementById('buy-button');
 const sell_button = document.getElementById('sell-button');
 const text_changer = document.getElementById('text-changer');
 const input_changer = document.getElementById('input-changer');
+const button_execute_order = document.getElementById('button-execute');
 
 
 // If the button is clicked, we want to also grab the url for the stockOrders which will be worked on early (so we're gonna add that feature later)
-buy_button.addEventListener('click', () => {
-    text_changer.innerHTML =  `"Buy some ${stockTicker}"`;
-    input_changer.placeholder = `"Buy some ${stockTicker}"`;
+buy_button.addEventListener('click', (e) => {
+    e.preventDefault();
+    text_changer.innerHTML =  `Buy some ${stockTicker}`;
+    input_changer.placeholder = `Buy some ${stockTicker}`;
+    button_execute_order.innerHTML = `Buy`;
 
     // Do the logic of buttons
     buy_button.classList.replace('bg-blue-700', 'bg-blue-400');
     sell_button.classList.replace('bg-blue-400', 'bg-blue-700');
+    const order =  fetch()
+
 
 })
 
 
-sell_button.addEventListener('click', () => {
-    text_changer.innerHTML =  `"Sell some ${stockTicker}"`;
-    input_changer.placeholder = `"Sell some ${stockTicker}"`;
+sell_button.addEventListener('click', (e) => {
+    e.preventDefault();
+    text_changer.innerHTML =  `Sell some ${stockTicker}`;
+    input_changer.placeholder = `Sell some ${stockTicker}`;
 
     // Do the logic of buttons
     sell_button.classList.replace('bg-blue-700', 'bg-blue-400');
     buy_button.classList.replace('bg-blue-400', 'bg-blue-700');
+    button_execute_order.innerHTML = `Sell`;
+
 
 })
+
+
+
+// Fetch the data for the buttons later, and put it inside the eventlistener :)

@@ -162,6 +162,7 @@ def stockOrder(request, ticker, order_type):
     capital_user = user.money_owned()
     if request.method == "POST":
         buy_order = request.get('BUY')
+        
 
 
 

@@ -86,24 +86,25 @@
 
       <!-- Stock order -->
        <!-- Wrapper, create a glowing broder -->
-       <div class="flex flex-col  border-cyan-300 h-[100px] w-full items-center justify-center">
+       <div class="flex flex-col  border-cyan-300 w-full max-w-[400px] items-center justify-center">
 
-         <form method="POST">
+         <form method="POST" class="w-full">
+            {% csrf_token %}
             <!-- Button wrapper -->
-            <div class="items-center justify-center relative mb-2 flex flex-row gap-4 ">
+            <div class="items-center justify-center relative mb-2 flex flex-row gap-4  w-full">
                <button class="bg-blue-400 text-white text-[24px] border-r-4 border-none hover:bg-blue-800 transition-colors hover:text-blue-500 " id="buy-button">BUY</button>
                <button class="bg-blue-700 text-gray-500 text-[24px] border-r-4 border-none hover:bg-blue-800 transition-colors hover:text-blue-500 " id="sell-button">SELL</button>
             </div>
             <!-- Input  -->
-            <div class="items-center justify-center flex flex-col">
+            <div class="items-center justify-center flex flex-col w-full">
                <!-- Change it via JS -->
                 <!-- What we want: B-->
                <p class="text-white text-[12px]" id="text-changer">
-                  "Buy some {{request.resolver_match.kwargs.stock_tick}}
+                  Buy some {{request.resolver_match.kwargs.stock_tick}}
                </p>
             <input type="text" id="input-changer" placeholder="Buy some {{request.resolver_match.kwargs.stock_tick}}" 
             class="px-4 py-2 text-black bg-white rounded-md focus:outline-none border-4" autocomplete="off ">
-            <button type="submit" class="bg-blue-600 border-4 text-white text-[12px] border-">Search</button>
+            <button type="submit" id="button-execute" class="bg-blue-600 border-4 text-white text-[12px] border-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.8),inset_0_0_15px_rgba(34,211,238,0.5)]">Add</button>
 
 
                
