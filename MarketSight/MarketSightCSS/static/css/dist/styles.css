@@ -268,6 +268,9 @@
   .hidden {
     display: none;
   }
+  .h-\[100px\] {
+    height: 100px;
+  }
   .h-\[160px\] {
     height: 160px;
   }
@@ -385,6 +388,10 @@
     border-style: var(--tw-border-style);
     border-width: 2px;
   }
+  .border-4 {
+    border-style: var(--tw-border-style);
+    border-width: 4px;
+  }
   .border-r-4 {
     border-right-style: var(--tw-border-style);
     border-right-width: 4px;
@@ -468,6 +475,9 @@
   }
   .text-\[23px\] {
     font-size: 23px;
+  }
+  .text-\[24px\] {
+    font-size: 24px;
   }
   .text-\[28px\] {
     font-size: 28px;

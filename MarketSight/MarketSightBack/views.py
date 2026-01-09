@@ -387,9 +387,10 @@ def autocomplete(data: str):
         
         stock_rec.sort(
             key=lambda a: (
-                grab_top_exchange_rate(a),
-                grab_volume(a.symbol),
                 grab_market_cap(a.symbol),
+                grab_volume(a.symbol),
+                grab_top_exchange_rate(a),
+
             ),
             reverse=True
         )
