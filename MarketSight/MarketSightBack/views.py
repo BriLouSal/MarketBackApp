@@ -152,16 +152,30 @@ def dailyWinners():
 
 def stockOrder(request, ticker, order_type):
     # Grab the current price of the stock
-    current_price = Ticker(ticker)
+    stock = Ticker(ticker)
 
 
     # Grab the Portfolio and its owner
     porfolio =  get_object_or_404(Portfolio)
+    stock_position = get_object_or_404(StockPosition)
     user = porfolio.owner
 
     capital_user = user.money_owned()
     if request.method == "POST":
-        buy_order = request.get('BUY')
+        if order_type == 'BUY':
+            # Grab the Cost for the stock
+            user_buy_quantity = request.get('input-changer', 0)
+            current_price_dict = stock.get()
+
+
+        
+        elif order_type == 'SALE':
+            # We'll need to check if the user
+            user_buy_quantity = request.get('input-changer', 0)
+            quantity_owned =  stock_portfolio.quantity 
+            
+
+
         
 
 

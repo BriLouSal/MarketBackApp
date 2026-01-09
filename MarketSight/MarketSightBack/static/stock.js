@@ -255,7 +255,7 @@ buy_button.addEventListener('click', (e) => {
     // Do the logic of buttons
     buy_button.classList.replace('bg-blue-700', 'bg-blue-400');
     sell_button.classList.replace('bg-blue-400', 'bg-blue-700');
-    const order =  fetch()
+    // const order =  fetch(`trade/<str:ticker>/<str:order_type>/`)
 
 
 })
