@@ -503,7 +503,7 @@ async def information_letter(request, letters):
 
 
 
-def check_stock(request, stock):
+def check_stock(stock):
     try:
         ticker = yf.Ticker(stock)
         # We can do is if something doesn't return, we can do return None 
@@ -520,7 +520,7 @@ def check_stock(request, stock):
     
 
         if not info or 'regularMarketPrice' not in info:
-                return messages.error(request, "The stock does not exist. Please try again")
+                return messages.error("The stock does not exist. Please try again")
 
             
         return stock_info
@@ -551,7 +551,7 @@ def search(request):
             stock_checked = check_stock(stock=search_stock)
 
             if stock_checked is None:
-                messages.error(request, "Please Try Again, This Stock Does not Exist")
+                messages.error("Please Try Again, This Stock Does not Exist")
                 return render(request, 'base/search.html')
 
     

@@ -243,6 +243,8 @@ const sell_button = document.getElementById('sell-button');
 const text_changer = document.getElementById('text-changer');
 const input_changer = document.getElementById('input-changer');
 const button_execute_order = document.getElementById('button-execute');
+const form_execution = document.getElementById('form_execute');
+
 
 
 // If the button is clicked, we want to also grab the url for the stockOrders which will be worked on early (so we're gonna add that feature later)
@@ -250,12 +252,14 @@ buy_button.addEventListener('click', (e) => {
     e.preventDefault();
     text_changer.innerHTML =  `Buy some ${stockTicker}`;
     input_changer.placeholder = `Buy some ${stockTicker}`;
-    button_execute_order.innerHTML = `Buy`;
+    button_execute_order.innerHTML = `BUY`;
 
     // Do the logic of buttons
     buy_button.classList.replace('bg-blue-700', 'bg-blue-400');
     sell_button.classList.replace('bg-blue-400', 'bg-blue-700');
     // const order =  fetch(`trade/<str:ticker>/<str:order_type>/`)
+
+    form_execution.action = `trade/${stockTicker}/buy/`
 
 
 })
@@ -269,7 +273,8 @@ sell_button.addEventListener('click', (e) => {
     // Do the logic of buttons
     sell_button.classList.replace('bg-blue-700', 'bg-blue-400');
     buy_button.classList.replace('bg-blue-400', 'bg-blue-700');
-    button_execute_order.innerHTML = `Sell`;
+    button_execute_order.innerHTML = `SELL`;
+    form_execution.action = `trade/${stockTicker}/sell/`
 
 
 })

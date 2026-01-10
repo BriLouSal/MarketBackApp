@@ -85,10 +85,11 @@
 
 
       <!-- Stock order -->
+      {% if user.is_authenticated %}
        <!-- Wrapper, create a glowing broder -->
        <div class="flex flex-row  border-cyan-300 w-full max-w-[400px] items-center justify-center gap-4">
 
-         <form method="POST" class="w-full">
+         <form method="POST" class="w-full" id="form_execute" action="">
             {% csrf_token %}
             <!-- Button wrapper -->
             <div class="items-center justify-center relative mb-2 flex flex-row gap-4  w-full">
@@ -104,7 +105,15 @@
                </p>
             <input type="text" id="input-changer" placeholder="Buy some {{request.resolver_match.kwargs.stock_tick}}" 
             class="px-4 py-2 text-black bg-white rounded-md focus:outline-none border-4" autocomplete="off ">
-            <button type="submit" id="button-execute" class="bg-blue-600 border-4 w-full text-white text-[12px] border-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.8),inset_0_0_15px_rgba(34,211,238,0.5)]">Add</button>
+            <button type="submit" id="button-execute" class="bg-blue-600 border-4 w-full text-white text-[12px] border-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.8),inset_0_0_15px_rgba(34,211,238,0.5)]">Add</button>\
+
+         {% else %}
+         <a href="{% url 'login' %}"> 
+         <p>Please Login to take advantage of our tools!. We welcome you to MarketSight, a pathway for strategic decisions, and summarized reports for you!</p> 
+         </a>
+  
+
+         {% endif %}
 
 
                
