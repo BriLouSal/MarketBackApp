@@ -25,6 +25,8 @@ API_KEY = os.getenv('ALPACA')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 
+# ACTUALLY THE EARLY VERSION THAT IS NOW BULLISH INDICATOR ANG DAILY WINNER XD
+
 
 def get_asset_info(self, df=None):
         """

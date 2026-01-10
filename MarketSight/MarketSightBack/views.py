@@ -153,33 +153,82 @@ def dailyWinners():
 def stockOrder(request, ticker, order_type):
     # Grab the current price of the stock
     stock = Ticker(ticker)
-
+    current_price = stock.history(period='1d')['Close'].iloc[-1]
+    quantity = float(request.POST.get('input-changer'))
 
     # Grab the Portfolio and its owner
     porfolio =  get_object_or_404(Portfolio)
     stock_position = get_object_or_404(StockPosition)
     user = porfolio.owner
 
+    # Grab the stock position of the Ticker and how much quantity does the user have, etc.
+    position = StockPosition.objects.filter(user_portfolio=porfolio, ticker=ticker).first()
+    
+
+    # Average Book Cost Formula:  Total Dollar Invested / Quantity Bought
+
+    # Transaction cost 
+
     capital_user = user.money_owned()
+
+    transaction = capital_user * quantity
     if request.method == "POST":
-        if order_type == 'BUY':
+        if StockOrder.OrderChoice.BUY == order_type:
             # Grab the Cost for the stock
-            user_buy_quantity = request.get('input-changer', 0)
-            current_price_dict = stock.get()
-
-
+            if capital_user < transaction:
+                return messages.error(request, "You cannot buy this stock, as you lack the capital to execute this trade")
         
-        elif order_type == 'SALE':
-            # We'll need to check if the user
-            user_buy_quantity = request.get('input-changer', 0)
-            quantity_owned =  stock_portfolio.quantity 
+            #  We wanna subtract the user's capital with the transaction cost
+            # Grab StockPosition book cost
+
+
+
+            capital_user -= float(transaction)
+            
+            position.quantity += quantity
+            
+            position.book_cost = transaction / quantity
             
 
 
+
+
         
+        elif StockOrder.OrderChoice.SELL == order_type:
+            # We'll need to check if the user has the quantity to sell the stock, or
+            # even owns the stock XD
+            if position.quantity < quantity or  not position:
+                return messages.error(request, 'You do not have the quantity to own the stock or own the stock.')
+            # First order of business is to add the money towards its user
+            # Since we're selling, AND also subtract stock.quantity 
+            capital_user += int(transaction)
+            position.quantity -= quantity
+
+            # Now if the user sells their stocks (All of it, delete it!)
+            
+            # We're also saving data into our models.py
+            if position.quantity == 0:
+                position.delete()
+            user.save()
+            
+            if position and position.pk: 
+                position.save()
 
 
+        messages.success(request, f"Order {order_type}: {quantity} {ticker} successful!")
 
+
+            
+
+
+# We will use the federal rates for this endeavour
+def risk_free_model():
+
+    
+    pass
+# Use PEG Ratio.
+def valuation():
+    pass
 
 async def build_stock_analyzer(stock_url, info) -> dict:
     cache_key = f"analysis:{stock_url}"
@@ -454,7 +503,7 @@ async def information_letter(request, letters):
 
 
 
-def check_stock(stock):
+def check_stock(request, stock):
     try:
         ticker = yf.Ticker(stock)
         # We can do is if something doesn't return, we can do return None 
@@ -471,7 +520,7 @@ def check_stock(stock):
     
 
         if not info or 'regularMarketPrice' not in info:
-                return messages.error("The stock does not exist. Please try again")
+                return messages.error(request, "The stock does not exist. Please try again")
 
             
         return stock_info
