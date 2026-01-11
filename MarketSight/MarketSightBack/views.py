@@ -538,6 +538,8 @@ def check_stock(stock):
 
 
 def search(request):
+    print("AUTH USER:", request.user, request.user.is_authenticated)
+
     # This is the index view where we will display the home page/search page
     # Now we need to find how to redirect the search html -> stock.html
     if request.method == "GET":
@@ -666,6 +668,7 @@ def signup(request):
         username = request.POST.get('username')
         
         password = request.POST.get('password')
+
         
         if User.objects.filter(username=username).exists():
             messages.error(request, "This username already exists, please try again!")
@@ -680,7 +683,7 @@ def signup(request):
         
             messages.success(request, "Successfully Signed up, please use login page!")
        
-        redirect("base/authentication/login.html")
+            redirect("base/authentication/login.html")
 
     return render(request, 'base/authentication/signup.html')
 
@@ -689,21 +692,21 @@ def signup(request):
 
 
 def loginpage(request):
+    
+    recent_url = request.GET.get('next') or request.POST.get('next') or 'search'
 
     if request.user.is_authenticated:
-        messages.error(request, "You're already authenticated!, No need to login again!")
-        return render(request, 'base/search.html')
+       return redirect('search')
       
     # Check if user exists in the database, if not we can do a 
 
     if request.method == "POST":
-        email = request.POST.get('email')
-       
+        user =  request.POST.get('email')
 
         password = request.POST.get('password')
 
         # This will check if user authentication will exist
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(request, email=(user), password=password)
 
         if user is None:
             messages.error(request, "This user does not exist, please signup or try again!")
@@ -711,10 +714,9 @@ def loginpage(request):
 
 
       
-        else:
-            login(request, user)
-            messages.success(request, "Login successful! Enjoy MarketSight!")
-            return render(request, 'base/search.html')
+        login(request, user)
+        messages.info(request, "Login successful! Enjoy MarketSight!")
+        return redirect(recent_url)
         
     return render(request, 'base/authentication/login.html')
 
