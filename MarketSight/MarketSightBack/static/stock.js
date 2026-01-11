@@ -259,7 +259,7 @@ buy_button.addEventListener('click', (e) => {
     sell_button.classList.replace('bg-blue-400', 'bg-blue-700');
     // const order =  fetch(`trade/<str:ticker>/<str:order_type>/`)
 
-    form_execution.action = `trade/${stockTicker}/buy/`
+    form_execution.action = `/trade/${stockTicker}/BUY/`;
 
 
 })
@@ -274,7 +274,7 @@ sell_button.addEventListener('click', (e) => {
     sell_button.classList.replace('bg-blue-700', 'bg-blue-400');
     buy_button.classList.replace('bg-blue-400', 'bg-blue-700');
     button_execute_order.innerHTML = `SELL`;
-    form_execution.action = `trade/${stockTicker}/sell/`
+    form_execution.action = `/trade/${stockTicker}/SELL/`;
 
 
 })

@@ -4,7 +4,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.forms import UserCreationForm
-
+from decimal import Decimal
+from django.db import transaction
 
 
 # User authentication library from Django
@@ -148,74 +149,106 @@ def dailyWinners():
 
 # Connect this via url.py in order to connect it in our forms in stock.html
 
-
-
+@transaction.atomic
 def stockOrder(request, ticker, order_type):
     # Grab the current price of the stock
     stock = Ticker(ticker)
-    current_price = stock.history(period='1d')['Close'].iloc[-1]
-    quantity = float(request.POST.get('input-changer'))
+    current_price = Decimal(str(stock.history(period='1d')['close'].iloc[-1]))
+    quantity = Decimal(request.POST.get('input-changer'))
 
     # Grab the Portfolio and its owner
-    porfolio =  get_object_or_404(Portfolio)
-    stock_position = get_object_or_404(StockPosition)
-    user = porfolio.owner
+    user, _ = Profile.objects.get_or_create(
+        username=request.user.username,
+        defaults={"email": request.user.email}
+    )
+    portfolio, _ = Portfolio.objects.get_or_create(
+        owner=user,
+        defaults={"name": "Main Portfolio"}
+    )
 
     # Grab the stock position of the Ticker and how much quantity does the user have, etc.
-    position = StockPosition.objects.filter(user_portfolio=porfolio, ticker=ticker).first()
-    
+    position = StockPosition.objects.filter(user_portfolio=portfolio, ticker=ticker).first()
 
     # Average Book Cost Formula:  Total Dollar Invested / Quantity Bought
 
     # Transaction cost 
+    capital_user = user.money_owned
 
-    capital_user = user.money_owned()
+    order = StockOrder.objects.create(
+        user_portfolio=portfolio,
+        ticker=ticker,
+        quantity=quantity,
+        order_choice=order_type.upper(),
+        price_bought=current_price,
+        status=StockOrder.Status.PENDING,
+    )
 
-    transaction = capital_user * quantity
+    # Grab the Cost for the stock
+    transaction = current_price * quantity
     if request.method == "POST":
-        if StockOrder.OrderChoice.BUY == order_type:
-            # Grab the Cost for the stock
-            if capital_user < transaction:
-                return messages.error(request, "You cannot buy this stock, as you lack the capital to execute this trade")
-        
+        if order_type.upper() == StockOrder.OrderChoice.BUY:
+            if user.money_owned < transaction:
+                order.status = StockOrder.Status.REJECTED
+                order.save()
+                messages.error(request, "Insufficient capital.")
+                return redirect("stock", stock_tick=ticker)
+
             #  We wanna subtract the user's capital with the transaction cost
             # Grab StockPosition book cost
+            if not position:
+                position = StockPosition.objects.create(
+                    user_portfolio=portfolio,
+                    ticker=ticker,
+                    quantity=quantity,
+                    book_cost=current_price,
+                )
+            else:
+                total_cost = (position.book_cost * position.quantity) + transaction
+                total_quantity = position.quantity + quantity
+                position.quantity = total_quantity
+                position.book_cost = total_cost / total_quantity
+                position.save()
 
+            user.money_owned -= int(transaction)
+            user.save()
+            order.status = StockOrder.Status.FILLED
+            order.save()
 
-
-            capital_user -= float(transaction)
-            
-            position.quantity += quantity
-            
-            position.book_cost = transaction / quantity
-            
-
-
-
-
-        
-        elif StockOrder.OrderChoice.SELL == order_type:
+        elif order_type.upper() == StockOrder.OrderChoice.SELL:
             # We'll need to check if the user has the quantity to sell the stock, or
             # even owns the stock XD
-            if position.quantity < quantity or  not position:
-                return messages.error(request, 'You do not have the quantity to own the stock or own the stock.')
+            if not position or position.quantity < quantity:
+                order.status = StockOrder.Status.REJECTED
+                order.save()
+                messages.error(request, 'You do not have the quantity to own the stock or own the stock.')
+                return redirect("stock", stock_tick=ticker)
             # First order of business is to add the money towards its user
             # Since we're selling, AND also subtract stock.quantity 
-            capital_user += int(transaction)
+            user.money_owned += int(transaction)
             position.quantity -= quantity
 
             # Now if the user sells their stocks (All of it, delete it!)
-            
             # We're also saving data into our models.py
             if position.quantity == 0:
                 position.delete()
-            user.save()
-            
-            if position and position.pk: 
+            else:
                 position.save()
 
+            user.save()
+            order.status = StockOrder.Status.FILLED
+            order.save()
 
-        messages.success(request, f"Order {order_type}: {quantity} {ticker} successful!")
+        else:
+            order.status = StockOrder.Status.CANCELED
+            order.save()
+            messages.error(request, "Invalid order type.")
+            return redirect("stock", stock_tick=ticker)
+
+        messages.success(
+            request,
+            f"{order.order_choice} {quantity} {ticker} @ ${current_price}"
+        )
+        return redirect('stock', stock_tick=ticker)
 
 
             
@@ -596,7 +629,7 @@ def portfolio_room(request):
 def stock(request, stock_tick:str):
 
     # This will happen when the user has: Search.html -> Stock Checker ->
-    money_owned = Profile.objects.all()
+
     
     
 
@@ -614,12 +647,6 @@ def stock(request, stock_tick:str):
             stock_url = i
 
     stock_url = stock_tick.upper()     
-
-
-    if request.method == 'POST':
-        get_order = request.POST.get('buy')
-        if get_order == 'buy':
-            pass
 
 
 
