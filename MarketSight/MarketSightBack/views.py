@@ -800,9 +800,18 @@ def assistance(request):
 
 
 def stock_portfolio(request):
-    # We will fetch user's stock portfolio from database and display it here
-    context = {}
+    # We will fetch user's stock portfolio from database and display it here, so our context would have ticker, and create average return. 
 
-    # Check if there's nothing inside the portfolio (which would say, "Please Buy some Stocks for a deep analysis")
+    # Important Formula: \(\text{ROI}=\left(\frac{\text{Final\ Value\ of\ Investment}-\text{Total\ Cost\ of\ Investment}}{\text{Total\ Cost\ of\ Investment}}\right)\times 100\%\)
+
+    #  Create a sidebar with graphs, ticker name, etc,.and we grab those information from StockPosition
+    # First grab stockPositon
+
+    user_stock_position = StockPosition.objects.get('all')
+
+    print(user_stock_position)
+
+
+    context = {}
     return render(request, 'MarketSightBack/stock_portfolio.html', context)
 

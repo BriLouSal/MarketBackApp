@@ -53,7 +53,7 @@ class Chat(models.Model):
 
 
 # User's owner of that Portfolio
-# Requirements: Name and the Ticker of the Stock. The Book Cost, and the Total Return of that stock.
+# Requirements: Name and the Ticker of the Stock. The Book Cost, and the Total Return of that stock. 
 #
 # Important Database: Owner of the Portfolio and the name of it, and it was created
 #
